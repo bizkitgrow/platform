@@ -1,0 +1,95 @@
+---
+interface Props {
+  targetedService?: string;
+}
+
+const { targetedService = 'General' } = Astro.props;
+---
+
+<div id="waitlist" class="p-8 sm:p-12 bg-white border border-slate-100 rounded-3xl shadow-sm max-w-xl mx-auto mt-20">
+  <div class="text-center mb-8">
+    <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-3">Join the Operational Perimeter</h2>
+    <p class="text-sm text-slate-500 leading-relaxed">Lock in priority pipeline resource allocation and receive customized system setup vouchers.</p>
+  </div>
+
+  <form id="waiting-list-form" class="space-y-4">
+    <input type="hidden" name="targeted_service" value={targetedService} />
+    
+    <div>
+      <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">Corporate Email</label>
+      <input 
+        type="email" 
+        name="email" 
+        required 
+        placeholder="operations@enterprise.com" 
+        class="w-full h-11 px-4 rounded-xl border border-slate-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none text-sm transition-all"
+      />
+    </div>
+
+    <div>
+      <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">Business Identity</label>
+      <input 
+        type="text" 
+        name="business_name" 
+        placeholder="Acme Operations Ltd" 
+        class="w-full h-11 px-4 rounded-xl border border-slate-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none text-sm transition-all"
+      />
+    </div>
+
+    <button 
+      type="submit" 
+      class="w-full h-12 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-sm font-bold shadow-sm transition-all flex items-center justify-center gap-2"
+    >
+      Initialize Onboarding Queue
+    </button>
+  </form>
+
+  <div id="form-response" class="mt-4 text-center text-xs font-medium hidden"></div>
+</div>
+
+<script is:inline>
+  const form = document.getElementById('waiting-list-form');
+  const responseDiv = document.getElementById('form-response');
+
+  if (form) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const formData = new FormData(form);
+      const email = formData.get('email');
+      const business_name = formData.get('business_name');
+      const targeted_service = formData.get('targeted_service');
+
+      responseDiv.classList.remove('hidden', 'text-red-600', 'text-emerald-600');
+      responseDiv.textContent = 'Processing request...';
+
+      try {
+        const res = await fetch('/api/waiting-list', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            email,
+            business_name,
+            targeted_service
+          })
+        });
+
+        const data = await res.json();
+        
+        if (res.ok) {
+          responseDiv.classList.add('text-emerald-600');
+          responseDiv.textContent = 'Operational baseline registered successfully. Access coupon dispatched.';
+          form.reset();
+        } else {
+          responseDiv.classList.add('text-red-600');
+          responseDiv.textContent = data.error || 'System initialization failed. Retry sequence.';
+        }
+      } catch (err) {
+        responseDiv.classList.add('text-red-600', 'hidden');
+        responseDiv.textContent = 'Network connectivity timeout. Operational perimeter down.';
+      }
+    });
+  }
+</script>

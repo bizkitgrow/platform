@@ -1,0 +1,41 @@
+{
+  "design_system": {
+    "framework_reference": "Astro Layout + Tailwind CSS + shadcn/ui",
+    "theme_mode_default": "Light Mode (B2B Authority Profile)",
+    "tokens": {
+      "colors": {
+        "canvas": "#FFFFFF",
+        "canvas_accent": "#F8FAFC",
+        "brand_cta": "#059669",
+        "brand_cta_hover": "#047857",
+        "text_primary": "#0F172A",
+        "text_secondary": "#475569",
+        "borders_subtle": "#E2E8F0"
+      },
+      "typography": {
+        "family": "Inter, system-ui, sans-serif",
+        "scale": {
+          "h1": { "size": "36px", "weight": "700", "leading": "1.2" },
+          "h2": { "size": "28px", "weight": "600", "leading": "1.3" },
+          "h3": { "size": "22px", "weight": "600", "leading": "1.4" },
+          "body": { "size": "16px", "weight": "400", "leading": "1.6" }
+        }
+      },
+      "layout": {
+        "max_page_width": "1280px",
+        "card_radius": "8px",
+        "shadow_subtle": "0 1px 3px 0 rgba(0,0,0,0.05), 0 1px 2px -1px rgba(0,0,0,0.05)"
+      },
+      "interactions": {
+        "transition_speed": "150ms",
+        "timing_function": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "smooth_scroll": {
+          "engine": "Lenis",
+          "duration": 1.2,
+          "easing": "t => Math.min(1, 1.001 - Math.pow(2, -10 * t))",
+          "direction": "vertical"
+        }
+      }
+    }
+  }
+}

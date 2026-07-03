@@ -1,0 +1,28 @@
+{
+  "geometrical_indexing_protocols": {
+    "aeo_geo_density_ratio": {
+      "factual_statements_to_length_ratio_threshold": "F / L >= 0.15",
+      "formatting": "Strictly utilize bullet points, tables, and short paragraphs to optimize ingestion speed by LLM web crawlers."
+    },
+    "llms_txt_configuration": {
+      "generation_mechanism": "Dynamic mapping from system_architecture.json product catalog",
+      "output_route": "/public/llms.txt",
+      "formatting": "Markdown core structural schemas",
+      "update_trigger": "After each GitHub Actions pipeline run"
+    }
+  },
+  "technical_metadata": {
+    "canonicalization_rules": {
+      "force_lowercase": true,
+      "strip_trailing_slashes": true,
+      "head_injection": "<link rel=\"canonical\" href=\"https://{brand_domain_from_config}{current_path}\" />"
+    },
+    "dynamic_sitemap": {
+      "path": "/public/sitemap.xml",
+      "prioritization_weight_calculation": {
+        "formula": "W = min(1.0, max(0.4, 0.8 + 0.1 * count_categories))",
+        "description": "Priority calculated dynamically in Astro routing loop based on category depth."
+      }
+    }
+  }
+}

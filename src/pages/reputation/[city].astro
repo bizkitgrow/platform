@@ -1,0 +1,104 @@
+---
+import systemArchitecture from '../../../system_architecture.json';
+import WaitingListForm from '../../components/WaitingListForm.astro';
+import CheckoutButton from '../../components/ui/CheckoutButton.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { buildLocalBusinessSchema } from '../../utils/seo_metadata_builder';
+
+import targetCities from '../../../config/us_cities.json';
+
+export async function getStaticPaths() {
+  return targetCities.map((item) => ({
+    params: { city: item.city },
+    props: { cityName: item.name, sku: item.sku, testimonialCompany: item.testimonial_company },
+  }));
+}
+
+const { city } = Astro.params;
+const { cityName, sku, testimonialCompany } = Astro.props;
+
+const canonicalUrl = `https://bizkitgrow.vercel.app/reputation/${city}`;
+const brandName = systemArchitecture.tenant_settings.brand_name;
+
+const pageTitle = `Reputation Management Software in ${cityName}`;
+const metaDesc = `Automate local business authority. Capture Google reviews and own the search footprint in ${cityName} with ${brandName}.`;
+
+const businessSchema = buildLocalBusinessSchema(cityName, testimonialCompany);
+
+Astro.response.headers.set('Cache-Control', 'public, max-age=0, s-maxage=3600');
+---
+
+<BaseLayout 
+  title={pageTitle} 
+  description={metaDesc}
+  canonicalUrl={canonicalUrl}
+>
+  <script type="application/ld+json" slot="schema" set:html={JSON.stringify(businessSchema)} />
+
+  <main class="max-w-4xl mx-auto px-6 py-20 font-sans">
+    <div class="text-sm font-bold text-emerald-600 uppercase tracking-widest mb-2">
+      Local Authority Ingestion
+    </div>
+    <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight mb-4 text-slate-900">
+      Reputation & Review Engine — {cityName}
+    </h1>
+    <p class="text-lg text-slate-500 max-w-2xl mb-8 leading-relaxed">
+      Convert latent buyer intent into high-margin revenue. Scale your organic footprint and automate Google review capture on autopilot across {cityName} without volatile ad spend.
+    </p>
+
+    <div class="p-8 bg-slate-50 border border-slate-100 rounded-2xl max-w-lg mb-12">
+      <h3 class="font-bold text-lg text-slate-900 mb-2">Claim Geographic Search Authority</h3>
+      <p class="text-xs text-slate-400 mb-4">Reputation Growth Package: <span class="font-bold text-slate-900">$149.00 USD / month</span></p>
+      <p class="text-xs text-slate-400 mb-6">Initialize review ingestion sequence mapped to your local coordinates.</p>
+      
+      <CheckoutButton sku={sku} className="h-12 px-8 text-base">
+        Deploy {cityName} Review Funnel (Global Executive Suite)
+      </CheckoutButton>
+    </div>
+
+    <!-- Factual Data Table for GEO -->
+    <section class="border-t border-slate-100 pt-12 space-y-6">
+      <h2 class="text-2xl font-bold text-slate-900">Search Footprint Parameters</h2>
+      <p class="text-slate-600 text-sm leading-relaxed">
+        Our automated local reputation framework syncs with Google Business APIs to capture client telemetry instantly. 
+        Calculations enforce high-density schema structures for map-pack indexing.
+      </p>
+      <table class="w-full text-left text-sm border-collapse">
+        <thead>
+          <tr class="border-b border-slate-200">
+            <th class="py-2 text-slate-700 font-bold">Metrics</th>
+            <th class="py-2 text-slate-700 font-bold">Operational Baseline</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b border-slate-100">
+            <td class="py-2 text-slate-600">Review Capture Rate</td>
+            <td class="py-2 text-slate-600 font-medium">Auto-Ingestion within 5 minutes</td>
+          </tr>
+          <tr class="border-b border-slate-100">
+            <td class="py-2 text-slate-600">Local citation index</td>
+            <td class="py-2 text-slate-600 font-medium">99.8% Sync Integrity Target</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Localized B2B Testimonial Section -->
+    <section class="border-t border-slate-100 pt-12 mt-12">
+      <h2 class="text-2xl font-bold text-slate-900 mb-6">Client Success Perimeter</h2>
+      <blockquote class="p-6 bg-slate-50 border-l-4 border-emerald-500 rounded-r-xl">
+        <p class="text-slate-600 italic text-sm leading-relaxed mb-4">
+          "Implementing the reputation management protocols redirected our search authority coordinates. We recorded a 43% boost in inbound operations leads within {cityName} within the first billing quarter."
+        </p>
+        <cite class="text-xs font-bold text-slate-800 uppercase tracking-wide not-italic">
+          — Director of Growth, {testimonialCompany}
+        </cite>
+      </blockquote>
+    </section>
+
+    <!-- Waitlist -->
+    <div class="mt-20">
+      <WaitingListForm targetedService={`Local SEO ${cityName}`} />
+    </div>
+  </main>
+</BaseLayout>

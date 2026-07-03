@@ -1,0 +1,106 @@
+---
+import { createClient } from '@supabase/supabase-js';
+import systemArchitecture from '../../../system_architecture.json';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const url = process.env.SUPABASE_URL;
+  const key = process.env.SUPABASE_ANON_KEY;
+
+  if (url && key) {
+    const supabase = createClient(url, key);
+    try {
+      const { data: posts } = await supabase.from('posts').select('slug');
+      if (posts && posts.length > 0) {
+        return posts.map((post) => ({
+          params: { slug: post.slug },
+        }));
+      }
+    } catch (err) {
+      console.error('Error fetching static paths for blog posts:', err.message);
+    }
+  }
+
+  // Fallback static paths if DB is empty during compilation
+  return [{ params: { slug: 'usd-to-eur-exchange-rate-secure-mobility-guide' } }];
+}
+
+const { slug } = Astro.params;
+
+const url = process.env.SUPABASE_URL;
+const key = process.env.SUPABASE_ANON_KEY;
+
+let post = null;
+if (url && key) {
+  const supabase = createClient(url, key);
+  try {
+    const { data, error } = await supabase.from('posts').select('*').eq('slug', slug).single();
+    if (error || !data) {
+      return Astro.redirect('/404');
+    }
+    post = data;
+  } catch (err) {
+    console.error(`Error loading post slug ${slug}:`, err.message);
+    return Astro.redirect('/404');
+  }
+} else {
+  return Astro.redirect('/404');
+}
+
+// Append high-performance cache headers
+Astro.response.headers.set('Cache-Control', 'public, max-age=0, s-maxage=3600');
+
+if (!post) {
+  // Graceful fallback content
+  post = {
+    title: 'Operational Ingest Signal Active',
+    content:
+      'The content pipeline is currently synchronizing. Please check the network perimeter in a moment.',
+    meta_desc: 'Operational synchronizer active.',
+    created_at: new Date().toISOString(),
+  };
+}
+
+const canonicalUrl = `https://bizkitgrow.vercel.app/blog/${slug}`;
+const pageTitle = post.title;
+const metaDesc = post.meta_desc;
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: post.title,
+  description: post.meta_desc,
+  url: canonicalUrl,
+  datePublished: post.created_at,
+  author: {
+    '@type': 'Organization',
+    name: systemArchitecture.tenant_settings.brand_name,
+  },
+};
+---
+
+<BaseLayout 
+  title={pageTitle} 
+  description={metaDesc}
+  canonicalUrl={canonicalUrl}
+>
+  <script type="application/ld+json" slot="schema" set:html={JSON.stringify(articleSchema)} />
+
+  <article class="max-w-3xl mx-auto px-6 py-20 font-sans">
+    <header class="mb-10">
+      <div class="text-sm font-bold text-emerald-600 uppercase tracking-widest mb-2">
+        Operational Telemetry Ingest
+      </div>
+      <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight mb-4">
+        {post.title}
+      </h1>
+      <div class="text-xs text-slate-400">
+        Dispatched on: {new Date(post.created_at).toLocaleDateString()} UTC
+      </div>
+    </header>
+    
+    <div class="prose prose-slate max-w-none text-slate-600 leading-relaxed text-base space-y-6">
+      <p class="whitespace-pre-line">{post.content}</p>
+    </div>
+  </article>
+</BaseLayout>

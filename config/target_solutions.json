@@ -1,0 +1,13 @@
+[
+  { "slug": "crm-system", "name": "CRM System Integration", "sku": "rp_sku_crm_multi_tenant" },
+  {
+    "slug": "invoicing-with-ai",
+    "name": "AI Invoicing Automation",
+    "sku": "rp_sku_invoice_ledger_ai"
+  },
+  {
+    "slug": "appointment-booking",
+    "name": "Smart Scheduling Engine",
+    "sku": "rp_sku_booking_calendar_v1"
+  }
+]

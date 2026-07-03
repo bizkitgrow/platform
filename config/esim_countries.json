@@ -1,0 +1,12 @@
+[
+  {
+    "country": "united-states",
+    "iso": "US",
+    "capital": "Washington",
+    "sku": "rp_sku_esim_global_v1"
+  },
+  { "country": "united-kingdom", "iso": "GB", "capital": "London", "sku": "rp_sku_esim_global_v1" },
+  { "country": "germany", "iso": "DE", "capital": "Berlin", "sku": "rp_sku_esim_global_v1" },
+  { "country": "canada", "iso": "CA", "capital": "Ottawa", "sku": "rp_sku_esim_global_v1" },
+  { "country": "australia", "iso": "AU", "capital": "Canberra", "sku": "rp_sku_esim_global_v1" }
+]

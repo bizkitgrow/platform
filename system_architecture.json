@@ -1,0 +1,31 @@
+{
+  "tenant_settings": {
+    "brand_name": "bizkitgrow",
+    "support_email": "support@bizkitgrow.com",
+    "parent_company_copyright": "bizkitgrow Operations Global Ltd.",
+    "primary_niche": "Global Digital Infrastructure & Automation"
+  },
+  "routing_architecture": {
+    "root_domain": {
+      "host": "Vercel",
+      "framework": "Astro v4 (ISR Mode)",
+      "paths": {
+        "/": "Ecosystem Hub Landing Page",
+        "/esim/[country]": "Pillar 1: Programmatic Connectivity Router",
+        "/reputation/[city]": "Pillar 2: Programmatic Local SEO Hub",
+        "/solutions/[service_slug]": "Pillar 3: AI Business Suite Dashboard",
+        "/alternatives/[software_name]": "Cross-Pillar SaaS Alternatives Hub",
+        "/blog/[slug]": "AGC Article View"
+      }
+    },
+    "fulfillment_subdomain": {
+      "host": "ResellPortal_Edge",
+      "dns_record": "CNAME shop.bizkitgrow.com → panel.resellportal.com",
+      "base_checkout_url": "https://shop.bizkitgrow.com/checkout",
+      "global_flags": {
+        "test_mode": true,
+        "skip_client_email": false
+      }
+    }
+  }
+}

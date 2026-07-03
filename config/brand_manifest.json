@@ -1,0 +1,53 @@
+{
+  "brand_architecture": {
+    "name": "bizkitgrow",
+    "global_positioning": "The Sovereign Infrastructure Engine for Remote Agencies and Consultancies"
+  },
+  "audience_demand_matrix": {
+    "target_geos": ["US", "UK", "CA", "AU", "DE"],
+    "intent_clusters": {
+      "pillar_1_mobility": {
+        "user_persona": "High-net-worth digital nomads, cross-border consultants, US remote founders.",
+        "core_pain_point": "Drastic roaming charges, insecure public networks stalling financial wire transfers, lost business SMS verification codes.",
+        "high_rpm_search_queries": [
+          "secure business esim for international travel",
+          "private dedicated vpn for financial operations",
+          "get us virtual business phone number remotely"
+        ],
+        "conversion_copy_tokens": {
+          "hero_headline": "Secure Your Digital Perimeter. Anywhere on Earth.",
+          "subheadline": "Unthrottled tier-1 cellular data, dedicated financial-grade encryption, and immediate US/UK corporate lines. Zero roaming friction, absolute operational uptime.",
+          "cta_label": "Deploy Remote Mobility Asset"
+        }
+      },
+      "pillar_2_growth": {
+        "user_persona": "US local brick-and-mortar owners, multi-location agencies, hyper-scale service providers.",
+        "core_pain_point": "Crushing ad-spend customer acquisition costs (CAC), negative Google reviews tanking local inbound leads, invisible organic footprint in high-value zip codes.",
+        "high_rpm_search_queries": [
+          "automated google business reputation management software",
+          "programmatic hyper local seo for multi location brands",
+          "automated client review acquisition funnel"
+        ],
+        "conversion_copy_tokens": {
+          "hero_headline": "Own the Search Grid. Dominate High-Value Zip Codes.",
+          "subheadline": "Convert latent buyer intent into high-margin revenue. Scale your local organic footprint and automate Google review capture on autopilot without volatile ad spend.",
+          "cta_label": "Ingest Inbound Search Authority"
+        }
+      },
+      "pillar_3_operations": {
+        "user_persona": "Time-poor agency owners, independent consultants, service-based solopreneurs scaling past $10k/mo.",
+        "core_pain_point": "Extreme administrative bloat, chaotic context-switching between 7 fragmented apps, payment drop-offs due to unprofessional billing workflows.",
+        "high_rpm_search_queries": [
+          "automated invoice to scheduling workflow for agencies",
+          "white label client management operations software",
+          "secure cryptographic contract signing tool for consultants"
+        ],
+        "conversion_copy_tokens": {
+          "hero_headline": "Zero Administrative Overhead. Maximum Profit Margin.",
+          "subheadline": "Consolidate your back-office architecture. Automate the friction out of client scheduling, AI billing collection, and smart document signing in one unified client portal.",
+          "cta_label": "Initialize Agency Automation"
+        }
+      }
+    }
+  }
+}

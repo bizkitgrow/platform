@@ -1,0 +1,27 @@
+---
+interface Props {
+  title: string;
+  subtext: string;
+  ctaLabel: string;
+  sku: string;
+  icon?: string;
+}
+
+const { title, subtext, ctaLabel, sku, icon = '⚡' } = Astro.props;
+
+import CheckoutButton from './CheckoutButton.astro';
+---
+
+<div class="p-8 bg-white border border-slate-100 rounded-2xl shadow-subtle hover:shadow-md transition-all duration-300 flex flex-col justify-between group will-change-transform">
+  <div>
+    <div class="w-12 h-12 rounded-xl bg-slate-50 flex items-center justify-center text-xl mb-6 group-hover:scale-105 transition-transform duration-300">
+      {icon}
+    </div>
+    <h3 class="text-xl font-bold text-slate-900 mb-3">{title}</h3>
+    <p class="text-slate-500 text-sm leading-relaxed mb-6">{subtext}</p>
+  </div>
+  
+  <CheckoutButton sku={sku} className="w-full h-11">
+    {ctaLabel}
+  </CheckoutButton>
+</div>

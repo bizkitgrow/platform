@@ -1,0 +1,21 @@
+---
+import systemArchitecture from '../../../system_architecture.json';
+
+interface Props {
+  sku: string;
+  className?: string;
+  testMode?: boolean;
+}
+
+const { sku, className = '', testMode = true } = Astro.props;
+const baseCheckoutUrl =
+  systemArchitecture.routing_architecture.fulfillment_subdomain.base_checkout_url;
+const checkoutUrl = `${baseCheckoutUrl}?product_id=${sku}${testMode ? '&test_mode=1' : ''}`;
+---
+
+<a 
+  href={checkoutUrl}
+  class={`inline-flex items-center justify-center rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold shadow-sm transition-all duration-150 ${className}`}
+>
+  <slot>Provision Authority Asset</slot>
+</a>

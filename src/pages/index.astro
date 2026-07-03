@@ -1,0 +1,90 @@
+---
+import brandManifest from '../../config/brand_manifest.json';
+import systemArchitecture from '../../system_architecture.json';
+import WaitingListForm from '../components/WaitingListForm.astro';
+import PillarCard from '../components/ui/PillarCard.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { buildAudienceIntentSchema } from '../utils/seo_metadata_builder';
+
+const brandName = systemArchitecture.tenant_settings.brand_name;
+const currentUrl = 'https://bizkitgrow.vercel.app/';
+
+const seoSchema = buildAudienceIntentSchema('pillar_1_mobility', currentUrl);
+
+const pillars = brandManifest.audience_demand_matrix.intent_clusters;
+---
+
+<BaseLayout 
+  title="Autonomous B2B Digital Infrastructure" 
+  description="Consolidate secure remote networks, automated local authority building, and back-office pipelines under one secure perimeter."
+  canonicalUrl={currentUrl}
+>
+  <script type="application/ld+json" slot="schema" set:html={JSON.stringify(seoSchema)} />
+
+  <!-- Hero Frame -->
+  <section class="max-w-[1280px] mx-auto px-6 py-20 md:py-28 text-center">
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-100 text-emerald-700 text-xs font-semibold uppercase tracking-wider mb-6">
+      <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+      Sovereign Growth Engine Active
+    </div>
+
+    <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold text-slate-900 tracking-tight max-w-4xl mx-auto leading-tight mb-8">
+      Sovereign Infrastructure for <span class="text-emerald-600">Remote Operations</span>
+    </h1>
+
+    <p class="text-lg sm:text-xl text-slate-500 max-w-2xl mx-auto leading-relaxed mb-10">
+      Unify tier-1 cellular routing, automated local search authority, and secure client operations under one secure perimeter.
+    </p>
+
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+      <a href="#pillars" class="h-12 px-8 inline-flex items-center justify-center rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold shadow-sm transition-all duration-150">
+        Explore Growth Pillars
+      </a>
+      <a href="#waitlist" class="h-12 px-8 inline-flex items-center justify-center rounded-xl border border-slate-200 hover:border-slate-300 bg-white text-slate-700 text-sm font-semibold transition-all">
+        Lock In Resource Allocation
+      </a>
+    </div>
+  </section>
+
+  <!-- Pillars Grid -->
+  <section id="pillars" class="max-w-[1280px] mx-auto px-6 py-20 border-t border-slate-100">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl font-extrabold text-slate-900 mb-4">Select Your Operational Perimeter</h2>
+      <p class="text-slate-500 max-w-xl mx-auto">Deploy target growth solutions matching commercial B2B query intents.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <!-- Pillar 1 -->
+      <PillarCard 
+        title="Global Connectivity" 
+        subtext={pillars.pillar_1_mobility.conversion_copy_tokens.subheadline} 
+        ctaLabel={pillars.pillar_1_mobility.conversion_copy_tokens.cta_label}
+        sku="rp_sku_esim_global_v1"
+        icon="📡"
+      />
+      <!-- Pillar 2 -->
+      <PillarCard 
+        title="Google Authority" 
+        subtext={pillars.pillar_2_growth.conversion_copy_tokens.subheadline} 
+        ctaLabel={pillars.pillar_2_growth.conversion_copy_tokens.cta_label}
+        sku="rp_sku_reputation_gmb_auto"
+        icon="📈"
+      />
+      <!-- Pillar 3 -->
+      <PillarCard 
+        title="Operational Automation" 
+        subtext={pillars.pillar_3_operations.conversion_copy_tokens.subheadline} 
+        ctaLabel={pillars.pillar_3_operations.conversion_copy_tokens.cta_label}
+        sku="rp_sku_b2b_suite_agency"
+        icon="⚙️"
+      />
+    </div>
+  </section>
+
+  <!-- Lead Capture Form -->
+  <section class="bg-slate-50/50 py-20 border-t border-b border-slate-100">
+    <div class="max-w-[1280px] mx-auto px-6">
+      <WaitingListForm />
+    </div>
+  </section>
+</BaseLayout>

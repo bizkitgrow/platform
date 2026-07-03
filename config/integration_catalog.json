@@ -1,0 +1,45 @@
+{
+  "telecom_ux_entry_point": {
+    "frontend_primitives": {
+      "input_controller": "catamphetamine/react-phone-number-input",
+      "numeric_sanitizer": "react-component/input-number",
+      "iso_parser": "AfterShip/phone",
+      "engineering_rationale": "Enforces E.164 compliance at browser level to prevent checkout drop-offs."
+    },
+    "edge_validation_stack": {
+      "phone_validator": {
+        "provider": "RapidAPI/phone-validator-api",
+        "quota": "Verify only on high-intent conversion actions."
+      },
+      "whatsapp_verification": {
+        "provider": "RapidAPI/whatsapp-number-validator3",
+        "ux_trigger": "Ensure active WhatsApp account before executing client-onboarding webhooks."
+      },
+      "fraud_scam_lookup": {
+        "provider": "RapidAPI/phone-scam-detector-real-time-spam-lookup-api",
+        "edge_action": "Blocks high-risk international numbers at serverless edge before routing to ResellPortal."
+      },
+      "device_compatibility": {
+        "provider": "RapidAPI/mobile-phone-specs-database",
+        "ux_rule": "Detects if browser user-agent lacks eSIM capability and dynamically defaults checkout flow to physical SIM shipping."
+      }
+    }
+  },
+  "enrichment_b2b_gateways": {
+    "company_intelligence": "RapidAPI/company-lookup-api",
+    "identity_resolution": "RapidAPI/people-data-lookup",
+    "conversion_mechanic": "Automatically resolves corporate size and domain details from email/phone entries to personalize Next.js portal UI."
+  },
+  "traffic_flywheel_feeds": {
+    "financial_data_hub": {
+      "provider": "RapidAPI/alpha-vantage",
+      "target_silo_path": "/alternatives/financial-tools",
+      "conversion_intent": "Capture exchange rate searches to cross-sell Pillar 1 VPN services."
+    },
+    "sports_data_hub": {
+      "provider": "github:api-evangelist/api-football",
+      "target_silo_path": "/blog/sports-nomad-hubs",
+      "conversion_intent": "Drive recurring traffic loop on match updates to upsell travel eSIMs."
+    }
+  }
+}

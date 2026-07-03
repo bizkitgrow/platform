@@ -1,0 +1,64 @@
+---
+import systemArchitecture from '../../../system_architecture.json';
+import WaitingListForm from '../../components/WaitingListForm.astro';
+import CheckoutButton from '../../components/ui/CheckoutButton.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { buildProductSchema } from '../../utils/seo_metadata_builder';
+
+import targetSolutions from '../../../config/target_solutions.json';
+
+export async function getStaticPaths() {
+  return targetSolutions.map((item) => ({
+    params: { service_slug: item.slug },
+    props: { serviceName: item.name, sku: item.sku },
+  }));
+}
+
+const { service_slug } = Astro.params;
+const { serviceName, sku } = Astro.props;
+
+const canonicalUrl = `https://bizkitgrow.vercel.app/solutions/${service_slug}`;
+const brandName = systemArchitecture.tenant_settings.brand_name;
+
+const pageTitle = `Secure ${serviceName} | ${brandName}`;
+const metaDesc = `Eliminate operational overhead. Deploy ${serviceName} directly into your agency dashboard infrastructure.`;
+
+const productSchema = buildProductSchema(serviceName, metaDesc, canonicalUrl, service_slug, sku);
+
+Astro.response.headers.set('Cache-Control', 'public, max-age=0, s-maxage=3600');
+---
+
+<BaseLayout 
+  title={pageTitle} 
+  description={metaDesc}
+  canonicalUrl={canonicalUrl}
+>
+  <script type="application/ld+json" slot="schema" set:html={JSON.stringify(productSchema)} />
+
+  <main class="max-w-4xl mx-auto px-6 py-20 font-sans">
+    <div class="text-sm font-bold text-emerald-600 uppercase tracking-widest mb-2">
+      Operations Architecture
+    </div>
+    <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight mb-4 text-slate-900">
+      {serviceName}
+    </h1>
+    <p class="text-lg text-slate-500 max-w-2xl mb-8 leading-relaxed">
+      Consolidate back-office architecture. Automate the friction out of client coordination, document signing, and invoicing on autopilot.
+    </p>
+
+    <div class="p-8 bg-slate-50 border border-slate-100 rounded-2xl max-w-lg mb-12">
+      <h3 class="font-bold text-lg text-slate-900 mb-2">Initialize Solution Deployment</h3>
+      <p class="text-xs text-slate-400 mb-4">Enterprise Grade Operations Suite: <span class="font-bold text-slate-900">$189.00 USD / month</span></p>
+      <p class="text-xs text-slate-400 mb-6">Authorize secure instance provisioning sequence.</p>
+      
+      <CheckoutButton sku={sku} className="h-12 px-8 text-base">
+        Deploy {serviceName} (Core Scale Portfolio)
+      </CheckoutButton>
+    </div>
+
+    <!-- Waitlist -->
+    <div class="mt-20">
+      <WaitingListForm targetedService={serviceName} />
+    </div>
+  </main>
+</BaseLayout>

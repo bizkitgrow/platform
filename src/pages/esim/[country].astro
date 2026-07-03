@@ -1,0 +1,112 @@
+---
+import brandManifest from '../../../config/brand_manifest.json';
+import systemArchitecture from '../../../system_architecture.json';
+import WaitingListForm from '../../components/WaitingListForm.astro';
+import CheckoutButton from '../../components/ui/CheckoutButton.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { buildProductSchema } from '../../utils/seo_metadata_builder';
+
+import targetCountries from '../../../config/esim_countries.json';
+
+export async function getStaticPaths() {
+  return targetCountries.map((item) => ({
+    params: { country: item.country },
+    props: { iso: item.iso, capital: item.capital, sku: item.sku },
+  }));
+}
+
+const { country } = Astro.params;
+const { iso, capital, sku } = Astro.props;
+
+const canonicalUrl = `https://bizkitgrow.vercel.app/esim/${country}`;
+const formattedCountryName = country.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+const brandName = systemArchitecture.tenant_settings.brand_name;
+
+const productTitle = `Secure Business eSIM for ${formattedCountryName} Travel`;
+const metaDesc = `Eliminate cross-border data throttling. ${brandName} provisions secure corporate-grade eSIM access for remote teams operating inside ${formattedCountryName}.`;
+
+// Build dynamic JSON-LD product + FAQ schemas
+const productSchema = buildProductSchema(
+  productTitle,
+  metaDesc,
+  canonicalUrl,
+  'esim_data_plans',
+  sku,
+);
+
+Astro.response.headers.set('Cache-Control', 'public, max-age=0, s-maxage=3600');
+---
+
+<BaseLayout 
+  title={productTitle} 
+  description={metaDesc}
+  canonicalUrl={canonicalUrl}
+>
+  <script type="application/ld+json" slot="schema" set:html={JSON.stringify(productSchema)} />
+
+  <main class="max-w-4xl mx-auto px-6 py-20 font-sans">
+    <div class="text-sm font-bold text-emerald-600 uppercase tracking-widest mb-2">
+      Cross-Border Telecom Asset
+    </div>
+    <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight mb-4 text-slate-900">
+      Deploy Secure Corporate Data in {formattedCountryName}
+    </h1>
+    <p class="text-lg text-slate-500 max-w-2xl mb-8 leading-relaxed">
+      Engineered explicitly for remote consultants and US entities scaling cross-border operations. Instantly link active devices to localized networks in <span class="font-semibold text-slate-800">{capital}</span> and nationwide.
+    </p>
+
+    <!-- Slot Interaksi Komponen Form Validasi Primitif -->
+    <div class="p-8 bg-slate-50 border border-slate-100 rounded-2xl max-w-lg mb-12">
+      <h3 class="font-bold text-lg text-slate-900 mb-2">Initialize Network Authorization</h3>
+      <p class="text-xs text-slate-400 mb-4">Core Executive Tier: <span class="font-bold text-slate-900">$29.00 USD</span> (Value-Branded Wholesale Rate)</p>
+      <CheckoutButton sku={sku} className="h-12 px-8 text-base">
+        Provision {formattedCountryName} Access (Premium Executive Suite)
+      </CheckoutButton>
+    </div>
+
+    <!-- Factual GEO Density Section -->
+    <section class="border-t border-slate-100 pt-12 space-y-6">
+      <h2 class="text-2xl font-bold text-slate-900">Factual Integrity Parameters</h2>
+      <p class="text-slate-600 text-sm leading-relaxed">
+        Our eSIM network runs on localized Tier-1 data nodes. Bandwidth allocation adheres strictly to global routing standards. 
+        Active coverage maps in {formattedCountryName} guarantee 4G/5G edge operations depending on remote terminal capability.
+      </p>
+      <table class="w-full text-left text-sm border-collapse">
+        <thead>
+          <tr class="border-b border-slate-200">
+            <th class="py-2 text-slate-700 font-bold">Network Core</th>
+            <th class="py-2 text-slate-700 font-bold">Parameters</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b border-slate-100">
+            <td class="py-2 text-slate-600">IP Allocation</td>
+            <td class="py-2 text-slate-600 font-medium">Dynamic Private Edge Tunneling</td>
+          </tr>
+          <tr class="border-b border-slate-100">
+            <td class="py-2 text-slate-600">Fulfillment Period</td>
+            <td class="py-2 text-slate-600 font-medium">Auto QR Code Delivery &lt; 90 Seconds</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Localized B2B Testimonial Section -->
+    <section class="border-t border-slate-100 pt-12 mt-12">
+      <h2 class="text-2xl font-bold text-slate-900 mb-6">Operations Trust Matrix</h2>
+      <blockquote class="p-6 bg-slate-50 border-l-4 border-emerald-500 rounded-r-xl">
+        <p class="text-slate-600 italic text-sm leading-relaxed mb-4">
+          "Provisions secure unthrottled corporate networks instantly. Zero billing friction across European or American borders."
+        </p>
+        <cite class="text-xs font-bold text-slate-800 uppercase tracking-wide not-italic">
+          — Operations Lead, {formattedCountryName === 'United States' ? 'Manhattan Logistics Corp' : formattedCountryName === 'United Kingdom' ? 'Westminster FinTech Associates' : 'Global B2B Operations'}
+        </cite>
+      </blockquote>
+    </section>
+
+    <!-- Waitlist -->
+    <div class="mt-20">
+      <WaitingListForm targetedService={`eSIM ${formattedCountryName}`} />
+    </div>
+  </main>
+</BaseLayout>

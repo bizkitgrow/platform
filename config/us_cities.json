@@ -1,0 +1,32 @@
+[
+  {
+    "city": "new-york",
+    "name": "New York",
+    "sku": "rp_sku_reputation_gmb_auto",
+    "testimonial_company": "Manhattan Logistics Corp"
+  },
+  {
+    "city": "london",
+    "name": "London",
+    "sku": "rp_sku_reputation_gmb_auto",
+    "testimonial_company": "Westminster FinTech Associates"
+  },
+  {
+    "city": "berlin",
+    "name": "Berlin",
+    "sku": "rp_sku_reputation_gmb_auto",
+    "testimonial_company": "Mitte Enterprise Group"
+  },
+  {
+    "city": "toronto",
+    "name": "Toronto",
+    "sku": "rp_sku_reputation_gmb_auto",
+    "testimonial_company": "Ontario Capital Holdings"
+  },
+  {
+    "city": "sydney",
+    "name": "Sydney",
+    "sku": "rp_sku_reputation_gmb_auto",
+    "testimonial_company": "Darling Harbour Ventures"
+  }
+]

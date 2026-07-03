@@ -1,0 +1,398 @@
+# BIZKITDEV — AI Agent Context & Rules
+
+> **File:** `.context` (root project)  
+> **Dibaca oleh:** Google Antigravity IDE, Cursor, Windsurf, dan AI Agent lainnya  
+> **Versi:** 2026-07-03  
+> **Tujuan:** Satu file referensi lengkap untuk AI Agent yang bekerja di repositori ini
+
+---
+
+## 🗺️ Peta Proyek (Baca Ini Dulu)
+
+```
+BIZKITDEV/
+├── .context                    ← File ini (AI rules & references)
+├── docs/
+│   ├── 00_INDEX.md             ← Master index & link referensi
+│   ├── 01_RULES_AND_AI_AGENT.md ← Coding rules, DOD, constraints
+│   ├── 02_ARCHITECTURE.md      ← Stack, API, PRD, product catalog
+│   ├── 03_DATABASE_SCHEMA.md   ← SQL DDL + Drizzle schema
+│   ├── 04_PIPELINE_AND_SCRIPTS.md ← GitHub Actions + AI adapter
+│   ├── 05_SEO_AND_UX.md        ← SEO/AEO/GEO + design tokens
+│   └── 06_DEPLOYMENT_AND_OPS.md ← Env vars, security, testing
+├── config/
+│   ├── brand_manifest.json     ← Target B2B Search Intent & Copy
+│   ├── integration_catalog.json ← Zero-cost Integration API matrix
+│   └── open_ecosystem_catalog.json ← Open source library assets
+├── system_architecture.json    ← Config global (JANGAN hardcode)
+├── ux_design_token.json        ← Design system tokens
+├── seo_aeo_manifest.json       ← SEO/GEO configuration
+├── scripts/
+│   ├── agc-parser.js
+│   ├── agc-engine-classifier.js
+│   ├── funnel-aggregator.js     ← Automated marketing flywheel
+│   └── universal-ai-adapter.js  ← Agnostic AI Refinement
+└── .github/workflows/
+    └── agc-pipeline-workflow.yml
+```
+
+**Stack:** Astro v4 ISR · Next.js 14 App Router · Supabase · Vercel · Cloudflare · GitHub Actions
+
+---
+
+## ⚡ Quick Rules (Non-Negotiable)
+
+```
+1. Baca docs/01_RULES_AND_AI_AGENT.md SEBELUM menulis kode
+2. Ambil copywriting & intent dari config/brand_manifest.json
+3. Semua panggilan AI → melalui scripts/universal-ai-adapter.js
+4. Proses > 2.5 detik → pindah ke GitHub Actions, BUKAN Vercel
+5. Setelah selesai → validasi DOD di docs/01_RULES_AND_AI_AGENT.md#3
+```
+
+---
+
+## 🤖 AI IDE — Google Antigravity (Antigravity IDE)
+
+### Tools & MCP Tersedia
+
+#### MCP Servers Aktif
+
+| Server | Tools Utama | Kapan Digunakan |
+|---|---|---|
+| **chrome-devtools-mcp** | `take_screenshot`, `lighthouse_audit`, `navigate_page`, `evaluate_script`, `list_network_requests` | Debug UI, audit CWV, inspect network |
+| **github-custom** | `create_or_update_file`, `push_files`, `create_issue`, `create_pull_request`, `search_code` | Git operations, PR, issue tracking |
+| **prisma-mcp-server** | `migrate-dev`, `migrate-status`, `migrate-reset`, `Prisma-Studio` | Database migrations (jika menggunakan Prisma, alternatif Drizzle) |
+| **StitchMCP** | `generate_screen_from_text`, `create_design_system`, `edit_screens` | UI/UX mockup generation |
+
+#### Native Tools
+
+| Tool | Fungsi |
+|---|---|
+| `run_command` | Menjalankan shell commands (Node, npm, git, biome, dll.) |
+| `write_to_file` | Membuat file baru |
+| `replace_file_content` | Mengedit file yang sudah ada |
+| `view_file` | Membaca isi file |
+| `grep_search` | Mencari teks dalam file |
+| `search_web` | Riset eksternal / cari dokumentasi |
+| `read_url_content` | Membaca konten web (dokumentasi, repo) |
+| `browser_subagent` | Automasi browser untuk testing/scraping |
+| `generate_image` | Generate UI mockup / asset visual |
+| `ask_question` | Meminta klarifikasi dari user |
+
+### Slash Commands
+
+| Command | Fungsi | Kapan Pakai |
+|---|---|---|
+| `/goal` | Eksekusi task berat tanpa henti (overnight) | Implementasi fitur kompleks end-to-end |
+| `/learn` | Simpan behavior/fix ke AGENTS.md permanen | Setelah menemukan solusi pola yang reusable |
+| `/schedule` | Set timer/cron untuk task berulang | Monitoring, reminder deploy |
+| `/grill-me` | Interview interaktif untuk alineasi plan | Sebelum implementasi fitur ambigu |
+
+### Skills yang Relevan untuk Proyek Ini
+
+#### Wajib Dibaca Sebelum Task Terkait
+
+| Skill | Trigger | Dokumen |
+|---|---|---|
+| `modern-web-guidance` | Sebelum SEMUA HTML/CSS/JS task | `/skills/modern-web-guidance/SKILL.md` |
+| `chrome-devtools` | Debug, audit performa, test UI | `/skills/chrome-devtools/SKILL.md` |
+| `a11y-debugging` | Audit aksesibilitas komponen | `/skills/a11y-debugging/SKILL.md` |
+| `debug-optimize-lcp` | Skor Lighthouse < 95 atau LCP > 2.5s | `/skills/debug-optimize-lcp/SKILL.md` |
+| `anti-ai-slop` | Semua perubahan copywriting UI | `/skills/anti-ai-slop/SKILL.md` |
+| `agentic-seo` | Audit SEO, schema, Core Web Vitals | `/skills/agentic-seo/SKILL.md` |
+| `vibe-coder-workflow` | Feature baru / architecture review | `/skills/vibe-coder-workflow/SKILL.md` |
+| `understand-codebase` | Onboarding atau analisis dampak perubahan | `/skills/understand-codebase/SKILL.md` |
+| `ui-ux-pro-max` | Design system, color palette, typography | `/skills/ui-ux-pro-max/SKILL.md` |
+| `firebase-firestore` | Jika proyek menambah Firestore (alternatif Supabase) | `/skills/firebase-firestore/SKILL.md` |
+
+#### Skills Workflow & Orchestration
+
+| Skill | Fungsi |
+|---|---|
+| `vibe-coder-workflow` | 4 persona (Designer/Frontend/Backend/DevOps), 12 task terstruktur |
+| `codymaster-workflow` | 50+ sub-skill terantai untuk siklus proyek besar |
+| `antigravity-skill-vault` | 300+ playbook spesialis (Next.js, TypeScript, security, k8s) |
+| `workflow-skill-creator` | Distilasi alur kerja ke SKILL.md baru |
+
+---
+
+## 🌐 Platform Integration Reference
+
+### GitHub
+
+| Resource | URL |
+|---|---|
+| Docs | https://docs.github.com/en |
+| Actions Docs | https://docs.github.com/en/actions |
+| Secrets Setup | Repo → Settings → Secrets and variables → Actions |
+| Workflow Syntax | https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions |
+| GitHub API | https://docs.github.com/en/rest |
+
+**GitHub Actions di proyek ini:**
+- File: `.github/workflows/agc-pipeline-workflow.yml`
+- Trigger: Cron `0 0 */2 * *` + `workflow_dispatch`
+- Secrets diperlukan: 7 variabel (lihat `docs/06_DEPLOYMENT_AND_OPS.md`)
+
+### Vercel
+
+| Resource | URL |
+|---|---|
+| Docs | https://vercel.com/docs |
+| Dashboard | https://vercel.com/dashboard |
+| Astro on Vercel | https://vercel.com/docs/frameworks/astro |
+| ISR/On-demand Revalidation | https://vercel.com/docs/incremental-static-regeneration |
+| Environment Variables | https://vercel.com/docs/environment-variables |
+| Serverless Functions | https://vercel.com/docs/functions |
+| Speed Insights | https://vercel.com/docs/speed-insights |
+
+**Constraint Vercel di proyek ini:**
+- Tier: Hobby (Free)
+- Max timeout serverless: **10 detik**
+- Semua proses berat → GitHub Actions
+- Vercel hanya sebagai: static host + lightweight webhook
+
+### Supabase
+
+| Resource | URL |
+|---|---|
+| Docs | https://supabase.com/docs |
+| Dashboard | https://supabase.com/dashboard |
+| JavaScript SDK | https://supabase.com/docs/reference/javascript |
+| SQL Editor | Dashboard → Project → SQL Editor |
+| Row Level Security | https://supabase.com/docs/guides/database/postgres/row-level-security |
+| Free Tier Limits | https://supabase.com/docs/guides/platform/org-based-billing |
+| Supabase CLI | https://supabase.com/docs/guides/cli |
+
+**Supabase di proyek ini:**
+- 4 tabel: `categories`, `posts`, `waiting_list`, `automation_logs`
+- Anti-pause: write ke `automation_logs` setiap 48 jam
+- `SUPABASE_SERVICE_ROLE_KEY` **hanya** untuk GitHub Actions runner
+
+### Duitku (Indonesia Local Payment Gateway)
+
+| Resource | URL |
+|---|---|
+| Dashboard | https://merchant.duitku.com |
+| API Docs | https://api-sandbox.duitku.com/docs |
+| Github SDK | https://github.com/duitku |
+| Sandbox Info | https://merchant.duitku.com/sandbox |
+
+### Trigger.dev, Fonnte & Communication
+
+| Resource | URL |
+|---|---|
+| Trigger.dev v3 | https://trigger.dev/docs |
+| Fonnte API | https://fonnte.com/docs |
+| Resend Docs | https://resend.com/docs |
+
+### Affiliate & RSS Data Ingestion
+
+| Resource | URL |
+|---|---|
+| Affiliate Skills | https://github.com/Affitor/affiliate-skills |
+| Claude SEO (Universal) | https://github.com/AgriciDaniel/claude-seo |
+| SEO GEO AEO Skill | https://github.com/SNLabat/SEO-GEO-AEO-Skill |
+| Google/Naver GEO Skill | https://github.com/gunheeaug/web-seo-aeo-geo-google-naver-skill |
+| GTM Engineer Skills | https://github.com/onvoyage-ai/gtm-engineer-skills |
+| Public APIs Repo | https://github.com/public-apis/public-apis |
+| NewsMesh API | https://newsmesh.co/docs |
+
+### Cloudflare
+
+| Resource | URL |
+|---|---|
+| Dashboard | https://dash.cloudflare.com |
+| Developer Docs | https://developers.cloudflare.com |
+| Turnstile (CAPTCHA) | https://developers.cloudflare.com/turnstile |
+| Turnstile Integration | https://developers.cloudflare.com/turnstile/get-started/ |
+| Workers | https://developers.cloudflare.com/workers |
+| Pages | https://developers.cloudflare.com/pages |
+| DNS Management | https://developers.cloudflare.com/dns |
+| R2 Storage | https://developers.cloudflare.com/r2 |
+
+**Cloudflare di proyek ini:**
+- Turnstile: melindungi waiting list form
+- DNS: (opsional) jika domain dikelola di Cloudflare
+
+---
+
+## 🛠️ Tech Stack Reference
+
+### Core Frameworks
+
+| Library | Version | Docs | Repo |
+|---|---|---|---|
+| Astro | v4.x+ (ISR) | https://docs.astro.build | https://github.com/withastro/astro |
+| Next.js | v14+ App Router | https://nextjs.org/docs | https://github.com/vercel/next.js |
+| Tailwind CSS | v3.x | https://tailwindcss.com/docs | — |
+| shadcn/ui | latest | https://ui.shadcn.com | https://github.com/shadcn-ui/ui |
+| Biome.js | v1.8+ | https://biomejs.dev | https://github.com/biomejs/biome |
+
+### Database & ORM
+
+| Library | Docs | Repo |
+|---|---|---|
+| Drizzle ORM | https://orm.drizzle.team | https://github.com/drizzle-team/drizzle-orm |
+| Supabase JS | https://supabase.com/docs/reference/javascript | https://github.com/supabase/supabase-js |
+
+### AI Providers
+
+| Provider | Model | Docs | Key Source |
+|---|---|---|---|
+| Google Gemini | gemini-1.5-flash | https://ai.google.dev/docs | https://aistudio.google.com/app/apikey |
+| OpenRouter | llama-3-8b-instruct:free | https://openrouter.ai/docs | https://openrouter.ai/keys |
+| xAI Grok | grok-beta | https://docs.x.ai | https://console.x.ai |
+
+### Security & Protection
+
+| Tool | Docs | Repo |
+|---|---|---|
+| Cloudflare Turnstile | https://developers.cloudflare.com/turnstile | — |
+| Arcjet | https://docs.arcjet.com | https://github.com/arcjet/arcjet-js |
+| DOMPurify | — | https://github.com/cure53/DOMPurify |
+
+### Content & SEO
+
+| Tool | Docs | Repo |
+|---|---|---|
+| crawl4ai | https://docs.crawl4ai.com | https://github.com/unclecode/crawl4ai |
+| BAML | https://docs.boundaryml.com | https://github.com/BoundaryML/baml |
+| Meilisearch | https://docs.meilisearch.com | https://github.com/meilisearch/meilisearch |
+| rss-parser | — | https://github.com/rbren/rss-parser |
+
+### Animation & UX
+
+| Tool | Docs | Repo |
+|---|---|---|
+| Lenis | https://lenis.darkroom.engineering | https://github.com/darkroomengineering/lenis |
+| Framer Motion | https://motion.dev/docs | https://github.com/framer/motion |
+| GSAP | https://greensock.com/docs | — |
+
+### Testing
+
+| Tool | Docs | Repo |
+|---|---|---|
+| Playwright | https://playwright.dev | https://github.com/microsoft/playwright |
+
+---
+
+## 📐 Coding Conventions
+
+### Naming
+
+```typescript
+// Files: kebab-case
+agc-parser.js
+ai-provider-adapter.js
+
+// Variables & functions: camelCase
+const itemsFetched = 0;
+async function runPipeline() {}
+
+// Types & interfaces: PascalCase
+type AIResponse = { polishedTitle: string; };
+interface ProductMeta { key: string; category_slug: string; }
+
+// Constants: UPPER_SNAKE_CASE
+const MAX_ITEMS_PER_RUN = 3;
+```
+
+### Import Order (Biome enforced)
+
+```javascript
+// 1. Node.js built-ins
+const fs   = require('fs');
+const path = require('path');
+
+// 2. External packages
+const { createClient } = require('@supabase/supabase-js');
+const { GoogleGenAI }  = require('@google/generative-ai');
+
+// 3. Internal modules
+const { AIProviderAdapter }  = require('./ai-provider-adapter');
+const { getProductAndRoute } = require('./agc-engine-classifier');
+```
+
+### Error Handling Pattern
+
+```javascript
+// Setiap async function di pipeline wajib:
+try {
+  // ... logic
+} catch (error) {
+  await supabase.from('automation_logs').insert([{
+    items_fetched: 0,
+    status: 'ERROR',
+    error_details: error.message,
+    execution_duration_ms: Date.now() - startTime,
+  }]);
+  process.exit(1);
+}
+```
+
+---
+
+## 🚫 Anti-Patterns (Jangan Lakukan)
+
+```javascript
+// ❌ Hardcode domain
+<a href="https://shop.bizkitdev.com/checkout">Buy</a>
+
+// ✅ Gunakan config
+const { base_checkout_url } = sysArch.routing_architecture.fulfillment_subdomain;
+<a href={`${base_checkout_url}?product_id=${productKey}`}>Buy</a>
+
+// ❌ Instansiasi AI SDK langsung
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+const result = await ai.getGenerativeModel(...);
+
+// ✅ Gunakan adapter
+const { AIProviderAdapter } = require('./ai-provider-adapter');
+const adapter = new AIProviderAdapter();
+const result = await adapter.polishContent(title, content);
+
+// ❌ Proses berat di Vercel API route
+export async function POST(req) {
+  await crawlAndParseEntireWebsite(); // timeout!
+}
+
+// ✅ Pindah ke GitHub Actions, Vercel hanya webhook
+export async function POST(req) {
+  // Hanya trigger atau simpan flag
+  return Response.json({ triggered: true });
+}
+```
+
+---
+
+## 📋 Definition of Done (Ringkasan)
+
+Sebelum commit, pastikan semua checklist ini terpenuhi:
+
+- [ ] Tidak ada domain/brand name hardcode di kode UI
+- [ ] Tidak ada raw AI SDK instantiation di luar `ai-provider-adapter.js`
+- [ ] Lighthouse score ≥ 95/100 (Performance, A11y, Best Practices, SEO)
+- [ ] Semua halaman dinamis punya JSON-LD schema yang valid
+- [ ] Biome lint & format: 0 error
+- [ ] Playwright E2E test: semua checkout link verified
+- [ ] (Jika ada DB change) Migration file terbuat dan tested
+
+---
+
+## 📞 Support & Resources
+
+| Kebutuhan | Solusi |
+|---|---|
+| Supabase free tier pause | Write ke `automation_logs` setiap 48h via GitHub Actions |
+| Vercel timeout | Pindah logic ke GitHub Actions runner |
+| AI failover | Grok → Gemini → OpenRouter → Hardcoded (urutan di adapter) |
+| Rate limit Gemini | Ganti ke OpenRouter dengan model gratis |
+| Bot spam di form | Aktifkan Arcjet + Cloudflare Turnstile |
+| LCP tinggi | Baca skill `debug-optimize-lcp` |
+| Accessibility issue | Baca skill `a11y-debugging` |
+| Kode berantakan | Jalankan `npx biome check --apply .` |
+
+---
+
+*File ini dikelola oleh AI Agent. Update setiap ada perubahan signifikan pada stack atau workflow.*
