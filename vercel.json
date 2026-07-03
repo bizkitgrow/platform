@@ -2,5 +2,10 @@
   "framework": "astro",
   "buildCommand": "npm run build",
   "outputDirectory": ".vercel/output",
-  "installCommand": "npm install"
+  "installCommand": "npm install",
+  "functions": {
+    "**/*.{js,ts,astro,mjs}": {
+      "runtime": "nodejs20.x"
+    }
+  }
 }
