@@ -8,6 +8,8 @@ export default defineConfig({
     speedInsights: {
       enabled: true,
     },
+    edgeMiddleware: false,
+    functionPerRoute: false,
   }),
   integrations: [
     tailwind({
