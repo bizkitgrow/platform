@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro build",
+    "build": "astro build && node scripts/fix-vercel-runtime.js",
     "preview": "astro preview",
     "astro": "astro",
     "lint": "biome check .",
@@ -33,7 +33,9 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
-    "@types/node": "^26.1.0"
+    "@types/node": "^26.1.0",
+    "patch-package": "^8.0.1",
+    "postinstall-postinstall": "^2.1.0"
   },
   "engines": {
     "node": "24.x"
