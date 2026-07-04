@@ -96,132 +96,183 @@ const systemLogs =
   description="Bizkitgrow live telemetry tracker, content ingestion control, and API monitoring hub."
   canonicalUrl={currentUrl}
 >
-  <main class="max-w-[1280px] mx-auto px-6 py-16">
-    <header class="mb-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 border-b border-border-subtle pb-8">
-      <div>
-        <h1 class="text-3xl sm:text-4xl font-extrabold text-text-primary tracking-tight">Operations Dashboard</h1>
-        <p class="text-text-secondary mt-1 text-sm">Bizkitgrow Platform Master Administration Console.</p>
+  <!-- Flowbite Admin Sidebar Layout -->
+  <div class="flex min-h-screen bg-gray-50 dark:bg-gray-900">
+    
+    <!-- Sidebar -->
+    <aside class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700" aria-label="Sidebar">
+      <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
+        <ul class="space-y-2 font-medium">
+          <li>
+            <a href="/admin" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white bg-gray-100 dark:bg-gray-700 group">
+              <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21"><path d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z"/><path d="M12.5 0c-.157 0-.311.01-.465.03A1.5 1.5 0 0 0 11 1.5V9h7.5A1.5 1.5 0 0 0 20 7.5a7.5 7.5 0 0 0-7.5-7.5Z"/></svg>
+              <span class="ms-3">Dashboard Overview</span>
+            </a>
+          </li>
+          <li>
+            <a href="/blog" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+              <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20"><path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.96 2.96 0 0 0 .13 5H5Z"/><path d="M14.067 0H7v5a2 2 0 0 1-2 2H0v11a1.97 1.97 0 0 0 1.934 2H18a2 2 0 0 0 2-2V5.933a2 2 0 0 0-.586-1.414l-4.343-4.343a2 2 0 0 0-1.414-.586ZM5 11H3v-2h2v2Zm0 4H3v-2h2v2Zm8-4h-6v-2h6v2Zm0 4h-6v-2h6v2Z"/></svg>
+              <span class="flex-1 ms-3 whitespace-nowrap">Briefings</span>
+            </a>
+          </li>
+          <li>
+            <a href="/" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+              <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20"><path d="M19 4h-1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1ZM8.5 16A3.5 3.5 0 1 1 12 12.5 3.5 3.5 0 0 1 8.5 16ZM8.5 2a3.5 3.5 0 1 1-3.5 3.5A3.5 3.5 0 0 1 8.5 2Zm7 4.5a3.5 3.5 0 1 1-3.5 3.5 3.5 3.5 0 0 1 3.5-3.5Z"/></svg>
+              <span class="flex-1 ms-3 whitespace-nowrap">Platform Home</span>
+            </a>
+          </li>
+        </ul>
       </div>
-      <div class="flex items-center gap-3">
-        <button id="trigger-pipeline-btn" class="h-10 px-5 inline-flex items-center justify-center rounded-xl bg-interactive-normal hover:bg-interactive-hover text-text-inverse text-xs font-bold shadow-sm transition-all duration-150">
-          Run Aggregator
-        </button>
-        <button id="trigger-digest-btn" class="h-10 px-5 inline-flex items-center justify-center rounded-xl border border-border-subtle hover:border-text-primary bg-background-surface text-text-primary text-xs font-bold shadow-sm transition-all">
-          Generate Daily Digest
-        </button>
-      </div>
-    </header>
+    </aside>
 
-    <!-- Telemetry Cards -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-      <div class="p-6 bg-background-surface border border-border-subtle rounded-2xl">
-        <p class="text-xs font-bold text-text-secondary uppercase tracking-wider mb-2">Total Subscribers</p>
-        <p class="text-3xl font-extrabold text-text-primary">{totalWaitlistCount}</p>
-      </div>
-      <div class="p-6 bg-background-surface border border-border-subtle rounded-2xl">
-        <p class="text-xs font-bold text-text-secondary uppercase tracking-wider mb-2">Ingested Posts</p>
-        <p class="text-3xl font-extrabold text-text-primary">{totalPosts}</p>
-      </div>
-      <div class="p-6 bg-background-surface border border-border-subtle rounded-2xl">
-        <p class="text-xs font-bold text-text-secondary uppercase tracking-wider mb-2">Successful Shares</p>
-        <p class="text-3xl font-extrabold text-emerald-600">{successfulShares}</p>
-      </div>
-      <div class="p-6 bg-background-surface border border-border-subtle rounded-2xl">
-        <p class="text-xs font-bold text-text-secondary uppercase tracking-wider mb-2">System Health</p>
-        <p class="text-3xl font-extrabold text-emerald-600">Secure</p>
-      </div>
-    </div>
-
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-      <!-- Active RSS Feeds -->
-      <section class="lg:col-span-2 bg-background-surface border border-border-subtle rounded-2xl p-6 sm:p-8">
-        <h2 class="text-xl font-bold text-text-primary mb-6">Active Content Feeds</h2>
-        <div class="overflow-x-auto">
-          <table class="w-full text-left border-collapse">
-            <thead>
-              <tr class="border-b border-border-subtle text-xs font-bold text-text-secondary uppercase">
-                <th class="pb-3">Feed Source</th>
-                <th class="pb-3">Target Pillar</th>
-                <th class="pb-3">Status</th>
-                <th class="pb-3 text-right">Last Sync</th>
-              </tr>
-            </thead>
-            <tbody class="text-sm">
-              {activeRssFeeds.map((feed) => (
-                <tr class="border-b border-border-subtle/50 text-text-primary">
-                  <td class="py-4 font-semibold max-w-xs truncate">{feed.url}</td>
-                  <td class="py-4 text-text-secondary capitalize">{feed.targetPillar || feed.pillar}</td>
-                  <td class="py-4">
-                    <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
-                      <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
-                      {feed.isActive ? 'ACTIVE' : 'INACTIVE'}
-                    </span>
-                  </td>
-                  <td class="py-4 text-right text-text-secondary">{feed.lastFetchedAt ? new Date(feed.lastFetchedAt).toLocaleTimeString() : 'Never'}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+    <!-- Main Content Area -->
+    <div class="p-4 sm:ml-64 w-full pt-24">
+      
+      <!-- Top Action Bar -->
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8 bg-white dark:bg-gray-800 p-6 rounded-2xl border border-gray-200 dark:border-gray-700">
+        <div>
+          <h1 class="text-2xl font-extrabold text-gray-900 dark:text-white tracking-tight">Operations Console</h1>
+          <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Telemetry, content ingestion engines, and security hardening control panel.</p>
         </div>
+        <div class="flex items-center gap-3">
+          <button id="trigger-pipeline-btn" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-bold rounded-xl text-xs px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-850 transition-all">
+            Run Ingestion
+          </button>
+          <button id="trigger-digest-btn" class="py-2.5 px-5 text-xs font-bold text-gray-900 focus:outline-none bg-white rounded-xl border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 transition-all">
+            Generate Daily Digest
+          </button>
+        </div>
+      </div>
 
-        <!-- Hardening Check Component mapped to Hardening-Audit-Tool-AuditTAP repository concepts -->
-        <div class="mt-8 pt-8 border-t border-border-subtle">
-          <h3 class="text-lg font-bold text-text-primary mb-4">Hardening & Security Audit</h3>
-          <div id="hardening-audit-card" class="p-5 bg-background-base border border-border-subtle rounded-xl flex items-center justify-between">
-            <div>
-              <p class="text-sm font-semibold text-text-primary">Supabase & API Perimeter Status</p>
-              <p id="hardening-status-desc" class="text-xs text-text-secondary">Run audit checklist to check RLS and Key Sanitization.</p>
-            </div>
-            <button id="run-audit-btn" class="h-9 px-4 rounded-lg bg-background-surface hover:bg-border-subtle text-text-primary border border-border-subtle text-xs font-bold transition-all">
-              Run Security Audit
-            </button>
+      <!-- Flowbite Stat Cards Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="p-6 bg-white border border-gray-200 rounded-2xl shadow-sm dark:bg-gray-800 dark:border-gray-700">
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-xs font-bold text-gray-500 uppercase tracking-wider dark:text-gray-400">Total Subscribers</span>
+            <span class="bg-blue-100 text-blue-850 text-xs font-semibold px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300">Waitlist</span>
           </div>
+          <p class="text-3xl font-extrabold text-gray-900 dark:text-white">{totalWaitlistCount}</p>
         </div>
-      </section>
+        
+        <div class="p-6 bg-white border border-gray-200 rounded-2xl shadow-sm dark:bg-gray-800 dark:border-gray-700">
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-xs font-bold text-gray-500 uppercase tracking-wider dark:text-gray-400">Ingested Posts</span>
+            <span class="bg-purple-100 text-purple-800 text-xs font-semibold px-2.5 py-0.5 rounded-full dark:bg-purple-900 dark:text-purple-300">Articles</span>
+          </div>
+          <p class="text-3xl font-extrabold text-gray-900 dark:text-white">{totalPosts}</p>
+        </div>
 
-      <!-- System Logs -->
-      <section class="bg-background-surface border border-border-subtle rounded-2xl p-6 sm:p-8">
-        <h2 class="text-xl font-bold text-text-primary mb-6">Live Automation Logs</h2>
-        <div class="space-y-4">
-          {systemLogs.map((log) => (
-            <div class="text-xs border-b border-border-subtle/40 pb-3 last:border-0 last:pb-0">
-              <div class="flex items-center justify-between mb-1.5">
-                <span class="text-text-secondary font-mono">{log.timestamp}</span>
-                <span class={`px-1.5 py-0.5 rounded text-[10px] font-bold ${
-                  log.level === 'SUCCESS' ? 'bg-emerald-100 text-emerald-800' : 'bg-blue-100 text-blue-800'
-                }`}>
-                  {log.level}
-                </span>
-              </div>
-              <p class="text-text-primary font-medium">{log.message}</p>
-            </div>
-          ))}
+        <div class="p-6 bg-white border border-gray-200 rounded-2xl shadow-sm dark:bg-gray-800 dark:border-gray-700">
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-xs font-bold text-gray-500 uppercase tracking-wider dark:text-gray-400">Social Shares</span>
+            <span class="bg-emerald-100 text-emerald-800 text-xs font-semibold px-2.5 py-0.5 rounded-full dark:bg-emerald-900 dark:text-emerald-300">Active</span>
+          </div>
+          <p class="text-3xl font-extrabold text-emerald-600 dark:text-emerald-500">{successfulShares}</p>
         </div>
-      </section>
+
+        <div class="p-6 bg-white border border-gray-200 rounded-2xl shadow-sm dark:bg-gray-800 dark:border-gray-700">
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-xs font-bold text-gray-500 uppercase tracking-wider dark:text-gray-400">System Health</span>
+            <span class="bg-emerald-100 text-emerald-800 text-xs font-semibold px-2.5 py-0.5 rounded-full dark:bg-emerald-900 dark:text-emerald-300">Secure</span>
+          </div>
+          <p class="text-3xl font-extrabold text-emerald-600 dark:text-emerald-500">100%</p>
+        </div>
+      </div>
+
+      <!-- Tables and Logs Section -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- Active Content Feeds Table -->
+        <section class="lg:col-span-2 bg-white border border-gray-200 rounded-2xl p-6 sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+          <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-6">Active Content Feeds</h2>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+              <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                  <th scope="col" class="px-6 py-3">Feed Source</th>
+                  <th scope="col" class="px-6 py-3">Pillar</th>
+                  <th scope="col" class="px-6 py-3">Status</th>
+                  <th scope="col" class="px-6 py-3 text-right">Last Sync</th>
+                </tr>
+              </thead>
+              <tbody>
+                {activeRssFeeds.map((feed) => (
+                  <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                    <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white max-w-xs truncate">{feed.url}</td>
+                    <td class="px-6 py-4 capitalize">{feed.targetPillar || feed.pillar}</td>
+                    <td class="px-6 py-4">
+                      <span class="inline-flex items-center gap-1 bg-emerald-100 text-emerald-800 text-xs font-semibold px-2 py-0.5 rounded-full dark:bg-emerald-900 dark:text-emerald-300">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                        {feed.isActive ? 'ACTIVE' : 'INACTIVE'}
+                      </span>
+                    </td>
+                    <td class="px-6 py-4 text-right text-gray-500 dark:text-gray-400">{feed.lastFetchedAt ? new Date(feed.lastFetchedAt).toLocaleTimeString() : 'Never'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Flowbite-inspired Hardening Panel -->
+          <div class="mt-8 pt-8 border-t border-gray-200 dark:border-gray-700">
+            <h3 class="text-base font-bold text-gray-900 dark:text-white mb-4">Hardening & Security Verification</h3>
+            <div id="hardening-audit-card" class="p-5 bg-gray-50 border border-gray-200 rounded-xl dark:bg-gray-700/50 dark:border-gray-600 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div>
+                <p class="text-sm font-semibold text-gray-900 dark:text-white">Supabase DB & API Security Gate</p>
+                <p id="hardening-status-desc" class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Run security checklist parameters (RLS policies, key sanitization).</p>
+              </div>
+              <button id="run-audit-btn" class="py-2 px-4 rounded-lg bg-white border border-gray-200 text-gray-900 hover:bg-gray-100 text-xs font-bold transition-all dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                Run Audit
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Automation Logs -->
+        <section class="bg-white border border-gray-200 rounded-2xl p-6 sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+          <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-6">Automation Logs</h2>
+          <div class="space-y-4">
+            {systemLogs.map((log) => (
+              <div class="text-xs border-b border-gray-100 dark:border-gray-700 pb-3 last:border-0 last:pb-0">
+                <div class="flex items-center justify-between mb-1.5">
+                  <span class="text-gray-500 dark:text-gray-400 font-mono">{log.timestamp}</span>
+                  <span class={`px-1.5 py-0.5 rounded text-[10px] font-bold ${
+                    log.level === 'SUCCESS' ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-300' : 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300'
+                  }`}>
+                    {log.level}
+                  </span>
+                </div>
+                <p class="text-gray-900 dark:text-white font-medium">{log.message}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+      </div>
     </div>
-  </main>
+  </div>
 
   <script is:inline>
-    // Ingestion triggers
+    // Ingestion pipeline triggers
     const triggerBtn = document.getElementById('trigger-pipeline-btn');
     if (triggerBtn) {
       triggerBtn.addEventListener('click', async () => {
         triggerBtn.disabled = true;
-        triggerBtn.textContent = 'Scraping...';
+        triggerBtn.textContent = 'Ingesting...';
         try {
           const res = await fetch('/api/v1/social/syndicate', { method: 'POST' });
           const data = await res.json();
           if (res.ok) {
-            alert('Aggregator pipeline executed successfully!');
+            alert('Ingestion pipeline triggered successfully!');
             window.location.reload();
           } else {
             alert(`Execution failed: ${data.error}`);
           }
         } catch (err) {
-          alert('Network timeout. Execution logged to system logs.');
+          alert('Network timeout. Connection logged.');
         } finally {
           triggerBtn.disabled = false;
-          triggerBtn.textContent = 'Run Aggregator';
+          triggerBtn.textContent = 'Run Ingestion';
         }
       });
     }
@@ -231,7 +282,7 @@ const systemLogs =
     if (digestBtn) {
       digestBtn.addEventListener('click', async () => {
         digestBtn.disabled = true;
-        digestBtn.textContent = 'Generating...';
+        digestBtn.textContent = 'Building...';
         try {
           const res = await fetch('/api/v1/admin/digest', { method: 'POST' });
           const data = await res.json();
@@ -242,7 +293,7 @@ const systemLogs =
             alert(`Digest failure: ${data.error || 'Failed'}`);
           }
         } catch (err) {
-          alert('System error building daily digest.');
+          alert('Error generating daily digest.');
         } finally {
           digestBtn.disabled = false;
           digestBtn.textContent = 'Generate Daily Digest';
@@ -258,7 +309,7 @@ const systemLogs =
     if (auditBtn && hardeningDesc) {
       auditBtn.addEventListener('click', async () => {
         auditBtn.disabled = true;
-        hardeningDesc.textContent = 'Auditing environment parameters...';
+        hardeningDesc.textContent = 'Auditing database RLS rules...';
         try {
           const res = await fetch('/api/v1/admin/audit');
           const data = await res.json();
@@ -266,18 +317,18 @@ const systemLogs =
             const { databaseConnection, rlsEnabled, apiTokenSecurity } = data.checks;
             const statusStr = `DB Connected: ${databaseConnection ? 'YES' : 'NO'} | RLS Secure: ${rlsEnabled ? 'YES' : 'NO'} | Key Sanitized: ${apiTokenSecurity ? 'YES' : 'NO'}`;
             hardeningDesc.textContent = statusStr;
-            hardeningCard.classList.remove('bg-background-base');
+            hardeningCard.classList.remove('bg-gray-50', 'dark:bg-gray-700/50');
             
             if (databaseConnection && rlsEnabled && apiTokenSecurity) {
-              hardeningCard.classList.add('bg-emerald-50', 'border-emerald-200');
+              hardeningCard.classList.add('bg-emerald-50', 'border-emerald-200', 'dark:bg-emerald-900/10', 'dark:border-emerald-800');
             } else {
-              hardeningCard.classList.add('bg-rose-50', 'border-rose-200');
+              hardeningCard.classList.add('bg-rose-50', 'border-rose-200', 'dark:bg-rose-900/10', 'dark:border-rose-800');
             }
           } else {
-            hardeningDesc.textContent = 'Audit process failed to complete.';
+            hardeningDesc.textContent = 'Audit failed to resolve check criteria.';
           }
         } catch (err) {
-          hardeningDesc.textContent = 'Hardening check failed. Connection offline.';
+          hardeningDesc.textContent = 'Hardening check offline.';
         } finally {
           auditBtn.disabled = false;
         }

@@ -27,6 +27,7 @@
     "dotenv": "^17.4.2",
     "drizzle-kit": "^0.31.10",
     "drizzle-orm": "^0.45.2",
+    "flowbite": "^4.0.2",
     "isomorphic-dompurify": "^3.18.0",
     "jsdom": "^24.1.0",
     "lenis": "^1.1.3",
