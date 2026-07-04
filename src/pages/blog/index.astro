@@ -1,0 +1,91 @@
+---
+import { desc } from 'drizzle-orm';
+import { db } from '../../db/client';
+import { posts as postsTable } from '../../db/schema';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const currentUrl = 'https://bizkitgrow.vercel.app/blog';
+
+let dbPosts: any[] = [];
+try {
+  dbPosts = await db.select().from(postsTable).orderBy(desc(postsTable.createdAt));
+} catch (err: any) {
+  console.error('Database query failed, using fallback:', err.message);
+}
+
+const fallbackPosts = [
+  {
+    title: 'The Future of Connectivity and Mobility',
+    slug: 'the-future-of-connectivity-and-mobility',
+    excerpt:
+      "In today's fast-paced corporate environment, mobility and connectivity dictate market leadership. Discover how advanced networks enable unprecedented scale.",
+    readingTime: '3 min read',
+    createdAt: 'July 4, 2026',
+  },
+];
+
+const posts =
+  dbPosts.length > 0
+    ? dbPosts.map((p) => ({
+        title: p.title,
+        slug: p.slug,
+        excerpt:
+          p.metaDesc ||
+          'Read our complete analysis regarding global connectivity, search algorithms, and automation perimeters.',
+        readingTime: '3 min read',
+        createdAt: p.createdAt
+          ? new Date(p.createdAt).toLocaleDateString('en-US', {
+              month: 'short',
+              day: 'numeric',
+              year: 'numeric',
+            })
+          : 'July 4, 2026',
+      }))
+    : fallbackPosts;
+---
+
+<BaseLayout 
+  title="Operational Intelligence Hub" 
+  description="Deep analytical reports, system updates, and strategic briefings regarding B2B growth and connectivity perimeters."
+  canonicalUrl={currentUrl}
+>
+  <main class="max-w-[1280px] mx-auto px-6 py-20">
+    <header class="max-w-3xl mb-16">
+      <h1 class="text-4xl sm:text-5xl font-extrabold text-text-primary tracking-tight mb-4">
+        Intelligence & Briefings
+      </h1>
+      <p class="text-lg text-text-secondary leading-relaxed">
+        Sovereign operational data-mining, localized search insights, and mobility network briefs tailored for the automated enterprise.
+      </p>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {posts.map((post) => (
+        <article class="flex flex-col bg-background-surface border border-border-subtle hover:border-interactive-normal rounded-2xl overflow-hidden transition-all duration-150 group shadow-sm">
+          <div class="p-6 sm:p-8 flex flex-col flex-grow">
+            <div class="flex items-center gap-3 text-xs text-text-secondary mb-4 font-medium">
+              <span>{post.createdAt}</span>
+              <span class="w-1.5 h-1.5 rounded-full bg-border-strong"></span>
+              <span>{post.readingTime}</span>
+            </div>
+            
+            <h3 class="text-xl font-bold text-text-primary mb-3 leading-snug group-hover:text-interactive-normal transition-colors">
+              <a href={`/blog/${post.slug}`}>
+                {post.title}
+              </a>
+            </h3>
+            
+            <p class="text-sm text-text-secondary leading-relaxed mb-6 flex-grow">
+              {post.excerpt}
+            </p>
+
+            <a href={`/blog/${post.slug}`} class="text-xs font-bold text-interactive-normal hover:text-interactive-hover inline-flex items-center gap-1 group-hover:underline">
+              Read Briefing
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 transform transition-transform group-hover:translate-x-1" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </main>
+</BaseLayout>

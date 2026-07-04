@@ -1,5 +1,5 @@
-const dns = require('dns');
-const url = require('url');
+const dns = require('node:dns');
+const url = require('node:url');
 require('dotenv').config();
 
 const checkDns = (hostname) => {
@@ -15,13 +15,13 @@ const checkDns = (hostname) => {
 };
 
 async function main() {
-  console.log("Checking Environment DNS Readiness...");
+  console.log('Checking Environment DNS Readiness...');
 
   // 1. Supabase DNS
   try {
     const supabaseUrl = process.env.SUPABASE_URL;
-    if (!supabaseUrl) throw new Error("SUPABASE_URL is not defined in .env");
-    
+    if (!supabaseUrl) throw new Error('SUPABASE_URL is not defined in .env');
+
     const parsed = new url.URL(supabaseUrl);
     const addresses = await checkDns(parsed.hostname);
     console.log(`✅ Supabase DNS (${parsed.hostname}) resolved to: ${addresses.join(', ')}`);

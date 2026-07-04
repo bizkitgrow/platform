@@ -8,7 +8,7 @@ export const POST: APIRoute = async ({ request }) => {
   );
   try {
     const body = await request.json();
-    const { email, business_name, targeted_service, turnstile_token } = body;
+    const { email, business_name, targeted_service } = body;
 
     if (!email) {
       return new Response(JSON.stringify({ error: 'Email parameter required.' }), { status: 400 });
@@ -26,8 +26,6 @@ export const POST: APIRoute = async ({ request }) => {
     if (decision.isDenied()) {
       return new Response(JSON.stringify({ error: 'Too many requests' }), { status: 429 });
     }
-
-    // Cloudflare Turnstile validation bypassed for frictionless B2B signups
 
     const { data, error } = await supabase
       .from('waiting_list')

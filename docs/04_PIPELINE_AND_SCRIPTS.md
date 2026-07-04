@@ -11,7 +11,7 @@
 ┌─────────────────────────────────────────────────────────────┐
 │              GitHub Actions Runner (cron 48h)               │
 │                                                             │
-│  RSS/News API → [agc-parser.js]                             │
+│  RSS/News API → [main-pipeline.js]                          │
 │                      │                                      │
 │                       ├─ Classify product → [classifier.js] │
 │                       ├─ Polish content  → [ai-adapter.js]  │
@@ -71,7 +71,7 @@ jobs:
           ALPHA_VANTAGE_KEY:         ${{ secrets.ALPHA_VANTAGE_KEY }}
           RAPIDAPI_KEY:              ${{ secrets.RAPIDAPI_KEY }}
         run: |
-          node scripts/funnel-aggregator.js
+          node scripts/main-pipeline.js
 ```
 
 ---
@@ -177,24 +177,23 @@ module.exports = { getProductAndRoute };
 
 ---
 
-## 5. AGC Parser — `scripts/agc-parser.js`
+## 5. AGC Parser — `scripts/main-pipeline.js`
 
 Main ingestion pipeline. Membaca RSS, mengklasifikasikan, memoles dengan AI, menyimpan ke Supabase.
 
 ```javascript
-// scripts/agc-parser.js
+// scripts/main-pipeline.js
 // Main Ingestion & Parser Pipeline utilizing the AI Abstraction Adapter
 
 const RSSParser           = require('rss-parser');
 const { createClient }    = require('@supabase/supabase-js');
-const { AIProviderAdapter } = require('./ai-provider-adapter');
+const { executeAgnosticAiRefinement } = require('./universal-ai-adapter');
 const { getProductAndRoute } = require('./agc-engine-classifier');
 const fs                  = require('fs');
 const path                = require('path');
 
 const rssParser = new RSSParser();
 const supabase  = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
-const aiAdapter = new AIProviderAdapter();
 
 // Load config dari file — no hardcoding
 const sysArch = JSON.parse(fs.readFileSync(path.join(__dirname, '../system_architecture.json'), 'utf8'));
@@ -234,9 +233,8 @@ async function runPipeline() {
       const catId = categoryMap.get(meta.category_slug);
 
       // AI polishing
-      const polished = await aiAdapter.polishContent(
-        item.title,
-        item.contentSnippet || item.title
+      const polished = await executeAgnosticAiRefinement(
+        `Refine content...`
       );
 
       // Insert ke Supabase

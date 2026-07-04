@@ -2,6 +2,7 @@
 import brandManifest from '../../config/brand_manifest.json';
 import systemArchitecture from '../../system_architecture.json';
 import uxDesignToken from '../../ux_design_token.json';
+import '@astrouxds/tokens/dist/css/index.css';
 
 interface Props {
   title: string;
@@ -9,9 +10,12 @@ interface Props {
   canonicalUrl: string;
 }
 
-const { title, description, canonicalUrl } = Astro.props;
+const { title = '', description = '', canonicalUrl = '' } = Astro.props;
 const brandName = systemArchitecture.tenant_settings.brand_name;
 const tokens = uxDesignToken.design_system.tokens;
+const safeTitle = title || '';
+const safeDescription = description || '';
+const safeCanonicalUrl = canonicalUrl || Astro.url.href;
 ---
 
 <!DOCTYPE html>
@@ -20,22 +24,26 @@ const tokens = uxDesignToken.design_system.tokens;
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>{title} | {brandName}</title>
-  <meta name="description" content={description} />
-  <link rel="canonical" href={canonicalUrl} />
+  <title>{safeTitle} | {brandName}</title>
+  <meta name="description" content={safeDescription} />
+  <link rel="canonical" href={safeCanonicalUrl} />
 
   <!-- OpenGraph Tags compliant with Naver / B2B Authority -->
   <meta property="og:site_name" content={brandName} />
-  <meta property="og:title" content={title.slice(0, 40)} />
-  <meta property="og:description" content={description.slice(0, 80)} />
+  <meta property="og:title" content={safeTitle.slice(0, 40)} />
+  <meta property="og:description" content={safeDescription.slice(0, 80)} />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content={canonicalUrl} />
-  <meta property="og:image" content="/og-image-default.jpg" />
+  <meta property="og:url" content={safeCanonicalUrl} />
+  <meta property="og:image" content={new URL('/og-image.webp', safeCanonicalUrl).href} />
   
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content={title.slice(0, 40)} />
-  <meta name="twitter:description" content={description.slice(0, 80)} />
+  <meta name="twitter:title" content={safeTitle.slice(0, 40)} />
+  <meta name="twitter:description" content={safeDescription.slice(0, 80)} />
+  <meta name="twitter:image" content={new URL('/og-image.webp', safeCanonicalUrl).href} />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/favicon.png" />
 
   <!-- Verification Tags -->
   <meta name="naver-site-verification" content="verified_bizkitgrow" />
@@ -45,44 +53,41 @@ const tokens = uxDesignToken.design_system.tokens;
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
-  <!-- Cloudflare Turnstile (Frictionless CAPTCHA) -->
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
 
   <!-- Dynamic JSON-LD Schema Injection Slot -->
   <slot name="schema" />
 
   <style define:vars={{
-    canvas: tokens.colors.canvas,
-    canvasAccent: tokens.colors.canvas_accent,
-    textPrimary: tokens.colors.text_primary,
-    textSecondary: tokens.colors.text_secondary,
-    bordersSubtle: tokens.colors.borders_subtle,
-    brandCta: tokens.colors.brand_cta,
-    fontFamily: tokens.typography.family
+    fontFamily: tokens.typography.family,
+    headingFamily: tokens.typography.heading_family
   }}>
     body {
-      background-color: var(--canvas);
-      color: var(--textPrimary);
       font-family: var(--fontFamily);
+    }
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--headingFamily);
+      letter-spacing: -0.02em;
     }
   </style>
 </head>
-<body class="antialiased selection:bg-emerald-100 selection:text-emerald-900 min-h-screen flex flex-col">
+<body class="antialiased selection:bg-interactive-hover selection:text-text-inverse bg-background-base text-text-primary min-h-screen flex flex-col">
   <!-- Dynamic Navigation Header -->
-  <header class="border-b border-[#E2E8F0] sticky top-0 bg-white/80 backdrop-blur-md z-50">
+  <header class="border-b border-border-subtle sticky top-0 bg-background-surface/80 backdrop-blur-md z-50">
     <div class="max-w-[1280px] mx-auto px-6 h-16 flex items-center justify-between">
-      <a href="/" class="text-xl font-extrabold tracking-tight text-[#0F172A] flex items-center gap-2 hover:opacity-90">
-        <span class="w-8 h-8 rounded-lg bg-emerald-600 flex items-center justify-center text-white text-base">b</span>
+      <a href="/" class="text-xl font-extrabold tracking-tight text-text-primary flex items-center gap-2 hover:opacity-90">
+        <span class="w-8 h-8 rounded-lg bg-interactive-normal flex items-center justify-center text-text-inverse text-base">b</span>
         {brandName}
       </a>
-      <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-[#475569]">
-        <a href="/" class="hover:text-[#0F172A] transition-colors">Platform</a>
-        <a href="/esim/united-states" class="hover:text-[#0F172A] transition-colors">Connectivity</a>
-        <a href="/reputation/new-york" class="hover:text-[#0F172A] transition-colors">Reputation</a>
-        <a href="/solutions/crm-system" class="hover:text-[#0F172A] transition-colors">Solutions</a>
+      <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-text-secondary">
+        <a href="/" class="hover:text-text-primary transition-colors">Platform</a>
+        <a href="/esim/united-states" class="hover:text-text-primary transition-colors">Connectivity</a>
+        <a href="/reputation/new-york" class="hover:text-text-primary transition-colors">Reputation</a>
+        <a href="/solutions/crm-system" class="hover:text-text-primary transition-colors">Solutions</a>
+        <a href="/blog" class="hover:text-text-primary transition-colors">Intelligence</a>
       </nav>
       <div class="flex items-center gap-4">
-        <a href="#waitlist" class="h-9 px-4 inline-flex items-center justify-center rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold tracking-wide transition-colors">
+        <a href="#waitlist" class="h-9 px-4 inline-flex items-center justify-center rounded-lg bg-interactive-normal hover:bg-interactive-hover text-text-inverse text-xs font-semibold tracking-wide transition-colors">
           Initialize System
         </a>
       </div>
@@ -95,15 +100,15 @@ const tokens = uxDesignToken.design_system.tokens;
   </div>
 
   <!-- Corporate Footer -->
-  <footer class="border-t border-[#E2E8F0] bg-[#F8FAFC] py-12 mt-20">
+  <footer class="border-t border-border-subtle bg-background-surface py-12 mt-20">
     <div class="max-w-[1280px] mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
-      <div class="text-sm text-[#475569]">
+      <div class="text-sm text-text-secondary">
         © {new Date().getFullYear()} {systemArchitecture.tenant_settings.parent_company_copyright}. All operational assets secure.
       </div>
-      <div class="flex gap-6 text-xs text-[#475569]">
-        <a href="#" class="hover:underline">Terms of Authority</a>
-        <a href="#" class="hover:underline">Privacy Perimeter</a>
-        <a href={`mailto:${systemArchitecture.tenant_settings.support_email}`} class="hover:underline">Operations Support</a>
+      <div class="flex gap-6 text-xs text-text-secondary">
+        <a href="/terms" class="hover:underline text-text-primary">Terms of Authority</a>
+        <a href="/privacy" class="hover:underline text-text-primary">Privacy Perimeter</a>
+        <a href={`mailto:${systemArchitecture.tenant_settings.support_email}`} class="hover:underline text-text-primary">Operations Support</a>
       </div>
     </div>
   </footer>

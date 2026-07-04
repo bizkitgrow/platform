@@ -131,7 +131,8 @@ async function runPipeline() {
         if (existing) continue;
 
         const cleanRawContent = DOMPurify.sanitize(
-          item.contentSnippet || item.content || item.title, { ALLOWED_TAGS: [] }
+          item.contentSnippet || item.content || item.title,
+          { ALLOWED_TAGS: [] },
         );
         const classified = getProductAndRoute(item.title, cleanRawContent);
         const catId = categoryMap.get(classified.category_slug) || null;

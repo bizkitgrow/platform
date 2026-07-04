@@ -25,10 +25,8 @@ Seluruh pemrosesan teks AI **wajib** melalui satu lapisan abstraksi. Tidak ada S
 
 ```
 scripts/
-└── ai-provider-adapter.js    ← SATU-SATUNYA entry point AI
-    ├── callGemini()           Primary
-    ├── callGrok()             Fallback #1 (realtime)
-    └── callOpenRouter()       Fallback #2 (multi-model)
+└── universal-ai-adapter.js    ← SATU-SATUNYA entry point AI
+    └── executeAgnosticAiRefinement()  (Gemini -> OpenRouter -> Grok failover chain)
 ```
 
 **Failover chain:** Grok → Gemini → OpenRouter → Deterministic hardcoded fallback
@@ -102,9 +100,9 @@ your-agency-monorepo/
 │   │   └── ui/                        # shadcn/ui components
 │   └── layouts/
 ├── scripts/
-│   ├── agc-parser.js                  # Main ingestion pipeline
+│   ├── main-pipeline.js               # Main ingestion pipeline
 │   ├── agc-engine-classifier.js       # Product classification
-│   └── ai-provider-adapter.js         # LLM abstraction layer
+│   └── universal-ai-adapter.js        # LLM abstraction layer
 ├── docs/                              # Dokumentasi sistem (folder ini)
 ├── system_architecture.json           # Config global: DNS, products, routing
 ├── ux_design_token.json               # Design system tokens

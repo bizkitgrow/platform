@@ -114,7 +114,7 @@ cp .env.example .env
 # isi nilai env di .env (lihat 06_DEPLOYMENT_AND_OPS.md)
 
 # 3. Jalankan pipeline test manual
-node scripts/funnel-aggregator.js
+node scripts/main-pipeline.js
 
 # 4. Dev server
 npm run dev

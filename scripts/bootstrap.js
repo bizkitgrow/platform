@@ -3,8 +3,12 @@ const fs = require('node:fs');
 const path = require('node:path');
 require('dotenv').config();
 
-const connectionString =
-  'postgresql://postgres:Das5uD4*KUW8nzv@db.zhuzmiwvfxhlekhnpgvo.supabase.co:5432/postgres';
+const connectionString = process.env.DATABASE_URL;
+
+if (!connectionString) {
+  console.error('ERROR: DATABASE_URL is not set in .env');
+  process.exit(1);
+}
 
 async function bootstrap() {
   console.log('Connecting to Supabase PostgreSQL database directly...');

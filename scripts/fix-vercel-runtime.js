@@ -1,5 +1,5 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require('node:fs');
+const path = require('node:path');
 
 const functionsDir = path.join(process.cwd(), '.vercel', 'output', 'functions');
 
@@ -15,7 +15,9 @@ function fixRuntime(dir) {
         const content = fs.readFileSync(fullPath, 'utf8');
         const json = JSON.parse(content);
         if (json.runtime && json.runtime !== 'nodejs24.x') {
-          console.log(`[fix-vercel-runtime] Overriding runtime ${json.runtime} -> nodejs24.x in ${fullPath}`);
+          console.log(
+            `[fix-vercel-runtime] Overriding runtime ${json.runtime} -> nodejs24.x in ${fullPath}`,
+          );
           json.runtime = 'nodejs24.x';
           fs.writeFileSync(fullPath, JSON.stringify(json, null, 2), 'utf8');
         }

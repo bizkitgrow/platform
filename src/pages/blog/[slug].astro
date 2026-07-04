@@ -1,106 +1,103 @@
 ---
-import { createClient } from '@supabase/supabase-js';
-import systemArchitecture from '../../../system_architecture.json';
+import { eq } from 'drizzle-orm';
+import { db } from '../../db/client';
+import { mediaAssets, posts as postsTable } from '../../db/schema';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
-export async function getStaticPaths() {
-  const url = process.env.SUPABASE_URL;
-  const key = process.env.SUPABASE_ANON_KEY;
+// Set public edge cache control for high-speed delivery
+Astro.response.headers.set('Cache-Control', 'public, max-age=0, s-maxage=3600');
 
-  if (url && key) {
-    const supabase = createClient(url, key);
-    try {
-      const { data: posts } = await supabase.from('posts').select('slug');
-      if (posts && posts.length > 0) {
-        return posts.map((post) => ({
-          params: { slug: post.slug },
-        }));
-      }
-    } catch (err) {
-      console.error('Error fetching static paths for blog posts:', err.message);
-    }
-  }
-
-  // Fallback static paths if DB is empty during compilation
-  return [{ params: { slug: 'usd-to-eur-exchange-rate-secure-mobility-guide' } }];
-}
+export const prerender = false; // Using SSR/ISR (Astro hybrid mode)
 
 const { slug } = Astro.params;
 
-const url = process.env.SUPABASE_URL;
-const key = process.env.SUPABASE_ANON_KEY;
+let post: any = null;
+let media: any = null;
 
-let post = null;
-if (url && key) {
-  const supabase = createClient(url, key);
-  try {
-    const { data, error } = await supabase.from('posts').select('*').eq('slug', slug).single();
-    if (error || !data) {
-      return Astro.redirect('/404');
+try {
+  const fetchedPosts = await db
+    .select()
+    .from(postsTable)
+    .where(eq(postsTable.slug, slug || ''))
+    .limit(1);
+  if (fetchedPosts.length > 0) {
+    post = fetchedPosts[0];
+    const fetchedMedia = await db
+      .select()
+      .from(mediaAssets)
+      .where(eq(mediaAssets.postId, post.id))
+      .limit(1);
+    if (fetchedMedia.length > 0) {
+      media = fetchedMedia[0];
     }
-    post = data;
-  } catch (err) {
-    console.error(`Error loading post slug ${slug}:`, err.message);
-    return Astro.redirect('/404');
   }
-} else {
-  return Astro.redirect('/404');
+} catch (err: any) {
+  console.error('Failed to query post from database:', err.message);
 }
 
-// Append high-performance cache headers
-Astro.response.headers.set('Cache-Control', 'public, max-age=0, s-maxage=3600');
-
-if (!post) {
-  // Graceful fallback content
-  post = {
-    title: 'Operational Ingest Signal Active',
-    content:
-      'The content pipeline is currently synchronizing. Please check the network perimeter in a moment.',
-    meta_desc: 'Operational synchronizer active.',
-    created_at: new Date().toISOString(),
-  };
-}
-
-const canonicalUrl = `https://bizkitgrow.vercel.app/blog/${slug}`;
-const pageTitle = post.title;
-const metaDesc = post.meta_desc;
-
-const articleSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'Article',
-  headline: post.title,
-  description: post.meta_desc,
-  url: canonicalUrl,
-  datePublished: post.created_at,
-  author: {
-    '@type': 'Organization',
-    name: systemArchitecture.tenant_settings.brand_name,
-  },
+const fallbackPost = {
+  title: 'The Future of Connectivity and Mobility',
+  content:
+    "<h2>Embracing the Era of Advanced Mobility</h2><p>In today's fast-paced corporate environment, mobility and connectivity dictate market leadership. The integration of robust network infrastructures enables unprecedented growth and operational automation.</p><p>We can explore deep metrics about how latency affects bottom lines...</p>",
+  target_product_key: 'esim_data_plans',
+  readingTime: '3 min read',
+  imagePrompt:
+    'Abstract visualization of glowing fiber optic cables representing global connectivity, enterprise technology, teal and slate colors, minimalist, hyper-realistic',
 };
+
+const activePost = post
+  ? {
+      title: post.title,
+      content: post.polishedContent || post.content,
+      target_product_key: post.targetProductKey || 'esim_data_plans',
+      readingTime: '3 min read',
+      imagePrompt: media
+        ? media.promptString
+        : 'Abstract visualization of glowing fiber optic cables representing global connectivity',
+    }
+  : fallbackPost;
+
+const BASE_CHECKOUT_URL = 'https://devhack.appserviceportal.com/checkout';
+const checkoutUrl = `${BASE_CHECKOUT_URL}?product_id=${activePost.target_product_key}`;
+
+const heroImageUrl = media
+  ? media.pollinationsUrl
+  : `https://image.pollinations.ai/prompt/${encodeURIComponent(activePost.imagePrompt)}?width=1200&height=630&nologo=true`;
 ---
 
 <BaseLayout 
-  title={pageTitle} 
-  description={metaDesc}
-  canonicalUrl={canonicalUrl}
+  title={activePost.title} 
+  description={activePost.content ? activePost.content.replace(/<[^>]*>/g, '').slice(0, 150) : activePost.title}
+  canonicalUrl={Astro.url.href}
 >
-  <script type="application/ld+json" slot="schema" set:html={JSON.stringify(articleSchema)} />
-
-  <article class="max-w-3xl mx-auto px-6 py-20 font-sans">
-    <header class="mb-10">
-      <div class="text-sm font-bold text-emerald-600 uppercase tracking-widest mb-2">
-        Operational Telemetry Ingest
-      </div>
-      <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight mb-4">
-        {post.title}
-      </h1>
-      <div class="text-xs text-slate-400">
-        Dispatched on: {new Date(post.created_at).toLocaleDateString()} UTC
-      </div>
-    </header>
+  <article class="max-w-4xl mx-auto px-6 py-16">
     
-    <div class="prose prose-slate max-w-none text-slate-600 leading-relaxed text-base space-y-6">
-      <p class="whitespace-pre-line">{post.content}</p>
+    <!-- Enforce ultra-bold responsive typography -->
+    <header class="mb-12">
+      <h1 class="text-4xl md:text-6xl font-extrabold text-text-primary tracking-tight leading-tight">
+        {activePost.title}
+      </h1>
+      <p class="text-sm font-semibold text-text-secondary mt-4 uppercase tracking-wider">{activePost.readingTime}</p>
+    </header>
+
+    <!-- Premium Hero Image -->
+    <div class="mb-12 rounded-2xl overflow-hidden shadow-md border border-border-subtle aspect-[16/9]">
+      <img src={heroImageUrl} alt={activePost.title} class="w-full h-full object-cover" loading="eager" />
     </div>
+
+    <!-- Intent Bridge Banner (CTA Card) injected below first paragraph -->
+    <div class="my-10 bg-interactive-normal text-text-inverse p-8 rounded-xl shadow-lg border border-interactive-hover flex flex-col md:flex-row items-center justify-between transition-all hover:scale-[1.01]">
+      <div>
+        <h3 class="text-2xl font-bold mb-2">Upgrade Your Corporate Mobility</h3>
+        <p class="text-text-inverse/80 max-w-lg">Unlock seamless connectivity for your enterprise across 190+ countries with our scalable eSIM infrastructure.</p>
+      </div>
+      <a href={checkoutUrl} class="mt-6 md:mt-0 bg-background-base hover:bg-background-surface text-text-primary font-bold py-3 px-8 rounded-full transition-colors whitespace-nowrap">
+        Deploy Now
+      </a>
+    </div>
+
+    <!-- Static HTML content rendering, no client-side JS -->
+    <div class="prose prose-lg prose-slate max-w-none text-text-primary" set:html={activePost.content} />
+    
   </article>
 </BaseLayout>

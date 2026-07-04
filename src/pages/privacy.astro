@@ -1,0 +1,41 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const currentUrl = 'https://bizkitgrow.vercel.app/privacy';
+---
+
+<BaseLayout 
+  title="Privacy Perimeter" 
+  description="Data security policies, telemetry logging configurations, and customer coordinate protection scopes."
+  canonicalUrl={currentUrl}
+>
+  <main class="max-w-4xl mx-auto px-6 py-20">
+    <header class="mb-12">
+      <h1 class="text-4xl sm:text-5xl font-extrabold text-text-primary tracking-tight mb-4">
+        Privacy Perimeter
+      </h1>
+      <p class="text-text-secondary">Last updated: July 4, 2026</p>
+    </header>
+
+    <div class="prose prose-slate max-w-none text-text-primary">
+      <p class="lead text-lg text-text-secondary mb-8">
+        We prioritize secure B2B coordinate protection. This Privacy Perimeter outlines how telemetry data, coordinate metrics, and payment callbacks are securely isolated.
+      </p>
+
+      <h2 class="text-2xl font-bold mt-10 mb-4">1. Information Collection Scope</h2>
+      <p class="mb-6 leading-relaxed text-text-secondary">
+        We log transactional data, corporate email waitlist queries, and device profiles to maintain high deliverability standards. Telemetry information is captured asynchronously to improve Core Web Vitals and protect routing integrity.
+      </p>
+
+      <h2 class="text-2xl font-bold mt-10 mb-4">2. Isolation and Storage</h2>
+      <p class="mb-6 leading-relaxed text-text-secondary">
+        All sensitive database columns, including email profiles and waiting lists, are stored in Supabase with strict Row Level Security (RLS) policies. Access role keys are rotated regularly to block public scanning vectors.
+      </p>
+
+      <h2 class="text-2xl font-bold mt-10 mb-4">3. Third-Party Webhook Data Routing</h2>
+      <p class="mb-6 leading-relaxed text-text-secondary">
+        When triggering social syndication, post coordinates, caption assets, and generated media URLs are routed securely to authorized n8n execution endpoints. We do not sell or lease operational coordinates to advertising networks.
+      </p>
+    </div>
+  </main>
+</BaseLayout>

@@ -30,47 +30,41 @@ automation_logs (standalone — health monitoring)
 ## 2. SQL DDL — PostgreSQL (Supabase Compatible)
 
 ```sql
--- Enable UUID extension
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-
 -- ============================================================
 -- TABLE 1: categories — Content Silo Classification
 -- ============================================================
 CREATE TABLE categories (
-  id   UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  id   BIGSERIAL PRIMARY KEY,
   name VARCHAR(255) NOT NULL,
-  slug VARCHAR(255) UNIQUE NOT NULL
+  slug VARCHAR(255) UNIQUE NOT NULL,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
 -- ============================================================
 -- TABLE 2: posts — AGC Content Model
 -- ============================================================
 CREATE TABLE posts (
-  id                 UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  title              TEXT NOT NULL,
-  slug               TEXT UNIQUE NOT NULL,
+  id                 BIGSERIAL PRIMARY KEY,
+  title              VARCHAR(255) NOT NULL,
+  slug               VARCHAR(255) UNIQUE NOT NULL,
   content            TEXT NOT NULL,
-  meta_desc          VARCHAR(160) NOT NULL,              -- Max 160 char SEO
-  category_id        UUID REFERENCES categories(id) ON DELETE SET NULL,
-  target_product_key VARCHAR(100) NOT NULL DEFAULT 'ai_business_tools_suite',
+  meta_desc          VARCHAR(255),
+  category_id        BIGINT REFERENCES categories(id) ON DELETE SET NULL,
+  target_product_key VARCHAR(255),
   source_url         TEXT,
-  schema_payload     JSONB DEFAULT '{}'::jsonb,          -- JSON-LD schema
-  faq_payload        JSONB DEFAULT '[]'::jsonb,          -- FAQ schema items
-  rating_aggregate   NUMERIC(3,2) DEFAULT 4.85,
-  rating_count       INTEGER DEFAULT 12,
-  created_at         TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc', NOW())
+  created_at         TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
 -- ============================================================
 -- TABLE 3: waiting_list — Lead Conversion Engine
 -- ============================================================
 CREATE TABLE waiting_list (
-  id               UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  id               BIGSERIAL PRIMARY KEY,
   email            VARCHAR(255) UNIQUE NOT NULL,
-  business_name    VARCHAR(255) DEFAULT NULL,
-  targeted_service VARCHAR(100) NOT NULL DEFAULT 'General',
+  business_name    VARCHAR(255),
+  targeted_service VARCHAR(255) DEFAULT 'General',
   coupon_sent      BOOLEAN DEFAULT FALSE,
-  created_at       TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc', NOW())
+  created_at       TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
 -- ============================================================
@@ -78,20 +72,17 @@ CREATE TABLE waiting_list (
 -- ============================================================
 CREATE TABLE automation_logs (
   id                   BIGSERIAL PRIMARY KEY,
-  run_date             TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc', NOW()),
   items_fetched        INTEGER DEFAULT 0,
-  status               VARCHAR(50) NOT NULL,    -- 'SUCCESS' | 'ERROR' | 'HEARTBEAT'
-  execution_duration_ms INTEGER DEFAULT 0,
-  error_details        TEXT DEFAULT NULL
+  status               VARCHAR(100) NOT NULL,
+  execution_duration_ms BIGINT DEFAULT 0,
+  error_details        TEXT,
+  created_at           TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
 -- ============================================================
 -- INDEXES — Optimized for high-concurrency Astro ISR routing
 -- ============================================================
-CREATE INDEX idx_posts_slug              ON posts(slug);
-CREATE INDEX idx_posts_category_id       ON posts(category_id);
-CREATE INDEX idx_posts_target_product_key ON posts(target_product_key);
-CREATE INDEX idx_automation_logs_run_date ON automation_logs(run_date);
+CREATE INDEX IF NOT EXISTS posts_category_id_idx ON posts(category_id);
 
 -- ============================================================
 -- SEED DATA — Base content pillars
@@ -112,42 +103,36 @@ File ini disimpan di: `src/db/schema.ts`
 ```typescript
 import {
   pgTable,
-  uuid,
   text,
   varchar,
   timestamp,
   boolean,
   bigint,
   integer,
-  numeric,
-  jsonb,
 } from 'drizzle-orm/pg-core';
 
 // ============================================================
 // Table: categories
 // ============================================================
 export const categories = pgTable('categories', {
-  id:   uuid('id').defaultRandom().primaryKey(),
+  id:   bigint('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),
   name: varchar('name', { length: 255 }).notNull(),
   slug: varchar('slug', { length: 255 }).notNull().unique(),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
 });
 
 // ============================================================
 // Table: posts
 // ============================================================
 export const posts = pgTable('posts', {
-  id:               uuid('id').defaultRandom().primaryKey(),
-  title:            text('title').notNull(),
-  slug:             text('slug').notNull().unique(),
+  id:               bigint('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),
+  title:            varchar('title', { length: 255 }).notNull(),
+  slug:             varchar('slug', { length: 255 }).notNull().unique(),
   content:          text('content').notNull(),
-  metaDesc:         varchar('meta_desc', { length: 160 }).notNull(),
-  categoryId:       uuid('category_id').references(() => categories.id, { onDelete: 'set null' }),
-  targetProductKey: varchar('target_product_key', { length: 100 }).default('ai_business_tools_suite'),
+  metaDesc:         varchar('meta_desc', { length: 255 }),
+  categoryId:       bigint('category_id', { mode: 'number' }).references(() => categories.id, { onDelete: 'set null' }),
+  targetProductKey: varchar('target_product_key', { length: 255 }),
   sourceUrl:        text('source_url'),
-  schemaPayload:    jsonb('schema_payload').default({}),
-  faqPayload:       jsonb('faq_payload').default([]),
-  ratingAggregate:  numeric('rating_aggregate', { precision: 3, scale: 2 }).default('4.85'),
-  ratingCount:      integer('rating_count').default(12),
   createdAt:        timestamp('created_at', { withTimezone: true }).defaultNow(),
 });
 
@@ -155,10 +140,10 @@ export const posts = pgTable('posts', {
 // Table: waiting_list
 // ============================================================
 export const waitingList = pgTable('waiting_list', {
-  id:              uuid('id').defaultRandom().primaryKey(),
+  id:              bigint('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),
   email:           varchar('email', { length: 255 }).notNull().unique(),
   businessName:    varchar('business_name', { length: 255 }),
-  targetedService: varchar('targeted_service', { length: 100 }).default('General'),
+  targetedService: varchar('targeted_service', { length: 255 }).default('General'),
   couponSent:      boolean('coupon_sent').default(false),
   createdAt:       timestamp('created_at', { withTimezone: true }).defaultNow(),
 });
@@ -168,11 +153,11 @@ export const waitingList = pgTable('waiting_list', {
 // ============================================================
 export const automationLogs = pgTable('automation_logs', {
   id:                  bigint('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),
-  runDate:             timestamp('run_date', { withTimezone: true }).defaultNow(),
   itemsFetched:        integer('items_fetched').default(0),
-  status:              varchar('status', { length: 50 }).notNull(),
-  executionDurationMs: integer('execution_duration_ms').default(0),
+  status:              varchar('status', { length: 100 }).notNull(),
+  executionDurationMs: bigint('execution_duration_ms', { mode: 'number' }).default(0),
   errorDetails:        text('error_details'),
+  createdAt:           timestamp('created_at', { withTimezone: true }).defaultNow(),
 });
 
 // ============================================================

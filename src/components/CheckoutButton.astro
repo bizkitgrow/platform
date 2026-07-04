@@ -6,15 +6,17 @@ interface Props {
   class?: string;
 }
 
-const { productId, label = "Checkout", variant = 'primary', class: className = '' } = Astro.props;
+const { productId, label = 'Checkout', variant = 'primary', class: className = '' } = Astro.props;
 
 // Dynamic subdomain configuration (using user-provided ResellPortal domain)
-const resellDomain = import.meta.env.RESELLPORTAL_DOMAIN || "devhack.appserviceportal.com";
+const resellDomain = import.meta.env.RESELLPORTAL_DOMAIN || 'devhack.appserviceportal.com';
 const checkoutUrl = `https://${resellDomain}/checkout?product_id=${productId}`;
 
-const baseStyles = "inline-flex items-center justify-center rounded-lg text-sm font-semibold transition-all duration-150 ease-out";
-const primaryStyles = "bg-brand_cta hover:bg-brand_cta_hover text-white shadow-subtle hover:shadow-md";
-const outlineStyles = "border border-borders_subtle text-text_primary hover:bg-canvas_accent";
+const baseStyles =
+  'inline-flex items-center justify-center rounded-lg text-sm font-semibold transition-all duration-150 ease-out';
+const primaryStyles =
+  'bg-brand_cta hover:bg-brand_cta_hover text-white shadow-subtle hover:shadow-md';
+const outlineStyles = 'border border-borders_subtle text-text_primary hover:bg-canvas_accent';
 
 const finalClasses = `${baseStyles} ${variant === 'primary' ? primaryStyles : outlineStyles} px-5 py-2.5 ${className}`;
 ---

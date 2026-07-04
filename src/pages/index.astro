@@ -22,35 +22,38 @@ const pillars = brandManifest.audience_demand_matrix.intent_clusters;
   <script type="application/ld+json" slot="schema" set:html={JSON.stringify(seoSchema)} />
 
   <!-- Hero Frame -->
-  <section class="max-w-[1280px] mx-auto px-6 py-20 md:py-28 text-center">
-    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-100 text-emerald-700 text-xs font-semibold uppercase tracking-wider mb-6">
-      <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+  <section class="max-w-[1280px] mx-auto px-6 py-24 md:py-32 text-center">
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-background-surface border border-border-subtle text-text-primary text-xs font-semibold uppercase tracking-wider mb-8">
+      <span class="w-1.5 h-1.5 rounded-full bg-interactive-normal animate-pulse"></span>
       Sovereign Growth Engine Active
     </div>
 
-    <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold text-slate-900 tracking-tight max-w-4xl mx-auto leading-tight mb-8">
-      Sovereign Infrastructure for <span class="text-emerald-600">Remote Operations</span>
+    <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold text-text-primary tracking-tight max-w-4xl mx-auto leading-tight mb-8">
+      Precision Operational Infrastructure for <span class="text-interactive-normal">B2B Enterprises</span>
     </h1>
 
-    <p class="text-lg sm:text-xl text-slate-500 max-w-2xl mx-auto leading-relaxed mb-10">
-      Unify tier-1 cellular routing, automated local search authority, and secure client operations under one secure perimeter.
+    <p class="text-lg sm:text-xl text-text-secondary max-w-2xl mx-auto leading-relaxed mb-10">
+      Consolidate secure remote networks, automated local search authority, and back-office pipelines within a single centralized perimeter.
     </p>
 
     <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-      <a href="#pillars" class="h-12 px-8 inline-flex items-center justify-center rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold shadow-sm transition-all duration-150">
+      <a href="#pillars" class="h-12 px-8 inline-flex items-center justify-center rounded-xl bg-interactive-normal hover:bg-interactive-hover text-text-inverse text-sm font-bold shadow-sm transition-all duration-150">
         Explore Growth Pillars
       </a>
-      <a href="#waitlist" class="h-12 px-8 inline-flex items-center justify-center rounded-xl border border-slate-200 hover:border-slate-300 bg-white text-slate-700 text-sm font-semibold transition-all">
-        Lock In Resource Allocation
+      <a href="#waitlist" class="h-12 px-8 inline-flex items-center justify-center rounded-xl border border-border-subtle hover:border-text-primary bg-background-surface text-text-primary text-sm font-semibold transition-all">
+        Secure Priority Access
       </a>
+    </div>
+    <div class="mt-4 text-xs text-text-secondary font-medium tracking-wide">
+      No credit card required. Instant self-setup.
     </div>
   </section>
 
   <!-- Pillars Grid -->
-  <section id="pillars" class="max-w-[1280px] mx-auto px-6 py-20 border-t border-slate-100">
+  <section id="pillars" class="max-w-[1280px] mx-auto px-6 py-20 border-t border-border-subtle">
     <div class="text-center mb-16">
-      <h2 class="text-3xl font-extrabold text-slate-900 mb-4">Select Your Operational Perimeter</h2>
-      <p class="text-slate-500 max-w-xl mx-auto">Deploy target growth solutions matching commercial B2B query intents.</p>
+      <h2 class="text-3xl font-extrabold text-text-primary mb-4">Select Your Operational Perimeter</h2>
+      <p class="text-text-secondary max-w-xl mx-auto">Deploy target growth solutions matching commercial B2B query intents.</p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -60,29 +63,68 @@ const pillars = brandManifest.audience_demand_matrix.intent_clusters;
         subtext={pillars.pillar_1_mobility.conversion_copy_tokens.subheadline} 
         ctaLabel={pillars.pillar_1_mobility.conversion_copy_tokens.cta_label}
         sku="rp_sku_esim_global_v1"
-        icon="📡"
-      />
+      >
+        <svg slot="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+      </PillarCard>
       <!-- Pillar 2 -->
       <PillarCard 
-        title="Google Authority" 
+        title="Search Authority" 
         subtext={pillars.pillar_2_growth.conversion_copy_tokens.subheadline} 
         ctaLabel={pillars.pillar_2_growth.conversion_copy_tokens.cta_label}
         sku="rp_sku_reputation_gmb_auto"
-        icon="📈"
-      />
+      >
+        <svg slot="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+      </PillarCard>
       <!-- Pillar 3 -->
       <PillarCard 
         title="Operational Automation" 
         subtext={pillars.pillar_3_operations.conversion_copy_tokens.subheadline} 
         ctaLabel={pillars.pillar_3_operations.conversion_copy_tokens.cta_label}
         sku="rp_sku_b2b_suite_agency"
-        icon="⚙️"
-      />
+      >
+        <svg slot="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+      </PillarCard>
+    </div>
+  </section>
+
+  <!-- Recent Intelligence Section -->
+  <section class="max-w-[1280px] mx-auto px-6 py-20 border-t border-border-subtle bg-background-surface/30">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+      <div>
+        <h2 class="text-3xl font-extrabold text-text-primary mb-4">Operational Intelligence</h2>
+        <p class="text-text-secondary max-w-xl">Deep analysis, local search coordinate shifts, and remote network updates.</p>
+      </div>
+      <a href="/blog" class="mt-4 md:mt-0 text-sm font-bold text-interactive-normal hover:text-interactive-hover inline-flex items-center gap-1">
+        View All Intelligence Briefs
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+      </a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <article class="p-8 bg-background-surface border border-border-subtle hover:border-interactive-normal rounded-2xl transition-all duration-150 flex flex-col group shadow-sm">
+        <div class="flex items-center gap-3 text-xs text-text-secondary mb-4 font-medium">
+          <span>July 4, 2026</span>
+          <span class="w-1 h-1 rounded-full bg-border-strong"></span>
+          <span>3 min read</span>
+        </div>
+        <h3 class="text-xl font-bold text-text-primary mb-3 leading-snug group-hover:text-interactive-normal transition-colors">
+          <a href="/blog/the-future-of-connectivity-and-mobility">
+            The Future of Connectivity and Mobility
+          </a>
+        </h3>
+        <p class="text-sm text-text-secondary leading-relaxed mb-6 flex-grow">
+          In today's fast-paced corporate environment, mobility and connectivity dictate market leadership. Explore how advanced networks enable unprecedented scale.
+        </p>
+        <a href="/blog/the-future-of-connectivity-and-mobility" class="text-xs font-bold text-interactive-normal hover:text-interactive-hover inline-flex items-center gap-1 group-hover:underline">
+          Read Briefing
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 transform transition-transform group-hover:translate-x-1" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </a>
+      </article>
     </div>
   </section>
 
   <!-- Lead Capture Form -->
-  <section class="bg-slate-50/50 py-20 border-t border-b border-slate-100">
+  <section class="bg-background-base py-20 border-t border-b border-border-subtle">
     <div class="max-w-[1280px] mx-auto px-6">
       <WaitingListForm />
     </div>
