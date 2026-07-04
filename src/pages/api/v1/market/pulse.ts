@@ -15,7 +15,7 @@ export const GET: APIRoute = async () => {
   try {
     const res = await fetch(
       `https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=NVDA,MSFT,GOOGL,AAPL&limit=5&apikey=${ALPHA_VANTAGE_KEY}`,
-      { signal: AbortSignal.timeout(8000) }
+      { signal: AbortSignal.timeout(8000) },
     );
 
     if (!res.ok) throw new Error(`Alpha Vantage returned ${res.status}`);
@@ -43,7 +43,7 @@ export const GET: APIRoute = async () => {
           'Content-Type': 'application/json',
           'Cache-Control': 'public, max-age=900, s-maxage=1800',
         },
-      }
+      },
     );
   } catch (err: any) {
     return new Response(
@@ -53,7 +53,7 @@ export const GET: APIRoute = async () => {
         lastUpdated: new Date().toISOString(),
         error: err.message,
       }),
-      { status: 200, headers: { 'Content-Type': 'application/json' } }
+      { status: 200, headers: { 'Content-Type': 'application/json' } },
     );
   }
 };

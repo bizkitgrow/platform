@@ -19,7 +19,8 @@ const fallbackPosts = [
   {
     title: 'The Future of Global Connectivity for Remote Teams',
     slug: 'the-future-of-connectivity-and-mobility',
-    excerpt: "Enterprise eSIM infrastructure is replacing legacy SIM provisioning — here is what B2B operators need to know in 2026.",
+    excerpt:
+      'Enterprise eSIM infrastructure is replacing legacy SIM provisioning — here is what B2B operators need to know in 2026.',
     readingTime: '3 min read',
     createdAt: 'Jul 4, 2026',
     pillar: 'esim_data_plans',
@@ -27,7 +28,8 @@ const fallbackPosts = [
   {
     title: 'Google Rewrites the Search Interface',
     slug: 'google-rewrites-search-2026',
-    excerpt: "The largest upgrade to Google Search in 25 years is reshaping local SEO authority. What every B2B operator must act on now.",
+    excerpt:
+      'The largest upgrade to Google Search in 25 years is reshaping local SEO authority. What every B2B operator must act on now.',
     readingTime: '5 min read',
     createdAt: 'Jul 4, 2026',
     pillar: 'ai_business_tools_suite',
@@ -54,9 +56,13 @@ const posts =
         title: p.title,
         slug: p.slug,
         excerpt: p.metaDesc || 'Read the complete analysis from the Bizkitgrow intelligence feed.',
-        readingTime: Math.max(2, Math.ceil((p.content?.length || 1000) / 1500)) + ' min read',
+        readingTime: `${Math.max(2, Math.ceil((p.content?.length || 1000) / 1500))} min read`,
         createdAt: p.createdAt
-          ? new Date(p.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+          ? new Date(p.createdAt).toLocaleDateString('en-US', {
+              month: 'short',
+              day: 'numeric',
+              year: 'numeric',
+            })
           : 'Jul 4, 2026',
         pillar: p.targetProductKey || 'ai_business_tools_suite',
       }))
@@ -75,7 +81,8 @@ const blogListSchema = {
   '@type': 'Blog',
   name: 'Bizkitgrow Intelligence Feed',
   url: currentUrl,
-  description: 'Sovereign B2B operational intelligence: eSIM, reputation gating, and AI automation briefings.',
+  description:
+    'Sovereign B2B operational intelligence: eSIM, reputation gating, and AI automation briefings.',
   blogPost: posts.slice(0, 5).map((p) => ({
     '@type': 'BlogPosting',
     headline: p.title,

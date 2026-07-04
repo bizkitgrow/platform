@@ -1,106 +1,81 @@
 const DOMPurify = require('isomorphic-dompurify');
 const { executeAgnosticAiRefinement } = require('./universal-ai-adapter');
+// Register tsx so we can require TypeScript files synchronously
+require('tsx/cjs');
+const { rewriteContent } = require('../src/lib/agc-rewriter.ts');
 
 /**
  * Text Polishing Engine using multi-key free inference cascade
  * (Gemini -> OpenRouter -> Grok)
  */
 async function polishText(rawText, targetPillar) {
-  console.log('[LLM-POLISHER] Passing raw text to inference cascade for pillar:', targetPillar);
+  console.log('[LLM-POLISHER] Passing raw text to inference cascade for tactical metadata on pillar:', targetPillar);
 
   let llmResponse = null;
 
   try {
     let pillarContext = '';
     if (targetPillar === 'esim_data_plans') {
-      pillarContext =
-        'FOCUS: Emphasize global connectivity, B2B enterprise roaming, and latency reduction solutions for nomads and global teams.';
+      pillarContext = 'FOCUS: Emphasize global connectivity, B2B enterprise roaming, and latency reduction solutions.';
     } else if (targetPillar === 'reputation_management') {
-      pillarContext =
-        'FOCUS: Emphasize Google Local Search Authority, review gating, crisis mitigation, and brand trust automation.';
+      pillarContext = 'FOCUS: Emphasize Google Local Search Authority, review gating, and brand trust automation.';
     } else if (targetPillar === 'ai_business_tools_suite') {
-      pillarContext =
-        'FOCUS: Emphasize document routing, back-office automation, CRM integrations, and operational efficiency.';
+      pillarContext = 'FOCUS: Emphasize document routing, back-office automation, CRM integrations, and operational efficiency.';
     }
 
-    const prompt = `You are a professional B2B content editor and copywriter. Analyze the following raw text and transform it into a polished, high-quality, SEO-optimized blog article. 
+    const prompt = `You are an expert B2B SaaS Content Strategist and SEO. Analyze the following raw article text.
+DO NOT rewrite the entire article. Instead, act as a tactical enhancer to generate precise metadata and a strong hook.
 
 ${pillarContext}
 
-CRITICAL WRITING STYLE RULES (Elements of Agent Style & Avoid AI Writing):
-1. Do not assume the reader shares your tacit knowledge.
-2. Do not use passive voice when the agent matters.
-3. Do not use abstract or general language when a concrete, specific term exists.
-4. Do not include needless words.
-5. Express coordinate ideas in similar form (parallel structure).
-6. Support factual claims with concrete evidence; do not be handwavy.
-7. Do NOT use bullet points unless the content is a genuine list.
-8. Do NOT use em or en dashes as casual sentence punctuation.
-9. Do NOT start consecutive sentences with the same word or phrase.
-10. Do NOT use repetitive transition words ("Additionally", "Furthermore", "Moreover").
-11. Do NOT close every paragraph with a summary sentence.
-12. NEVER use the following AI-ism words: delve, landscape, tapestry, realm, paradigm, embark, beacon, testament to, robust, comprehensive, cutting-edge, leverage, pivotal, underscores, meticulous, seamless, watershed moment, nestled, vibrant, intricate.
-13. Replace the above AI-isms with simpler equivalents (e.g., use "use" instead of "leverage", "explore" instead of "delve").
+CRITICAL RULES:
+1. Professional, human-friendly tone. No generic "AI-slop".
+2. NEVER use words like: delve, landscape, tapestry, realm, paradigm, robust, comprehensive, cutting-edge, leverage, seamless.
 
 Return ONLY a raw JSON object with no markdown formatting or code blocks. The JSON must exactly match this structure:
 {
-  "title": "A compelling, professional title",
-  "seo_body": "The polished article content formatted as semantic HTML (e.g., <h2>, <p>, <ul>). Do not wrap in a full HTML document, just the body content.",
-  "meta_desc": "A concise, engaging meta description under 160 characters.",
-  "social_caption": "An engaging caption for social media sharing, including relevant hashtags.",
-  "image_prompt": "A detailed, descriptive text prompt suitable for an AI image generator to create a professional abstract hero image for this article."
+  "hook": "A compelling, audience-centric SEO hook (1-2 sentences) that introduces the original content.",
+  "metaDesc": "A concise, engaging meta description under 160 characters.",
+  "tags": ["Tag1", "Tag2", "Tag3"],
+  "socialWidget": "An engaging caption for social media sharing, including relevant hashtags."
 }
 
-Raw text to polish:
+Raw text to analyze:
 ${rawText}
 `;
 
-    // Second Pass (Auditing via LLM prompt rules is handled inherently if using high intelligence models,
-    // but the unified abstraction layer ensures we get the best available model).
     llmResponse = await executeAgnosticAiRefinement(prompt);
   } catch (err) {
-    console.error(
-      '[LLM-POLISHER] API cascade failed, falling back to dynamic parsing:',
-      err.message,
-    );
-
-    // Dynamic Fallback parsing from rawText
-    // rawText format is expected to be:
-    // Title: ...
-    // Link: ...
-    // Published: ...
-    // Content: ...
+    console.error('[LLM-POLISHER] API cascade failed, falling back to basic extraction:', err.message);
 
     const titleMatch = rawText.match(/Title:\s*(.+)/);
-    const linkMatch = rawText.match(/Link:\s*(.+)/);
     const contentMatch = rawText.match(/Content:\s*([\s\S]+)/);
-
     const fallbackTitle = titleMatch ? titleMatch[1].trim() : 'Industry Update';
-    const fallbackLink = linkMatch ? linkMatch[1].trim() : '#';
     let fallbackContent = contentMatch ? contentMatch[1].trim() : 'No content available.';
 
-    // Convert basic line breaks to paragraphs
-    fallbackContent = fallbackContent
-      .split('\n')
-      .filter((p) => p.trim())
-      .map((p) => `<p>${p}</p>`)
-      .join('');
-
     llmResponse = {
-      title: fallbackTitle,
-      seo_body: `<h2>Breaking Update</h2>${fallbackContent}<p><a href="${fallbackLink}" target="_blank" rel="noopener noreferrer">Read full source here</a></p>`,
-      meta_desc: `${fallbackContent.replace(/<[^>]*>?/gm, '').substring(0, 157)}...`,
-      social_caption: `Read our latest update on ${fallbackTitle}: ${fallbackLink} #IndustryNews #Update`,
-      image_prompt: `Abstract minimalist corporate background representing ${fallbackTitle}, professional, subtle colors`,
+      hook: `Discover the latest insights on ${fallbackTitle}.`,
+      metaDesc: `${fallbackContent.replace(/<[^>]*>?/gm, '').substring(0, 157)}...`,
+      tags: ['Industry News', 'Updates'],
+      socialWidget: `Read our latest update: ${fallbackTitle} #IndustryNews #Update`
     };
   }
 
-  // Sanitize the 'seo_body' using dompurify to prevent XSS
-  console.log('[LLM-POLISHER] Sanitizing SEO body...');
-  const cleanHtml = DOMPurify.sanitize(llmResponse.seo_body);
-  llmResponse.seo_body = cleanHtml;
+    // Now call the AGC Rewriter to generate paraphrase data
+    try {
+      const paraphraseData = await rewriteContent(rawText);
+      if (paraphraseData) {
+        llmResponse.paraphrasedHook = paraphraseData.paraphrasedHook;
+        llmResponse.syntacticVariant = paraphraseData.syntacticVariant;
+        llmResponse.paraphraseSummary = paraphraseData.paraphraseSummary;
+        llmResponse.originalTokenCount = paraphraseData.originalTokenCount;
+        llmResponse.newTokenCount = paraphraseData.newTokenCount;
+      }
+    } catch (rewriteErr) {
+      console.warn('[LLM-POLISHER] AGC Rewriting pipeline failed. Skipping paraphrase merging.', rewriteErr.message);
+    }
 
-  console.log('[LLM-POLISHER] Polishing complete. Returning clean JSON payload.');
+  console.log('[LLM-POLISHER] Polishing complete. Returning tactical JSON payload.');
   return llmResponse;
 }
 

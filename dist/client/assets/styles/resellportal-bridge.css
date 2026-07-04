@@ -1,0 +1,73 @@
+/*
+ * bridge.css - UI Bridge for ResellPortal White-Label Console
+ * Mapped to bizkitgrow design tokens (Inter Font, Minimalist Canvas, Emerald Brand CTA)
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --canvas: #FFFFFF;
+  --canvas-accent: #F8FAFC;
+  --brand-cta: #059669;
+  --brand-cta-hover: #047857;
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --borders-subtle: #E2E8F0;
+  --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+body {
+  font-family: var(--font-family) !important;
+  background-color: var(--canvas) !important;
+  color: var(--text-primary) !important;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Card Elements & Tables */
+.card, .panel, .box, .table-container {
+  background: var(--canvas) !important;
+  border: 1px solid var(--borders-subtle) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Buttons */
+.btn-primary, .button-submit, .btn-success, button[type="submit"] {
+  background-color: var(--brand-cta) !important;
+  border-color: var(--brand-cta) !important;
+  color: #FFFFFF !important;
+  font-family: var(--font-family) !important;
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+  padding: 10px 20px !important;
+  transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.btn-primary:hover, .button-submit:hover, button[type="submit"]:hover {
+  background-color: var(--brand-cta-hover) !important;
+  border-color: var(--brand-cta-hover) !important;
+}
+
+/* Headers and Typography */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-primary) !important;
+  font-family: var(--font-family) !important;
+  font-weight: 700 !important;
+}
+
+/* Inputs and Forms */
+input[type="text"], input[type="email"], input[type="password"], select, textarea {
+  background-color: var(--canvas) !important;
+  border: 1px solid var(--borders-subtle) !important;
+  border-radius: 8px !important;
+  color: var(--text-primary) !important;
+  font-family: var(--font-family) !important;
+  padding: 10px 14px !important;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--brand-cta) !important;
+  outline: none !important;
+}

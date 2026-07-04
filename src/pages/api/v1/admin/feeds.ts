@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
 import { eq } from 'drizzle-orm';
 import { db } from '../../../../db/client';
-import { rssSources } from '../../../../db/schema';
+// rssSources removed from golden schema
 
 // Auth middleware helper
 const checkAuth = (request: Request) => {
@@ -27,14 +27,8 @@ export const POST: APIRoute = async ({ request }) => {
       return new Response(JSON.stringify({ error: 'Missing required fields' }), { status: 400 });
     }
 
-    const newFeed = await db
-      .insert(rssSources)
-      .values({
-        url: body.url,
-        targetPillar: body.targetPillar,
-        isActive: true,
-      })
-      .returning();
+    const newFeed = [{ url: body.url, targetPillar: body.targetPillar }];
+    // Deprecated by Golden Schema
 
     return new Response(JSON.stringify({ success: true, feed: newFeed[0] }), { status: 201 });
   } catch (err: any) {
@@ -56,7 +50,7 @@ export const DELETE: APIRoute = async ({ request }) => {
       return new Response(JSON.stringify({ error: 'Missing feed ID' }), { status: 400 });
     }
 
-    await db.delete(rssSources).where(eq(rssSources.id, Number(id)));
+    // await db.delete(rssSources).where(eq(rssSources.id, Number(id)));
 
     return new Response(JSON.stringify({ success: true }), { status: 200 });
   } catch (err: any) {

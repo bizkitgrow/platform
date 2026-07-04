@@ -2,16 +2,14 @@ import {
   bigint,
   bigserial,
   boolean,
-  integer,
+  jsonb,
   pgTable,
   text,
   timestamp,
+  uniqueIndex,
   varchar,
 } from 'drizzle-orm/pg-core';
 
-// ============================================================
-// Table: categories
-// ============================================================
 export const categories = pgTable('categories', {
   id: bigserial('id', { mode: 'number' }).primaryKey(),
   name: varchar('name', { length: 255 }).notNull(),
@@ -19,82 +17,54 @@ export const categories = pgTable('categories', {
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
 });
 
-// ============================================================
-// Table: rss_sources
-// ============================================================
-export const rssSources = pgTable('rss_sources', {
-  id: bigserial('id', { mode: 'number' }).primaryKey(),
-  url: text('url').notNull().unique(),
-  targetPillar: varchar('target_pillar', { length: 255 }).notNull(),
-  isActive: boolean('is_active').default(true),
-  lastFetchedAt: timestamp('last_fetched_at', { withTimezone: true }),
-  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
-});
+export const posts = pgTable(
+  'posts',
+  {
+    id: bigserial('id', { mode: 'number' }).primaryKey(),
+    title: varchar('title', { length: 255 }).notNull(),
+    slug: varchar('slug', { length: 255 }).notNull().unique(),
+    content: text('content').notNull(),
 
-// ============================================================
-// Table: posts
-// ============================================================
-export const posts = pgTable('posts', {
-  id: bigserial('id', { mode: 'number' }).primaryKey(),
-  title: varchar('title', { length: 255 }).notNull(),
-  slug: varchar('slug', { length: 255 }).notNull().unique(),
-  content: text('content').notNull(),
-  rawMarkdown: text('raw_markdown'),
-  polishedContent: text('polished_content'),
-  hash: varchar('hash', { length: 64 }).notNull().unique(),
-  metaDesc: varchar('meta_desc', { length: 255 }),
-  categoryId: bigint('category_id', { mode: 'number' }).references(() => categories.id, {
-    onDelete: 'set null',
+    aiSummary: jsonb('ai_summary')
+      .$type<{
+        hook: string;
+        tags: string[];
+        metaDesc: string;
+        socialWidget: string;
+        paraphrasedHook?: string;
+        syntacticVariant?: string;
+        paraphraseSummary?: string;
+        originalTokenCount?: number;
+        newTokenCount?: number;
+      }>()
+      .notNull(),
+
+    originalImage: text('original_image'),
+    hash: varchar('hash', { length: 64 }).notNull().unique(),
+    metaDesc: varchar('meta_desc', { length: 160 }).notNull(),
+    categoryId: bigint('category_id', { mode: 'number' }).references(() => categories.id, {
+      onDelete: 'set null',
+    }),
+    sourceUrl: text('source_url'),
+
+    targetProductSku: varchar('target_product_sku', { length: 50 }).default('general'),
+    resellportalOrderId: text('resellportal_order_id'),
+    resellportalStatus: varchar('resellportal_status', { length: 20 }).default('pending'),
+    webhookProcessed: boolean('webhook_processed').default(false),
+
+    createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
+  },
+  (table) => ({
+    slugIdx: uniqueIndex('idx_posts_slug').on(table.slug),
+    hashIdx: uniqueIndex('idx_posts_hash').on(table.hash),
   }),
-  targetProductKey: varchar('target_product_key', { length: 255 }),
-  sourceUrl: text('source_url'),
-  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
-});
+);
 
-// ============================================================
-// Table: media_assets
-// ============================================================
-export const mediaAssets = pgTable('media_assets', {
+export const inboundWebhooks = pgTable('inbound_webhooks', {
   id: bigserial('id', { mode: 'number' }).primaryKey(),
-  postId: bigint('post_id', { mode: 'number' }).references(() => posts.id, { onDelete: 'cascade' }),
-  promptString: text('prompt_string').notNull(),
-  pollinationsUrl: text('pollinations_url').notNull(),
-  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
-});
-
-// ============================================================
-// Table: social_shares
-// ============================================================
-export const socialShares = pgTable('social_shares', {
-  id: bigserial('id', { mode: 'number' }).primaryKey(),
-  postId: bigint('post_id', { mode: 'number' }).references(() => posts.id, { onDelete: 'cascade' }),
-  status: varchar('status', { length: 50 }).notNull().default('PENDING'),
-  platform: varchar('platform', { length: 50 }).notNull(),
-  errorLog: text('error_log'),
-  syndicatedAt: timestamp('syndicated_at', { withTimezone: true }),
-  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
-});
-
-// ============================================================
-// Table: waiting_list
-// ============================================================
-export const waitingList = pgTable('waiting_list', {
-  id: bigserial('id', { mode: 'number' }).primaryKey(),
-  email: varchar('email', { length: 255 }).notNull().unique(),
-  businessName: varchar('business_name', { length: 255 }),
-  targetedService: varchar('targeted_service', { length: 255 }).default('General'),
-  couponSent: boolean('coupon_sent').default(false),
-  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
-});
-
-// ============================================================
-// Table: automation_logs
-// ============================================================
-export const automationLogs = pgTable('automation_logs', {
-  id: bigserial('id', { mode: 'number' }).primaryKey(),
-  itemsFetched: integer('items_fetched').default(0),
-  status: varchar('status', { length: 100 }).notNull(),
-  executionDurationMs: bigint('execution_duration_ms', { mode: 'number' }).default(0),
-  errorDetails: text('error_details'),
-  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
+  eventId: varchar('event_id', { length: 255 }).notNull().unique(),
+  eventSignature: varchar('event_signature', { length: 255 }).notNull().unique(),
+  provider: varchar('provider', { length: 100 }).notNull().default('ResellPortal'),
+  payloadType: varchar('payload_type', { length: 100 }).notNull(),
+  processedAt: timestamp('processed_at', { withTimezone: true }).defaultNow(),
 });

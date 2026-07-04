@@ -1,6 +1,9 @@
 ---
-import { navigationLinks, footerLinks } from '../utils/navigation';
+import { SEO } from 'astro-seo';
 import systemArchitecture from '../../system_architecture.json';
+import RichSnippet from '../components/RichSnippet.astro';
+import { footerLinks, navigationLinks } from '../utils/navigation';
+import '../styles/global.css';
 
 interface Props {
   title: string;
@@ -30,7 +33,6 @@ const supportEmail = systemArchitecture.tenant_settings.support_email;
 const safeCanonical = canonicalUrl || Astro.url.href;
 const safeOgImage = ogImage || new URL('/og-image.webp', safeCanonical).href;
 const safeTitle = `${title} | ${brandName}`;
-const ONESIGNAL_APP_ID = '498d3a2b-c642-41a3-b70c-c4b1185c958c';
 
 // Build context-aware JSON-LD structured data
 const structuredData: Record<string, unknown> = {
@@ -74,55 +76,46 @@ const websiteSchema = {
 ---
 
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="dark scroll-smooth">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-  <title>{safeTitle}</title>
-  <meta name="description" content={description.slice(0, 160)} />
-  <link rel="canonical" href={safeCanonical} />
+  <SEO 
+    title={safeTitle} 
+    description={description.slice(0, 160)} 
+    canonical={safeCanonical}
+    openGraph={{
+      basic: {
+        title: title.slice(0, 60),
+        type: schemaType === 'Article' ? 'article' : 'website',
+        image: safeOgImage,
+      }
+    }}
+    twitter={{
+      card: 'summary_large_image',
+      image: safeOgImage,
+      title: title.slice(0, 60),
+      description: description.slice(0, 160)
+    }}
+  />
 
-  <!-- Robots: Allow all crawlers + LLMs -->
-  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
-
-  <!-- OpenGraph -->
-  <meta property="og:site_name" content={brandName} />
-  <meta property="og:title" content={title.slice(0, 60)} />
-  <meta property="og:description" content={description.slice(0, 160)} />
-  <meta property="og:type" content={schemaType === 'Article' ? 'article' : 'website'} />
-  <meta property="og:url" content={safeCanonical} />
-  <meta property="og:image" content={safeOgImage} />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content={title.slice(0, 60)} />
-  <meta name="twitter:description" content={description.slice(0, 160)} />
-  <meta name="twitter:image" content={safeOgImage} />
-
-  <!-- Favicon -->
   <link rel="icon" type="image/png" href="/favicon.png" />
-
-  <!-- Verification -->
   <meta name="naver-site-verification" content="verified_bizkitgrow" />
 
-  <!-- Google Fonts: Performance-optimized preload -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Outfit:wght@800;900&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
 
   <!-- Structured Data: WebSite (always) -->
   <script type="application/ld+json" is:inline set:html={JSON.stringify(websiteSchema)} />
+  <RichSnippet pageTitle={safeTitle} pageDesc={description} />
 
   <!-- Structured Data: Page-specific -->
   {schemaType !== 'WebSite' && (
     <script type="application/ld+json" is:inline set:html={JSON.stringify(structuredData)} />
   )}
-
-  <!-- Schema slot for page-level overrides -->
   <slot name="schema" />
 
   <!-- OneSignal Web SDK v16 -->
@@ -131,23 +124,13 @@ const websiteSchema = {
     OneSignalDeferred.push(async function(OneSignal) {
       await OneSignal.init({
         appId: "498d3a2b-c642-41a3-b70c-c4b1185c958c",
+        safari_web_id: "web.onesignal.auto.3437296f-1581-4c9c-99a7-ef947df2b18c",
         allowLocalhostAsSecureOrigin: true,
         serviceWorkerPath: "/OneSignalSDKWorker.js",
-        notifyButton: { enable: false },
-        promptOptions: {
-          slidedown: {
-            prompts: [{
-              type: "push",
-              autoPrompt: true,
-              text: {
-                actionMessage: "Get real-time B2B intelligence, eSIM alerts, and market updates delivered instantly.",
-                acceptButton: "Subscribe",
-                cancelButton: "Not now",
-              },
-              delay: { pageViews: 1, timeDelay: 5 },
-            }]
-          }
-        }
+        notifyButton: { 
+          enable: true,
+          theme: "inverse"
+        },
       });
     });
   </script>
@@ -157,21 +140,19 @@ const websiteSchema = {
     :root {
       --canvas: #000000;
       --surface: #0a0a0a;
-      --border: #1c1c1e;
-      --text-primary: #f4f4f5;
-      --text-muted: #71717a;
-      --accent-green: #00ff66;
-      --accent-orange: #ff4500;
+      --border: #334155;
+      --text-primary: #f8fafc;
+      --text-muted: #cbd5e1;
+      --accent-green: #22c55e;
       --font-mono: 'JetBrains Mono', monospace;
       --font-heading: 'Outfit', sans-serif;
       --font-body: 'Plus Jakarta Sans', sans-serif;
     }
 
-    html { background: var(--canvas); color: var(--text-primary); }
-
     body {
       font-family: var(--font-body);
       background: var(--canvas);
+      color: var(--text-primary);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -192,194 +173,89 @@ const websiteSchema = {
       pointer-events: none;
       z-index: -1;
     }
-
-    /* Mono utility */
-    .font-mono { font-family: var(--font-mono); }
-    .font-heading { font-family: var(--font-heading); }
-
-    /* Selection */
-    ::selection { background: rgba(0, 255, 102, 0.2); color: #f4f4f5; }
-
-    /* Focus rings */
-    :focus-visible { outline: 1.5px solid var(--accent-green); outline-offset: 3px; }
-
-    /* Smooth scroll */
-    @media (prefers-reduced-motion: no-preference) {
-      html { scroll-behavior: smooth; }
-    }
   </style>
 </head>
-<body>
-
-  <!-- Sticky Nav: Flat authority bar -->
-  <header class="sticky top-0 z-50 w-full border-b border-[#1c1c1e] bg-[#000000]/90 backdrop-blur-md">
-    <div class="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between gap-8">
-
-      <!-- Wordmark -->
-      <a href="/" class="flex items-center gap-1 shrink-0" aria-label="Bizkitgrow home">
-        <span class="font-['Outfit'] text-sm font-black tracking-widest uppercase text-white">
-          BIZKITGROW<span class="text-[#00ff66]">_</span>
-        </span>
-      </a>
-
-      <!-- Desktop Nav -->
-      <nav class="hidden md:flex items-center gap-8" aria-label="Main navigation">
-        <span class="flex items-center gap-1.5 font-['JetBrains_Mono'] text-[10px] text-[#00ff66] tracking-wider">
-          <span class="w-1.5 h-1.5 rounded-full bg-[#00ff66] animate-pulse"></span>
-          EDGE: ONLINE
-        </span>
-        {navigationLinks.map((link) => (
-          <a
-            href={link.href}
-            class={`font-['JetBrains_Mono'] text-[10px] tracking-widest uppercase transition-colors hover:text-white ${Astro.url.pathname === link.href || (link.href !== '/' && Astro.url.pathname.startsWith(link.href)) ? 'text-white' : 'text-[#71717a]'}`}
-          >
-            {link.label}
-          </a>
-        ))}
-      </nav>
-
-      <!-- CTA -->
-      <div class="flex items-center gap-3">
-        <a
-          href="#waitlist"
-          class="hidden sm:flex items-center gap-2 bg-[#ff4500] hover:bg-[#ff5714] text-white font-['JetBrains_Mono'] text-[10px] font-bold tracking-widest uppercase px-4 py-2 transition-colors"
-        >
-          ACQUIRE ACCESS
-          <span aria-hidden="true">→</span>
-        </a>
-
-        <!-- Mobile Menu Toggle -->
-        <button
-          id="mobile-menu-btn"
-          class="md:hidden p-2 text-[#71717a] hover:text-white transition-colors"
-          aria-label="Toggle navigation menu"
-          aria-expanded="false"
-          aria-controls="mobile-nav"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <line x1="4" x2="20" y1="12" y2="12"/>
-            <line x1="4" x2="20" y1="6" y2="6"/>
-            <line x1="4" x2="20" y1="18" y2="18"/>
+<body class="bg-canvas dark:bg-canvas text-text_primary antialiased">
+  
+  <nav class="bg-black border-b border-gray-700 w-full z-50 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
+    <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+    <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
+        <span class="font-heading text-xl font-black tracking-widest text-white uppercase">BIZKITGROW<span class="text-brand_cta">_</span></span>
+    </a>
+    <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+        <button type="button" class="text-white bg-brand_cta hover:bg-brand_cta_hover focus:ring-4 focus:outline-none focus:ring-green-300 font-mono font-bold tracking-widest text-xs px-4 py-2 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">ACQUIRE ACCESS</button>
+        <button data-collapse-toggle="navbar-sticky" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-400 rounded-lg md:hidden hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-600 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-sticky" aria-expanded="false">
+          <span class="sr-only">Open main menu</span>
+          <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
           </svg>
-        </button>
-      </div>
+      </button>
     </div>
-
-    <!-- Mobile Nav Drawer -->
-    <div
-      id="mobile-nav"
-      class="hidden md:hidden border-t border-[#1c1c1e] bg-[#000000] px-6 py-6 space-y-4"
-      role="navigation"
-      aria-label="Mobile navigation"
-    >
-      {navigationLinks.map((link) => (
-        <a
-          href={link.href}
-          class="block font-['JetBrains_Mono'] text-[11px] tracking-widest uppercase text-[#71717a] hover:text-white transition-colors py-1"
-        >
-          {link.label}
-        </a>
-      ))}
-      <a
-        href="#waitlist"
-        class="block w-full text-center bg-[#ff4500] text-white font-['JetBrains_Mono'] text-[10px] font-bold tracking-widest uppercase px-4 py-3 mt-4 transition-colors hover:bg-[#ff5714]"
-      >
-        ACQUIRE ACCESS →
-      </a>
+    <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-sticky">
+      <ul class="flex flex-col p-4 md:p-0 mt-4 font-mono font-bold tracking-widest text-xs border border-gray-700 rounded-lg bg-black md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0">
+        {navigationLinks.map((link) => (
+          <li>
+            <a href={link.href} class={`block py-2 px-3 text-white rounded md:bg-transparent ${Astro.url.pathname === link.href ? 'md:text-brand_cta' : 'md:text-gray-400'} md:hover:text-brand_cta md:p-0`} aria-current="page">{link.label}</a>
+          </li>
+        ))}
+      </ul>
     </div>
-  </header>
+    </div>
+  </nav>
 
-  <script is:inline>
-    (function() {
-      var btn = document.getElementById('mobile-menu-btn');
-      var nav = document.getElementById('mobile-nav');
-      if (btn && nav) {
-        btn.addEventListener('click', function() {
-          var isExpanded = btn.getAttribute('aria-expanded') === 'true';
-          btn.setAttribute('aria-expanded', String(!isExpanded));
-          nav.classList.toggle('hidden');
-        });
-      }
-    })();
-  </script>
-
-  <!-- Main Content -->
-  <main class="flex-grow">
+  <main class="flex-grow pt-8">
     <slot />
   </main>
 
-  <!-- Corporate Footer -->
-  <footer class="border-t border-[#1c1c1e] bg-[#000000] py-16 mt-auto">
-    <div class="max-w-7xl mx-auto px-6">
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-
-        <!-- Brand Column -->
-        <div class="md:col-span-2">
-          <span class="font-['Outfit'] text-sm font-black tracking-widest uppercase text-white">
-            BIZKITGROW<span class="text-[#00ff66]">_</span>
-          </span>
-          <p class="mt-4 text-sm text-[#71717a] leading-relaxed max-w-sm">
-            Autonomous B2B infrastructure for global remote operators: sovereign connectivity, reputation gating, and back-office automation — all on a single edge.
-          </p>
-          <div class="mt-6 flex items-center gap-2 font-['JetBrains_Mono'] text-[10px] text-[#00ff66]">
-            <span class="w-1.5 h-1.5 rounded-full bg-[#00ff66] animate-pulse"></span>
-            ALL SYSTEMS OPERATIONAL
-          </div>
-        </div>
-
-        <!-- Product Links -->
-        <div>
-          <h3 class="font-['JetBrains_Mono'] text-[10px] tracking-widest uppercase text-[#71717a] mb-4">PRODUCT</h3>
-          <ul class="space-y-3">
-            {footerLinks.product.map((link) => (
-              <li>
-                <a href={link.href} class="text-sm text-[#a1a1aa] hover:text-white transition-colors">
-                  {link.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <!-- Legal Links -->
-        <div>
-          <h3 class="font-['JetBrains_Mono'] text-[10px] tracking-widest uppercase text-[#71717a] mb-4">LEGAL</h3>
-          <ul class="space-y-3">
-            {footerLinks.company.map((link) => (
-              <li>
-                <a href={link.href} class="text-sm text-[#a1a1aa] hover:text-white transition-colors">
-                  {link.label}
-                </a>
-              </li>
-            ))}
-            <li>
-              <a href={`mailto:${supportEmail}`} class="text-sm text-[#a1a1aa] hover:text-white transition-colors">
-                Operations Support
+  <footer class="bg-black border-t border-gray-800 mt-20">
+    <div class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
+        <div class="md:flex md:justify-between">
+          <div class="mb-6 md:mb-0">
+              <a href="/" class="flex items-center">
+                  <span class="self-center font-heading text-2xl font-black tracking-widest whitespace-nowrap dark:text-white uppercase">BIZKITGROW<span class="text-brand_cta">_</span></span>
               </a>
-            </li>
-          </ul>
-        </div>
+              <p class="mt-4 text-sm text-gray-500 dark:text-gray-400 max-w-sm">
+                Autonomous B2B infrastructure for global remote operators: sovereign connectivity, reputation gating, and back-office automation.
+              </p>
+          </div>
+          <div class="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
+              <div>
+                  <h2 class="mb-6 text-sm font-mono tracking-widest font-bold text-gray-900 uppercase dark:text-white">Product</h2>
+                  <ul class="text-gray-500 dark:text-gray-400 font-medium">
+                      {footerLinks.product.map((link) => (
+                        <li class="mb-4">
+                            <a href={link.href} class="hover:underline">{link.label}</a>
+                        </li>
+                      ))}
+                  </ul>
+              </div>
+              <div>
+                  <h2 class="mb-6 text-sm font-mono tracking-widest font-bold text-gray-900 uppercase dark:text-white">Legal</h2>
+                  <ul class="text-gray-500 dark:text-gray-400 font-medium">
+                      {footerLinks.company.map((link) => (
+                        <li class="mb-4">
+                            <a href={link.href} class="hover:underline">{link.label}</a>
+                        </li>
+                      ))}
+                  </ul>
+              </div>
+          </div>
       </div>
-
-      <!-- Bottom Bar -->
-      <div class="border-t border-[#1c1c1e] pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-        <p class="font-['JetBrains_Mono'] text-[10px] text-[#3f3f46] tracking-wider uppercase">
-          © {new Date().getFullYear()} {systemArchitecture.tenant_settings.parent_company_copyright}. All operational assets secure.
-        </p>
-        <p class="font-['JetBrains_Mono'] text-[10px] text-[#3f3f46] tracking-wider uppercase">
-          NODE: AP-SOUTHEAST-1 // EDGE: VERCEL
-        </p>
+      <hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
+      <div class="sm:flex sm:items-center sm:justify-between">
+          <span class="font-mono text-sm text-gray-500 sm:text-center dark:text-gray-400 tracking-wider">
+            © {new Date().getFullYear()} {systemArchitecture.tenant_settings.parent_company_copyright}. All operational assets secure.
+          </span>
       </div>
     </div>
   </footer>
 
-  <!-- Lenis Smooth Scroll -->
   <script>
+    import 'flowbite';
     import Lenis from 'lenis';
-    const lenis = new Lenis({ duration: 1.0, easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
-    function raf(time: number) { lenis.raf(time); requestAnimationFrame(raf); }
+    const lenis = new Lenis({ duration: 1.0, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
+    function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
     requestAnimationFrame(raf);
   </script>
-
 </body>
 </html>

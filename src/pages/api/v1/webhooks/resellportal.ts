@@ -1,57 +1,89 @@
-import crypto from 'node:crypto';
+import { createHmac } from 'node:crypto';
 import type { APIRoute } from 'astro';
+import { eq } from 'drizzle-orm';
+import { db } from '../../../../db/client';
+import { inboundWebhooks, posts } from '../../../../db/schema';
+
+const WEBHOOK_SECRET = process.env.RESELLPORTAL_WEBHOOK_SECRET;
 
 export const POST: APIRoute = async ({ request }) => {
-  const webhookSecret = process.env.RESELLPORTAL_WEBHOOK_SECRET;
-
-  if (!webhookSecret || webhookSecret === 'sk_live_placeholder') {
-    console.log('[RESELLPORTAL] Awaiting Production Keys. Webhook skipped safely.');
-    return new Response(JSON.stringify({ status: 'Awaiting Keys' }), { status: 200 });
-  }
-
   try {
-    const rawBody = await request.text();
-    const signature = request.headers.get('x-webhook-signature');
+    const signature = request.headers.get('x-resellportal-signature') || '';
+    const rawBody = await request.text(); // Raw body needed for HMAC
 
-    if (!signature) {
-      return new Response('Missing Signature', { status: 401 });
+    if (!WEBHOOK_SECRET) {
+      console.error('[WEBHOOK] Missing RESELLPORTAL_WEBHOOK_SECRET');
+      return new Response('Configuration Error', { status: 500 });
     }
 
-    const expectedSignature = crypto
-      .createHmac('sha256', webhookSecret)
-      .update(rawBody)
-      .digest('hex');
+    const hmac = createHmac('sha256', WEBHOOK_SECRET);
+    hmac.update(rawBody);
+    const computedSignature = hmac.digest('hex');
 
-    // Secure compare
-    if (
-      signature.length !== expectedSignature.length ||
-      !crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expectedSignature))
-    ) {
-      return new Response('Invalid Signature', { status: 401 });
+    if (computedSignature !== signature) {
+      console.error('[WEBHOOK] Invalid webhook signature');
+      return new Response('Invalid signature', { status: 401 });
     }
 
-    const payload = JSON.parse(rawBody);
-    const event = payload.event;
+    const event = JSON.parse(rawBody);
+    const eventId = event.id || `webhook_${Date.now()}`;
+    const isDryRun = event.test === true || event.dryRun === true;
 
-    console.log(`[RESELLPORTAL] Received verified webhook event: ${event}`);
+    // Idempotency check
+    const existing = await db.query.inboundWebhooks.findFirst({
+      where: eq(inboundWebhooks.eventId, eventId),
+    });
 
-    // Handle events
-    switch (event) {
-      case 'service.activated':
-        // TODO: Handle service activation (e.g. notify user, trigger setup)
-        console.log('Service activated:', payload.data);
-        break;
-      case 'deposit.completed':
-        // TODO: Handle deposit completed
-        console.log('Deposit completed:', payload.data);
-        break;
-      default:
-        console.log('Unhandled event type:', event);
+    if (existing) {
+      console.log(`[WEBHOOK] Duplicate event ${eventId} safely ignored.`);
+      return new Response(JSON.stringify({ message: 'Duplicate event' }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
-    return new Response(JSON.stringify({ received: true }), { status: 200 });
-  } catch (err: any) {
-    console.error('[RESELLPORTAL-WEBHOOK] Error parsing payload', err.message);
-    return new Response('Bad Request', { status: 400 });
+    // Insert to DB
+    await db.insert(inboundWebhooks).values({
+      eventId,
+      eventSignature: computedSignature,
+      provider: 'ResellPortal',
+      payloadType: event.type,
+      processedAt: new Date(),
+    });
+
+    // If dry run, exit early successfully
+    if (isDryRun) {
+      console.log(`[WEBHOOK] Dry run event ${eventId} processed successfully.`);
+      return new Response(JSON.stringify({ success: true, eventId, dryRun: true }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
+    // Process event (service.activated / deposit.completed / service.cancelled)
+    if (event.type === 'service.activated' && event.orderId) {
+      console.log(`[WEBHOOK] Provisioning activated for order ${event.orderId}`);
+      await db
+        .update(posts)
+        .set({ resellportalStatus: 'active' })
+        .where(eq(posts.resellportalOrderId, event.orderId));
+    } else if (event.type === 'service.cancelled' && event.orderId) {
+      console.log(`[WEBHOOK] Service cancelled for order ${event.orderId}`);
+      await db
+        .update(posts)
+        .set({ resellportalStatus: 'cancelled' })
+        .where(eq(posts.resellportalOrderId, event.orderId));
+    }
+
+    return new Response(JSON.stringify({ success: true, eventId }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  } catch (error: any) {
+    console.error('[WEBHOOK] [ERROR]', error.message);
+    return new Response(JSON.stringify({ error: 'Internal Server Error' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 };

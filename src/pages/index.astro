@@ -1,14 +1,13 @@
 ---
 import brandManifest from '../../config/brand_manifest.json';
 import systemArchitecture from '../../system_architecture.json';
-import WaitingListForm from '../components/WaitingListForm.astro';
 import MarketPulseTicker from '../components/MarketPulseTicker.astro';
+import ResellPortalWidget from '../components/ResellPortalWidget.astro';
+import WaitingListForm from '../components/WaitingListForm.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const brandName = systemArchitecture.tenant_settings.brand_name;
 const currentUrl = 'https://bizkitgrow.vercel.app/';
-
-const pillars = brandManifest.audience_demand_matrix.intent_clusters;
 
 const stats = [
   { value: '190+', label: 'Countries', sub: 'GLOBAL COVERAGE' },
@@ -21,36 +20,36 @@ const pillarData = [
   {
     tag: 'PILLAR_01 // CONNECTIVITY',
     title: 'Global eSIM Infrastructure',
-    body: "Instant cellular routing across 190+ sovereign networks. Enterprise-grade eSIM provisioning with dedicated financial-grade encryption — no roaming friction, full uptime guarantee.",
+    body: 'Instant cellular routing across 190+ sovereign networks. Enterprise-grade eSIM provisioning with dedicated financial-grade encryption — no roaming friction, full uptime guarantee.',
     cta: { href: '/esim/united-states', label: 'DEPLOY CONNECTIVITY' },
     status: 'ROUTING_STABLE',
-    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>`,
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>`,
   },
   {
     tag: 'PILLAR_02 // SEARCH AUTHORITY',
     title: 'Reputation Gating Engine',
-    body: "Automated Google Business Profile optimization, review capture sequences, and local semantic indexation. Own the search grid in high-value zip codes without volatile ad spend.",
+    body: 'Automated Google Business Profile optimization, review capture sequences, and local semantic indexation. Own the search grid in high-value zip codes without volatile ad spend.',
     cta: { href: '/reputation/new-york', label: 'ACTIVATE AUTHORITY' },
     status: 'CRAWLING_ACTIVE',
-    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>`,
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>`,
   },
   {
     tag: 'PILLAR_03 // FLOW AUTOMATION',
     title: 'Operational CRM Suite',
-    body: "Consolidate invoicing, AI-powered scheduling, and secure e-signature workflows into a single client portal. Cut administrative overhead and recover lost revenue from billing friction.",
+    body: 'Consolidate invoicing, AI-powered scheduling, and secure e-signature workflows into a single client portal. Cut administrative overhead and recover lost revenue from billing friction.',
     cta: { href: '/solutions/crm-system', label: 'INITIALIZE SYSTEM' },
     status: 'SYSTEMS_STABLE',
-    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>`,
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>`,
   },
 ];
 
-// Organization + WebSite JSON-LD
 const orgSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: brandName,
   url: currentUrl,
-  description: "Autonomous B2B infrastructure for global remote operators: sovereign connectivity, reputation gating, and back-office automation.",
+  description:
+    'Autonomous B2B infrastructure for global remote operators: sovereign connectivity, reputation gating, and back-office automation.',
   sameAs: ['https://bizkitgrow.vercel.app'],
   contactPoint: {
     '@type': 'ContactPoint',
@@ -68,43 +67,37 @@ const orgSchema = {
   <script type="application/ld+json" slot="schema" is:inline set:html={JSON.stringify(orgSchema)} />
 
   <!-- ═══════════════════ HERO ═══════════════════ -->
-  <section class="max-w-7xl mx-auto px-6 pt-24 pb-20 border-b border-[#1c1c1e]" aria-labelledby="hero-headline">
-
-    <div class="font-['JetBrains_Mono'] text-[10px] uppercase tracking-[0.2em] text-[#00ff66] mb-5 flex items-center gap-2">
-      <span class="w-1.5 h-1.5 rounded-full bg-[#00ff66] animate-pulse"></span>
-      [ INGESTION &amp; REDISTRIBUTION LOOP ACTIVE ]
+  <section class="max-w-screen-xl mx-auto px-4 py-16 lg:py-24 border-b border-gray-800">
+    <div class="inline-flex items-center justify-between px-3 py-1 mb-8 text-sm font-mono text-brand_cta bg-green-900/20 border border-brand_cta rounded-full">
+      <span class="text-xs uppercase tracking-widest font-bold flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-brand_cta animate-pulse"></span>
+        [ INGESTION &amp; REDISTRIBUTION LOOP ACTIVE ]
+      </span>
     </div>
-
-    <h1 id="hero-headline" class="font-['Outfit'] text-5xl sm:text-7xl md:text-8xl font-black tracking-tighter leading-[0.88] text-white uppercase max-w-5xl">
+    
+    <h1 class="mb-8 font-heading text-5xl font-black tracking-tight leading-none text-white md:text-6xl lg:text-8xl uppercase">
       Sovereign B2B<br />
-      <span class="text-[#3f3f46]">Digital Logistics.</span>
+      <span class="text-gray-500">Digital Logistics.</span>
     </h1>
-
-    <p class="mt-8 text-base md:text-lg text-[#71717a] max-w-2xl leading-relaxed">
+    
+    <p class="mb-10 text-lg font-normal text-gray-400 lg:text-xl sm:px-16 xl:px-0 max-w-3xl">
       We construct zero-maintenance structural pipelines, high-speed mobile eSIM configurations, and localized search reputation machines for global remote operators.
-      <strong class="text-[#a1a1aa] font-medium"> No bloat. No vendor lock-in. Pure infrastructure.</strong>
+      <strong class="text-gray-300 font-bold"> No bloat. No vendor lock-in. Pure infrastructure.</strong>
     </p>
 
-    <div class="mt-10 flex flex-col sm:flex-row gap-4 font-['JetBrains_Mono'] text-[11px]">
-      <a
-        href="/solutions/crm-system"
-        id="hero-primary-cta"
-        class="inline-flex items-center justify-between gap-4 bg-[#ff4500] hover:bg-[#ff5714] text-white font-bold px-6 py-4 transition-colors group"
-      >
-        <span>ACQUIRE PIPELINE</span>
-        <span class="transform group-hover:translate-x-1 transition-transform" aria-hidden="true">→</span>
-      </a>
-      <a
-        href="/blog"
-        id="hero-secondary-cta"
-        class="inline-flex items-center justify-between gap-4 border border-[#1c1c1e] hover:border-[#3f3f46] text-[#71717a] hover:text-white px-6 py-4 transition-colors"
-      >
-        <span>VIEW INTELLIGENCE FEED</span>
-        <span aria-hidden="true">↗</span>
-      </a>
+    <div class="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
+        <a href="/solutions/crm-system" class="inline-flex justify-center items-center py-4 px-8 text-sm font-bold font-mono tracking-widest text-center text-white bg-brand_cta hover:bg-brand_cta_hover focus:ring-4 focus:ring-green-300 dark:focus:ring-green-900 uppercase">
+            ACQUIRE PIPELINE
+            <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+            </svg>
+        </a>
+        <a href="/blog" class="inline-flex justify-center items-center py-4 px-8 text-sm font-bold font-mono tracking-widest text-center text-gray-300 border border-gray-700 hover:bg-gray-800 hover:text-white focus:ring-4 focus:ring-gray-800 uppercase transition-colors">
+            VIEW INTELLIGENCE FEED
+        </a>  
     </div>
-
-    <p class="mt-5 font-['JetBrains_Mono'] text-[9px] tracking-wider text-[#3f3f46] uppercase">
+    
+    <p class="font-mono text-xs tracking-wider text-gray-500 uppercase">
       No credit card required. Instant self-setup. Cancel any time.
     </p>
   </section>
@@ -113,122 +106,115 @@ const orgSchema = {
   <MarketPulseTicker />
 
   <!-- ═══════════════════ STATS STRIP ═══════════════════ -->
-  <section class="max-w-7xl mx-auto px-6 py-12 border-b border-[#1c1c1e]" aria-label="Platform metrics">
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-0 divide-x divide-[#1c1c1e]">
-      {stats.map((stat) => (
-        <div class="px-6 first:pl-0 last:pr-0">
-          <div class="font-['Outfit'] text-4xl font-black text-white tracking-tight">{stat.value}</div>
-          <div class="text-sm text-[#a1a1aa] mt-1">{stat.label}</div>
-          <div class="font-['JetBrains_Mono'] text-[9px] text-[#52525b] uppercase tracking-wider mt-1">{stat.sub}</div>
+  <section class="border-b border-gray-800 bg-black">
+    <div class="max-w-screen-xl px-4 py-8 mx-auto text-center lg:py-16">
+        <dl class="grid max-w-screen-md gap-8 mx-auto text-gray-900 sm:grid-cols-4 dark:text-white">
+            {stats.map((stat) => (
+              <div class="flex flex-col items-center justify-center">
+                  <dt class="mb-2 text-4xl font-extrabold font-heading tracking-tight">{stat.value}</dt>
+                  <dd class="text-gray-500 font-medium">{stat.label}</dd>
+                  <dd class="font-mono text-xs text-gray-600 uppercase tracking-widest mt-1">{stat.sub}</dd>
+              </div>
+            ))}
+        </dl>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ PILLARS ═══════════════════ -->
+  <section class="max-w-screen-xl px-4 py-16 mx-auto lg:py-24 border-b border-gray-800">
+    <div class="max-w-screen-md mb-8 lg:mb-16">
+      <span class="bg-gray-800 text-gray-300 text-xs font-mono font-bold uppercase tracking-widest me-2 px-3 py-1 rounded">GROWTH VECTORS</span>
+      <h2 class="mt-6 mb-4 text-4xl tracking-tight font-black font-heading text-white uppercase">
+        Select Your Operational Perimeter.
+      </h2>
+    </div>
+    <div class="grid lg:grid-cols-3 gap-8">
+      {pillarData.map((pillar, i) => (
+        <div class="p-8 bg-gray-900 border border-gray-800 rounded-none shadow-sm dark:bg-gray-900 dark:border-gray-800 hover:border-brand_cta transition-colors group">
+          <div class="flex items-center justify-between mb-4">
+            <span class="bg-black border border-gray-700 text-gray-400 text-xs font-mono tracking-widest uppercase px-3 py-1 rounded-sm">
+              [{String(i + 1).padStart(2, '0')}] {pillar.tag}
+            </span>
+          </div>
+          <div class="w-12 h-12 flex items-center justify-center border border-gray-700 bg-black text-gray-400 mb-6 group-hover:text-brand_cta group-hover:border-brand_cta transition-colors">
+            <Fragment set:html={pillar.icon} />
+          </div>
+          <h3 class="mb-4 text-2xl font-black tracking-tight text-white font-heading uppercase">{pillar.title}</h3>
+          <p class="mb-6 font-light text-gray-400 font-body">{pillar.body}</p>
+          <a href={pillar.cta.href} class="inline-flex items-center font-mono font-bold text-xs uppercase tracking-widest text-brand_cta hover:text-white transition-colors">
+            {pillar.cta.label}
+            <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+            </svg>
+          </a>
+          <div class="mt-6 pt-4 border-t border-gray-800 font-mono text-[10px] text-gray-500 uppercase tracking-widest">
+            STATUS: {pillar.status}
+          </div>
         </div>
       ))}
     </div>
   </section>
 
-  <!-- ═══════════════════ PILLARS ═══════════════════ -->
-  <section id="pillars" class="max-w-7xl mx-auto px-6 py-20 border-b border-[#1c1c1e]" aria-labelledby="pillars-heading">
-    <div class="mb-12">
-      <div class="font-['JetBrains_Mono'] text-[10px] text-[#52525b] uppercase tracking-widest mb-3">GROWTH VECTORS</div>
-      <h2 id="pillars-heading" class="font-['Outfit'] text-4xl font-black text-white uppercase tracking-tight">
-        Select Your Operational<br />Perimeter.
-      </h2>
+  <!-- ═══════════════════ INTELLIGENCE FEED ═══════════════════ -->
+  <section class="max-w-screen-xl px-4 py-16 mx-auto lg:py-24 border-b border-gray-800">
+    <div class="flex items-end justify-between mb-8 lg:mb-16">
+      <div class="max-w-screen-md">
+        <span class="bg-gray-800 text-gray-300 text-xs font-mono font-bold uppercase tracking-widest me-2 px-3 py-1 rounded">INTELLIGENCE FEED</span>
+        <h2 class="mt-6 mb-4 text-4xl tracking-tight font-black font-heading text-white uppercase">Latest Briefings.</h2>
+      </div>
+      <a href="/blog" class="hidden md:inline-flex items-center font-mono font-bold text-xs uppercase tracking-widest text-gray-400 hover:text-white transition-colors">
+        VIEW ALL <span class="ml-2" aria-hidden="true">→</span>
+      </a>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-0 divide-y md:divide-y-0 md:divide-x divide-[#1c1c1e]">
-      {pillarData.map((pillar, i) => (
-        <article class="py-8 md:px-8 first:pl-0 last:pr-0 group">
-          <div class="font-['JetBrains_Mono'] text-[9px] text-[#52525b] uppercase tracking-widest mb-4">
-            [{String(i + 1).padStart(2, '0')}] {pillar.tag}
-          </div>
-          <div class="w-10 h-10 border border-[#1c1c1e] flex items-center justify-center text-[#71717a] group-hover:border-[#00ff66] group-hover:text-[#00ff66] transition-colors mb-4" aria-hidden="true">
-            <Fragment set:html={pillar.icon} />
-          </div>
-          <h3 class="font-['Outfit'] text-2xl font-black text-white uppercase tracking-tight mb-3">
-            {pillar.title}
-          </h3>
-          <p class="text-sm text-[#71717a] leading-relaxed mb-6">
-            {pillar.body}
-          </p>
-          <a
-            href={pillar.cta.href}
-            class="font-['JetBrains_Mono'] text-[10px] tracking-widest text-[#00ff66] hover:text-white transition-colors uppercase inline-flex items-center gap-2"
-          >
-            {pillar.cta.label} <span aria-hidden="true">→</span>
-          </a>
-          <div class="mt-4 font-['JetBrains_Mono'] text-[9px] text-[#52525b] uppercase tracking-wider">
-            STATUS: {pillar.status}
-          </div>
-        </article>
-      ))}
+    <div class="grid lg:grid-cols-2 gap-8">
+      <article class="p-8 bg-gray-900 border border-gray-800">
+        <div class="flex justify-between items-center mb-5 text-gray-500">
+            <span class="bg-black border border-gray-700 text-gray-400 text-xs font-mono font-bold uppercase tracking-widest px-3 py-1 rounded-sm">esim_data_plans</span>
+            <span class="text-sm font-mono uppercase tracking-widest">Jul 4, 2026</span>
+        </div>
+        <h2 class="mb-4 text-2xl font-black tracking-tight text-white font-heading uppercase hover:text-brand_cta transition-colors"><a href="/blog">The Future of Global Connectivity for Remote Teams</a></h2>
+        <p class="mb-6 font-light text-gray-400 font-body">How enterprise eSIM infrastructure is replacing legacy SIM provisioning — and what it means for B2B operations in 2026.</p>
+        <a href="/blog" class="inline-flex items-center font-mono font-bold text-xs uppercase tracking-widest text-brand_cta hover:text-white transition-colors">
+            READ BRIEFING
+            <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+            </svg>
+        </a>
+      </article>
+
+      <article class="p-8 bg-gray-900 border border-gray-800">
+        <div class="flex justify-between items-center mb-5 text-gray-500">
+            <span class="bg-black border border-gray-700 text-gray-400 text-xs font-mono font-bold uppercase tracking-widest px-3 py-1 rounded-sm">ai_business_tools_suite</span>
+            <span class="text-sm font-mono uppercase tracking-widest">Jul 4, 2026</span>
+        </div>
+        <h2 class="mb-4 text-2xl font-black tracking-tight text-white font-heading uppercase hover:text-brand_cta transition-colors"><a href="/blog">Google Rewrites the Search Interface</a></h2>
+        <p class="mb-6 font-light text-gray-400 font-body">The largest upgrade to Google Search in 25 years is live. AI Mode now merges with standard results — and it changes local SEO authority fundamentally.</p>
+        <a href="/blog" class="inline-flex items-center font-mono font-bold text-xs uppercase tracking-widest text-brand_cta hover:text-white transition-colors">
+            READ BRIEFING
+            <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+            </svg>
+        </a>
+      </article>
     </div>
   </section>
 
-  <!-- ═══════════════════ INTELLIGENCE FEED ═══════════════════ -->
-  <section class="max-w-7xl mx-auto px-6 py-20 border-b border-[#1c1c1e]" aria-labelledby="intel-heading">
-    <div class="flex items-end justify-between mb-12">
-      <div>
-        <div class="font-['JetBrains_Mono'] text-[10px] text-[#52525b] uppercase tracking-widest mb-3">INTELLIGENCE FEED</div>
-        <h2 id="intel-heading" class="font-['Outfit'] text-4xl font-black text-white uppercase tracking-tight">
-          Latest Briefings.
-        </h2>
-      </div>
-      <a
-        href="/blog"
-        class="font-['JetBrains_Mono'] text-[10px] text-[#71717a] hover:text-white uppercase tracking-widest transition-colors hidden md:flex items-center gap-2"
-      >
-        VIEW ALL <span aria-hidden="true">→</span>
-      </a>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-0 divide-y md:divide-y-0 md:divide-x divide-[#1c1c1e]">
-      <article class="py-8 md:pr-8 group">
-        <div class="font-['JetBrains_Mono'] text-[9px] text-[#52525b] uppercase tracking-widest mb-3">esim_data_plans // Jul 4, 2026</div>
-        <h3 class="font-['Outfit'] text-xl font-black text-white uppercase tracking-tight mb-3 group-hover:text-[#a1a1aa] transition-colors">
-          <a href="/blog">The Future of Global Connectivity for Remote Teams</a>
-        </h3>
-        <p class="text-sm text-[#71717a] leading-relaxed mb-4">
-          How enterprise eSIM infrastructure is replacing legacy SIM provisioning — and what it means for B2B operations in 2026.
-        </p>
-        <a href="/blog" class="font-['JetBrains_Mono'] text-[10px] text-[#00ff66] uppercase tracking-widest hover:text-white transition-colors inline-flex items-center gap-1">
-          READ BRIEFING <span aria-hidden="true">→</span>
-        </a>
-      </article>
-
-      <article class="py-8 md:pl-8 group">
-        <div class="font-['JetBrains_Mono'] text-[9px] text-[#52525b] uppercase tracking-widest mb-3">ai_business_tools_suite // Jul 4, 2026</div>
-        <h3 class="font-['Outfit'] text-xl font-black text-white uppercase tracking-tight mb-3 group-hover:text-[#a1a1aa] transition-colors">
-          <a href="/blog">Google Rewrites the Search Interface — Here Is What B2B Operators Must Know</a>
-        </h3>
-        <p class="text-sm text-[#71717a] leading-relaxed mb-4">
-          The largest upgrade to Google Search in 25 years is live. AI Mode now merges with standard results — and it changes local SEO authority fundamentally.
-        </p>
-        <a href="/blog" class="font-['JetBrains_Mono'] text-[10px] text-[#00ff66] uppercase tracking-widest hover:text-white transition-colors inline-flex items-center gap-1">
-          READ BRIEFING <span aria-hidden="true">→</span>
-        </a>
-      </article>
-    </div>
-
-    <div class="mt-8 md:hidden">
-      <a href="/blog" class="font-['JetBrains_Mono'] text-[10px] text-[#71717a] hover:text-white uppercase tracking-widest transition-colors inline-flex items-center gap-2">
-        VIEW ALL BRIEFINGS <span aria-hidden="true">→</span>
-      </a>
-    </div>
+  <!-- ═══════════════════ RESELLPORTAL WIDGET ═══════════════════ -->
+  <section class="max-w-screen-xl px-4 py-8 mx-auto border-b border-gray-800">
+    <ResellPortalWidget productSku="ai-blog-generator" resellportalStatus="pending" theme="dark-brutalist" />
   </section>
 
   <!-- ═══════════════════ WAITLIST ═══════════════════ -->
-  <section id="waitlist" class="border-b border-[#1c1c1e]">
-    <div class="max-w-7xl mx-auto px-6 py-20">
-      <div class="max-w-2xl">
-        <div class="font-['JetBrains_Mono'] text-[10px] text-[#52525b] uppercase tracking-widest mb-4">PRIORITY ACCESS</div>
-        <h2 class="font-['Outfit'] text-4xl font-black text-white uppercase tracking-tight mb-4">
-          Secure Your Position<br />in the Queue.
-        </h2>
-        <p class="text-sm text-[#71717a] leading-relaxed mb-8">
-          Early operators receive 30% off first 3 months, dedicated onboarding, and direct access to the operational intelligence feed.
-        </p>
-      </div>
+  <section class="max-w-screen-xl px-4 py-16 mx-auto lg:py-24 border-b border-gray-800">
+    <div class="max-w-screen-md mb-8 lg:mb-16">
+      <span class="bg-gray-800 text-gray-300 text-xs font-mono font-bold uppercase tracking-widest me-2 px-3 py-1 rounded">PRIORITY ACCESS</span>
+      <h2 class="mt-6 mb-4 text-4xl tracking-tight font-black font-heading text-white uppercase">Secure Your Position in the Queue.</h2>
+      <p class="mb-8 font-light text-gray-400 sm:text-xl font-body">Early operators receive 30% off first 3 months, dedicated onboarding, and direct access to the operational intelligence feed.</p>
+    </div>
+    <div class="max-w-screen-md">
       <WaitingListForm />
     </div>
   </section>
-
 </BaseLayout>
+

@@ -1,0 +1,85 @@
+---
+export const prerender = false;
+
+import { desc } from 'drizzle-orm';
+import { db } from '../../db/client';
+// automationLogs deprecated in golden schema
+import AdminLayout from '../../layouts/AdminLayout.astro';
+
+// Basic Authentication Gate for Admin Perimeter
+const authHeader = Astro.request.headers.get('Authorization');
+if (!authHeader || !authHeader.startsWith('Basic ')) {
+  Astro.response.headers.set('WWW-Authenticate', 'Basic realm="Bizkitgrow Admin Perimeter"');
+  return new Response('Unauthorized Access', { status: 401 });
+}
+
+try {
+  const credentials = Buffer.from(authHeader.split(' ')[1], 'base64').toString('ascii');
+  const [username, password] = credentials.split(':');
+
+  if (username !== import.meta.env.ADMIN_USERNAME || password !== import.meta.env.ADMIN_PASSWORD) {
+    Astro.response.headers.set('WWW-Authenticate', 'Basic realm="Bizkitgrow Admin Perimeter"');
+    return new Response('Unauthorized Access', { status: 401 });
+  }
+} catch (err) {
+  Astro.response.headers.set('WWW-Authenticate', 'Basic realm="Bizkitgrow Admin Perimeter"');
+  return new Response('Unauthorized Access', { status: 401 });
+}
+
+const logs: any[] = [];
+// Deprecated
+
+const systemLogs = logs.map((l) => ({
+  timestamp: l.createdAt ? new Date(l.createdAt).toLocaleString() : 'N/A',
+  level: l.status,
+  message: l.errorDetails || `Miner fetched ${l.itemsFetched} new items.`,
+  jobType: l.jobType,
+}));
+---
+
+<AdminLayout title="Automation Logs">
+  <!-- Top Action Bar -->
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8 bg-gray-900 p-6 rounded-sm border border-gray-800">
+    <div>
+      <h1 class="text-2xl font-heading font-black text-white tracking-tight uppercase">Automation Logs</h1>
+      <p class="text-sm font-mono text-gray-400 mt-1 uppercase tracking-widest">System telemetry, crawler errors, and ingestion history.</p>
+    </div>
+  </div>
+
+  <section class="bg-gray-900 border border-gray-800 rounded-sm p-6 sm:p-8">
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm text-left text-gray-400 font-mono">
+        <thead class="text-xs text-gray-500 uppercase bg-gray-800 border-b border-gray-700">
+          <tr>
+            <th scope="col" class="px-6 py-3">Timestamp</th>
+            <th scope="col" class="px-6 py-3">Job Type</th>
+            <th scope="col" class="px-6 py-3">Status</th>
+            <th scope="col" class="px-6 py-3">Message</th>
+          </tr>
+        </thead>
+        <tbody>
+          {systemLogs.length > 0 ? systemLogs.map((log) => (
+            <tr class="bg-gray-900 border-b border-gray-800 hover:bg-gray-800 transition-colors">
+              <td class="px-6 py-4 text-gray-500 whitespace-nowrap">{log.timestamp}</td>
+              <td class="px-6 py-4 uppercase font-bold text-gray-300">{log.jobType}</td>
+              <td class="px-6 py-4">
+                <span class={`inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-sm uppercase tracking-widest border ${
+                  log.level === 'SUCCESS' ? 'bg-green-900/20 text-brand_cta border-brand_cta/30' : 
+                  log.level === 'ERROR' ? 'bg-rose-900/20 text-rose-500 border-rose-500/30' :
+                  'bg-blue-900/20 text-blue-300 border-blue-800/50'
+                }`}>
+                  {log.level}
+                </span>
+              </td>
+              <td class="px-6 py-4 text-gray-300">{log.message}</td>
+            </tr>
+          )) : (
+            <tr>
+              <td colspan="4" class="px-6 py-8 text-center text-gray-500">No logs found.</td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+    </div>
+  </section>
+</AdminLayout>

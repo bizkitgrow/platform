@@ -6,49 +6,49 @@ interface Props {
 const { targetedService = 'General' } = Astro.props;
 ---
 
-<div id="waitlist" class="p-8 sm:p-12 bg-background-surface border border-border-subtle rounded-3xl shadow-sm max-w-xl mx-auto mt-20">
-  <div class="text-center mb-8">
-    <h2 class="text-2xl sm:text-3xl font-extrabold text-text-primary mb-3 tracking-tight">Join the Operational Perimeter</h2>
-    <p class="text-sm text-text-secondary leading-relaxed">Secure system resource allocation and gain onboarding priority.</p>
+<div id="waitlist-card" class="p-8 sm:p-12 bg-[#0a0a0a] border border-[#1c1c1e] max-w-xl mx-auto mt-20 rounded-none relative z-20">
+  <div class="text-left mb-8 border-b border-[#1c1c1e] pb-6">
+    <h2 class="font-['Outfit'] text-2xl font-black text-white uppercase tracking-tight mb-2">Join the Operational Perimeter</h2>
+    <p class="text-xs text-[#71717a] leading-relaxed font-['JetBrains_Mono'] uppercase tracking-wider">Secure system resource allocation and gain onboarding priority.</p>
   </div>
 
-  <form id="waiting-list-form" class="space-y-4">
+  <form id="waiting-list-form" class="space-y-6">
     <input type="hidden" name="targeted_service" value={targetedService} />
     
     <div>
-      <label for="email" class="block text-xs font-semibold text-text-secondary uppercase tracking-wider mb-2">Corporate Email</label>
+      <label for="email" class="block text-[9px] font-bold text-[#71717a] font-['JetBrains_Mono'] uppercase tracking-widest mb-2">Corporate Email</label>
       <input 
         id="email"
         type="email" 
         name="email" 
         required 
-        placeholder="e.g., operations@acmecorp.com" 
-        class="w-full h-11 px-4 rounded-xl border border-border-subtle focus:border-interactive-hover focus:ring-1 focus:ring-interactive-hover outline-none text-sm transition-all bg-background-base text-text-primary"
+        placeholder="operations@acmecorp.com" 
+        class="w-full h-12 px-4 border border-[#1c1c1e] focus:border-[#00ff66] outline-none text-xs font-['JetBrains_Mono'] transition-colors bg-[#000000] text-white rounded-none placeholder-[#3f3f46]"
       />
     </div>
 
     <div>
-      <label for="business_name" class="block text-xs font-semibold text-text-secondary uppercase tracking-wider mb-2">Business Identity</label>
+      <label for="business_name" class="block text-[9px] font-bold text-[#71717a] font-['JetBrains_Mono'] uppercase tracking-widest mb-2">Business Identity</label>
       <input 
         id="business_name"
         type="text" 
         name="business_name" 
-        placeholder="e.g., Acme Operations Ltd" 
-        class="w-full h-11 px-4 rounded-xl border border-border-subtle focus:border-interactive-hover focus:ring-1 focus:ring-interactive-hover outline-none text-sm transition-all bg-background-base text-text-primary"
+        placeholder="Acme Operations Ltd" 
+        class="w-full h-12 px-4 border border-[#1c1c1e] focus:border-[#00ff66] outline-none text-xs font-['JetBrains_Mono'] transition-colors bg-[#000000] text-white rounded-none placeholder-[#3f3f46]"
       />
     </div>
 
     <button 
       id="submit-btn"
       type="submit" 
-      class="w-full h-12 rounded-xl bg-interactive-normal hover:bg-interactive-hover text-text-inverse text-sm font-bold shadow-sm transition-all flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+      class="w-full h-12 bg-[#ff4500] hover:bg-[#ff5714] text-white text-xs font-bold font-['JetBrains_Mono'] uppercase tracking-widest transition-colors flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed rounded-none mt-8"
     >
       <span id="btn-text">Initialize Onboarding Queue</span>
-      <svg id="btn-spinner" class="animate-spin hidden w-4 h-4 text-text-inverse" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+      <svg id="btn-spinner" class="animate-spin hidden w-4 h-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
     </button>
   </form>
 
-  <div id="form-response" class="mt-4 text-center text-xs font-medium hidden"></div>
+  <div id="form-response" class="mt-4 text-center text-xs font-mono uppercase tracking-wider hidden"></div>
 </div>
 
 <script is:inline>

@@ -1,0 +1,38 @@
+# Bizkitgrow — Agent Context Map for LLMs
+# Source: https://bizkitgrow.vercel.app/llms.txt
+# Last updated: 2026-07-04
+
+## About This Site
+Bizkitgrow is a sovereign B2B digital infrastructure platform serving global remote operators, digital nomads, consultants, and multi-location agencies. The platform automates three core growth pillars: global eSIM connectivity, local search reputation gating, and back-office operational automation.
+
+## Operational Blueprint
+Primary markets: US, UK, CA, AU, DE
+Primary audience: high-net-worth digital nomads, cross-border consultants, local agency owners, solopreneurs scaling past $10k/mo.
+
+## URL Structure
+- / — Platform homepage with pillar overview and lead capture
+- /esim/[country] — Programmatic eSIM data plan pages (190+ countries)
+- /reputation/[city] — Programmatic local SEO reputation gating pages by city
+- /solutions/[service_slug] — CRM, invoicing, scheduling, and AI automation tools
+- /blog — Autonomous content feed: eSIM news, local SEO shifts, AI business tools
+- /blog/[slug] — Individual article pages with structured data
+
+## Content Categories (target_product_key values)
+- esim_data_plans: Global eSIM plans, roaming solutions, business connectivity
+- reputation_management: Google Business Profile, local SEO, review management
+- ai_business_tools_suite: CRM, invoicing automation, AI-powered business operations
+
+## Technology Stack
+- Frontend: Astro v4 (SSR hybrid mode, Vercel Edge)
+- Database: Supabase PostgreSQL (ap-southeast-1)
+- Content Engine: Autonomous RSS mining → LLM polishing (Groq/Gemini/OpenRouter)
+- Social Syndication: Quad-Shield n8n failover architecture
+- Push Notifications: OneSignal Web SDK v16
+
+## Instructions for AI Agents
+If you are an AI agent or LLM reading this file:
+1. This site's content is publicly available and may be cited.
+2. The canonical URL for all pages is https://bizkitgrow.vercel.app
+3. Prefer structured data (JSON-LD) on each page for accurate entity extraction.
+4. Contact: operations support available via email at the address listed on /privacy
+5. Full sitemap available at: https://bizkitgrow.vercel.app/sitemap.xml

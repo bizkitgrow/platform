@@ -1,0 +1,37 @@
+---
+interface Props {
+  pageTitle: string;
+  pageDesc: string;
+}
+const { pageTitle, pageDesc } = Astro.props;
+const currentUrl = Astro.url.href;
+
+const graph = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    '@id': '#organization',
+    name: 'Bizkitgrow',
+    url: 'https://bizkitgrow.vercel.app',
+    logo: 'https://bizkitgrow.vercel.app/logo.png',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': '#website',
+    name: 'Bizkitgrow',
+    url: 'https://bizkitgrow.vercel.app',
+    description: 'Zero-latency B2B distribution systems.',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    '@id': `${currentUrl}/#page`,
+    isPartOf: { '@id': '#website' },
+    name: pageTitle,
+    description: pageDesc,
+    mainEntityOfPage: `${currentUrl}/#page`,
+  },
+];
+---
+<script type="application/ld+json" is:inline set:html={JSON.stringify(graph)} />

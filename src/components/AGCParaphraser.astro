@@ -1,0 +1,60 @@
+---
+export interface Props {
+  originalText: string;
+  paraphrasedHook?: string;
+  syntacticVariant?: string;
+  paraphraseSummary?: string;
+}
+
+const { originalText, paraphrasedHook, syntacticVariant, paraphraseSummary } = Astro.props;
+---
+
+<div class="agc-paraphraser mt-12 mb-12 border-t-4 border-b-4 border-white py-8 bg-black text-white">
+  <div class="flex items-center justify-between mb-6">
+    <h3 class="text-2xl font-bold uppercase tracking-widest font-mono">AGC Synapse Diff</h3>
+    <span class="bg-white text-black text-xs font-bold px-3 py-1 uppercase tracking-widest">AI Polished</span>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div class="original-content border border-gray-800 p-6 bg-gray-950">
+      <h4 class="text-xs uppercase text-gray-400 mb-4 tracking-widest font-mono">Original Source</h4>
+      <div class="prose prose-invert prose-sm max-w-none opacity-70">
+        <p>{originalText.substring(0, 300)}...</p>
+      </div>
+    </div>
+    
+    <div class="paraphrased-content border-l-4 border-white p-6 bg-gray-900">
+      <h4 class="text-xs uppercase text-white mb-4 tracking-widest font-mono flex items-center gap-2">
+        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+        Tactical Refinement
+      </h4>
+      
+      {paraphrasedHook && (
+        <div class="mb-4">
+          <span class="text-xs uppercase text-gray-400 block mb-1">Hook</span>
+          <p class="font-bold text-lg">{paraphrasedHook}</p>
+        </div>
+      )}
+      
+      {syntacticVariant && (
+        <div class="mb-4">
+          <span class="text-xs uppercase text-gray-400 block mb-1">Syntactic Variant</span>
+          <p class="italic border-l-2 border-gray-500 pl-3">{syntacticVariant}</p>
+        </div>
+      )}
+
+      {paraphraseSummary && (
+        <div>
+          <span class="text-xs uppercase text-gray-400 block mb-1">Executive Summary</span>
+          <p class="text-sm">{paraphraseSummary}</p>
+        </div>
+      )}
+    </div>
+  </div>
+</div>
+
+<style>
+  .agc-paraphraser {
+    font-family: 'JetBrains Mono', 'Outfit', sans-serif;
+  }
+</style>

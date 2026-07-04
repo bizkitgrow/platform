@@ -1,4 +1,28 @@
 require('dotenv').config();
+const { createClient } = require('@supabase/supabase-js');
+
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE_KEY
+);
+
+async function processPendingShares(supabaseClient, recordId, dispatchResult) {
+  const targetStatus = dispatchResult.success ? 'SUCCESS' : 'FAILED';
+  
+  const { error } = await supabaseClient
+    .from('social_shares')
+    .update({ 
+      status: targetStatus, 
+      error_log: dispatchResult.error || null
+    })
+    .eq('id', recordId);
+    
+  if (error) {
+    console.error(`[DATABASE ERROR] Failed to flush social row state: ${error.message}`);
+  } else {
+    console.log(`[STATE SYNC] Row ${recordId} successfully mutated to ${targetStatus}`);
+  }
+}
 
 async function dispatchWithTimeout(url, payload, timeoutMs) {
   const response = await fetch(url, {
@@ -23,7 +47,11 @@ async function runDispatcher() {
     try {
       console.log('[GATE 1] Dispatching to n8n Cloud...');
       const res = await dispatchWithTimeout(process.env.N8N_CLOUD_WEBHOOK_URL, payload, 6000);
-      if (res.ok) { console.log('[GATE 1 SUCCESS]'); process.exit(0); }
+      if (res.ok) { 
+        console.log('[GATE 1 SUCCESS]'); 
+        if (process.env.PENDING_SHARE_ID) await processPendingShares(supabase, process.env.PENDING_SHARE_ID, { success: true });
+        process.exit(0); 
+      }
       console.warn('[GATE 1] Returned non-OK status:', res.status);
     } catch (e) {
       console.warn('[GATE 1 FAIL] Cascading to Gate 2...', e.message);
@@ -35,7 +63,11 @@ async function runDispatcher() {
     try {
       console.log('[GATE 2] Dispatching to Oracle n8n...');
       const res = await dispatchWithTimeout(process.env.N8N_ORACLE_WEBHOOK_URL, payload, 6000);
-      if (res.ok) { console.log('[GATE 2 SUCCESS]'); process.exit(0); }
+      if (res.ok) { 
+        console.log('[GATE 2 SUCCESS]'); 
+        if (process.env.PENDING_SHARE_ID) await processPendingShares(supabase, process.env.PENDING_SHARE_ID, { success: true });
+        process.exit(0); 
+      }
       console.warn('[GATE 2] Returned non-OK status:', res.status);
     } catch (e) {
       console.warn('[GATE 2 FAIL] Cascading to Gate 3...', e.message);
@@ -62,6 +94,7 @@ async function runDispatcher() {
         signal: AbortSignal.timeout(8000),
       });
       const tweetData = await tweetRes.json();
+      if (process.env.PENDING_SHARE_ID) await processPendingShares(supabase, process.env.PENDING_SHARE_ID, { success: true });
       console.log('[GATE 3] X dispatch result:', JSON.stringify(tweetData));
     } catch (e) {
       console.error('[GATE 3 X FAIL]', e.message);
@@ -89,9 +122,37 @@ async function runDispatcher() {
         signal: AbortSignal.timeout(8000),
       });
       const pinData = await pinRes.json();
+      if (process.env.PENDING_SHARE_ID) await processPendingShares(supabase, process.env.PENDING_SHARE_ID, { success: true });
       console.log('[GATE 3] Pinterest dispatch result:', JSON.stringify(pinData));
     } catch (e) {
       console.error('[GATE 3 Pinterest FAIL]', e.message);
+    }
+  }
+
+  // --- GATE 4: Direct Audience Push Notification (OneSignal) ---
+  if (process.env.ONESIGNAL_APP_ID && process.env.ONESIGNAL_REST_API_KEY) {
+    console.log('[GATE 4] Dispatching Push Notification via OneSignal...');
+    try {
+      const osRes = await fetch('https://onesignal.com/api/v1/notifications', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Basic ${process.env.ONESIGNAL_REST_API_KEY}`
+        },
+        body: JSON.stringify({
+          app_id: process.env.ONESIGNAL_APP_ID,
+          included_segments: ['Subscribed Users', 'Active Users'],
+          headings: { en: payload.title },
+          contents: { en: payload.social_caption },
+          url: `https://bizkitgrow.vercel.app/blog/${payload.slug}`,
+          chrome_web_image: payload.image_url
+        }),
+        signal: AbortSignal.timeout(8000),
+      });
+      const osData = await osRes.json();
+      console.log('[GATE 4] OneSignal dispatch result:', JSON.stringify(osData));
+    } catch (e) {
+      console.error('[GATE 4 OneSignal FAIL]', e.message);
     }
   }
 

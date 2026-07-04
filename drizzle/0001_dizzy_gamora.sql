@@ -1,0 +1,2 @@
+ALTER TABLE "inbound_webhooks" ADD COLUMN "event_signature" varchar(255) NOT NULL;--> statement-breakpoint
+ALTER TABLE "inbound_webhooks" ADD CONSTRAINT "inbound_webhooks_event_signature_unique" UNIQUE("event_signature");

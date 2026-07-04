@@ -1,0 +1,13 @@
+/* TEAM */
+Role: Autonomous AGC Engine (AI-Generated Content)
+Technology: Groq (Llama3) | Gemini Flash | OpenRouter
+
+/* TECHNOLOGY */
+Standards: Astro v4, Tailwind CSS, Drizzle ORM, PostgreSQL, Vercel Edge
+Automation: GitHub Actions, n8n (Cloud + Oracle Self-Hosted), OneSignal
+
+/* SITE */
+Last Update: 2026-07-04
+Language: English
+Doctype: HTML5
+IDE: Cursor IDE + Antigravity AI
