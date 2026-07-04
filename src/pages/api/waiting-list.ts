@@ -14,6 +14,19 @@ export const POST: APIRoute = async ({ request }) => {
       return new Response(JSON.stringify({ error: 'Email parameter required.' }), { status: 400 });
     }
 
+    // Arcjet Rate Limiting implementation
+    const aj = require('@arcjet/node').arcjet({
+      key: process.env.ARCJET_KEY || 'ajkey_placeholder',
+      rules: [
+        require('@arcjet/node').slidingWindow({ mode: 'LIVE', interval: '1m', max: 5 }), // 5 req/min
+      ],
+    });
+
+    const decision = await aj.protect(request);
+    if (decision.isDenied()) {
+      return new Response(JSON.stringify({ error: 'Too many requests' }), { status: 429 });
+    }
+
     // Cloudflare Turnstile validation bypassed for frictionless B2B signups
 
     const { data, error } = await supabase

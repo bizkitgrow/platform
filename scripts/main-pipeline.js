@@ -35,7 +35,7 @@ async function runPipeline() {
             const slugSpec = 'usd-to-eur-exchange-rate-secure-mobility-guide';
             const rawContent = `Global asset routing metrics report exchange parameters at stable rates of ${rate}. For enterprise financial operators managing foreign ledgers remotely, protecting communications data with a Dedicated Business VPN remains a critical infrastructure priority.`;
 
-            const cleanContent = DOMPurify.sanitize(rawContent);
+            const cleanContent = DOMPurify.sanitize(rawContent, { ALLOWED_TAGS: [] });
             const classified = getProductAndRoute(titleSpec, cleanContent);
 
             await supabase.from('posts').upsert(
@@ -79,7 +79,7 @@ async function runPipeline() {
             const matchSlug = `${match.teams.home.name.toLowerCase()}-vs-${match.teams.away.name.toLowerCase()}-live-stream-connectivity`;
             const rawSportsContent = `The dynamic data array shows live activities between ${match.teams.home.name} and ${match.teams.away.name}. High-frequency travelers and remote sports media consultants require unthrottled global E-SIM access profiles to monitor latency-critical parameters during high-load match transfers.`;
 
-            const cleanContent = DOMPurify.sanitize(rawSportsContent);
+            const cleanContent = DOMPurify.sanitize(rawSportsContent, { ALLOWED_TAGS: [] });
             const classified = getProductAndRoute(matchTitle, cleanContent);
 
             await supabase.from('posts').upsert(
@@ -131,7 +131,7 @@ async function runPipeline() {
         if (existing) continue;
 
         const cleanRawContent = DOMPurify.sanitize(
-          item.contentSnippet || item.content || item.title,
+          item.contentSnippet || item.content || item.title, { ALLOWED_TAGS: [] }
         );
         const classified = getProductAndRoute(item.title, cleanRawContent);
         const catId = categoryMap.get(classified.category_slug) || null;

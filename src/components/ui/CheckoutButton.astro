@@ -8,9 +8,8 @@ interface Props {
 }
 
 const { sku, className = '', testMode = true } = Astro.props;
-const baseCheckoutUrl =
-  systemArchitecture.routing_architecture.fulfillment_subdomain.base_checkout_url;
-const checkoutUrl = `${baseCheckoutUrl}?product_id=${sku}${testMode ? '&test_mode=1' : ''}`;
+const resellDomain = import.meta.env.RESELLPORTAL_DOMAIN || systemArchitecture.routing_architecture.fulfillment_subdomain.base_checkout_url.replace('https://', '').split('/')[0] || "devhack.appserviceportal.com";
+const checkoutUrl = `https://${resellDomain}/checkout?product_id=${sku}${testMode ? '&test_mode=1' : ''}`;
 ---
 
 <a 
