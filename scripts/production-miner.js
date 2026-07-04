@@ -163,11 +163,14 @@ async function runMiner() {
         [newPostId, polishedResult.image_prompt, imageUrl],
       );
 
-      // Insert Social Share Ticket
-      await pool.query(
-        "INSERT INTO social_shares (post_id, status, platform) VALUES ($1, 'PENDING', 'all')",
-        [newPostId],
-      );
+      // Insert 4 platform-specific share tickets
+      const platforms = ['instagram', 'facebook', 'x_twitter', 'pinterest'];
+      for (const platform of platforms) {
+        await pool.query(
+          "INSERT INTO social_shares (post_id, status, platform) VALUES ($1, 'PENDING', $2)",
+          [newPostId, platform],
+        );
+      }
 
       // Update RSS source last fetched
       await pool.query('UPDATE rss_sources SET last_fetched_at = NOW() WHERE id = $1', [source.id]);

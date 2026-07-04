@@ -59,7 +59,8 @@ CREATE TABLE IF NOT EXISTS social_shares (
   id BIGSERIAL PRIMARY KEY,
   post_id BIGINT REFERENCES posts(id) ON DELETE CASCADE,
   status VARCHAR(50) NOT NULL DEFAULT 'PENDING',
-  platform VARCHAR(50),
+  platform VARCHAR(50) NOT NULL,
+  error_log TEXT,
   syndicated_at TIMESTAMP WITH TIME ZONE,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );

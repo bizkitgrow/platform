@@ -27,6 +27,7 @@ jobs:
       - name: Run Production Miner
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           GROK_API_KEY: ${{ secrets.GROK_API_KEY }}
@@ -53,10 +54,13 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      - name: Run Syndicator
-        # Assuming scripts/test-syndicate.js was renamed/restructured or we create a dedicated scripts/syndicate.js
+      - name: Run Quad-Shield Social Syndication
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          N8N_WEBHOOK_URL: ${{ secrets.N8N_WEBHOOK_URL }}
+          N8N_CLOUD_WEBHOOK_URL: ${{ secrets.N8N_CLOUD_WEBHOOK_URL }}
+          N8N_ORACLE_WEBHOOK_URL: ${{ secrets.N8N_ORACLE_WEBHOOK_URL }}
+          X_TWITTER_BEARER_TOKEN: ${{ secrets.X_TWITTER_BEARER_TOKEN }}
+          PINTEREST_ACCESS_TOKEN: ${{ secrets.PINTEREST_ACCESS_TOKEN }}
+          PINTEREST_BOARD_ID: ${{ secrets.PINTEREST_BOARD_ID }}
           BASE_URL: ${{ secrets.BASE_URL }}
-        run: node scripts/syndicate.js
+        run: node scripts/social-media-dispatcher.js

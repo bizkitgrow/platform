@@ -69,7 +69,8 @@ export const socialShares = pgTable('social_shares', {
   id: bigserial('id', { mode: 'number' }).primaryKey(),
   postId: bigint('post_id', { mode: 'number' }).references(() => posts.id, { onDelete: 'cascade' }),
   status: varchar('status', { length: 50 }).notNull().default('PENDING'),
-  platform: varchar('platform', { length: 50 }),
+  platform: varchar('platform', { length: 50 }).notNull(),
+  errorLog: text('error_log'),
   syndicatedAt: timestamp('syndicated_at', { withTimezone: true }),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
 });

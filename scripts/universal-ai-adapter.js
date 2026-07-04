@@ -15,6 +15,33 @@ class LLMProvider {
   }
 }
 
+class GroqAdapter extends LLMProvider {
+  constructor(apiKey) {
+    super();
+    this.apiKey = apiKey;
+    this.url = 'https://api.groq.com/openai/v1/chat/completions';
+    this.model = 'llama3-70b-8192';
+  }
+
+  async generateResponse(prompt) {
+    const response = await fetch(this.url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.apiKey}`,
+      },
+      body: JSON.stringify({
+        model: this.model,
+        messages: [{ role: 'user', content: prompt }],
+        response_format: { type: 'json_object' },
+      }),
+    });
+    if (!response.ok) throw new Error(`Groq responded with status ${response.status}`);
+    const data = await response.json();
+    return JSON.parse(data.choices[0].message.content);
+  }
+}
+
 class GeminiAdapter extends LLMProvider {
   constructor(apiKey) {
     super();
@@ -110,6 +137,7 @@ class GrokAdapter extends LLMProvider {
 const LLMFactory = {
   getProviders() {
     const providers = [];
+    if (process.env.GROQ_API_KEY) providers.push(new GroqAdapter(process.env.GROQ_API_KEY));
     if (process.env.GEMINI_API_KEY) providers.push(new GeminiAdapter(process.env.GEMINI_API_KEY));
     if (process.env.OPENROUTER_API_KEY)
       providers.push(new OpenRouterAdapter(process.env.OPENROUTER_API_KEY));
@@ -151,6 +179,7 @@ async function executeAgnosticAiRefinement(prompt) {
 module.exports = {
   executeAgnosticAiRefinement,
   LLMFactory,
+  GroqAdapter,
   GeminiAdapter,
   OpenRouterAdapter,
   GrokAdapter,

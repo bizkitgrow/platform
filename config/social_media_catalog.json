@@ -1,0 +1,24 @@
+{
+  "quad_shield_infrastructure": {
+    "gate_1_n8n_cloud": {
+      "timeout_ms": 6000,
+      "priority": 1,
+      "target_networks": ["instagram", "facebook", "x_twitter", "pinterest"]
+    },
+    "gate_2_oracle_self_hosted": {
+      "timeout_ms": 6000,
+      "priority": 2,
+      "target_networks": ["instagram", "facebook", "x_twitter", "pinterest"]
+    },
+    "gate_3_github_direct_fallback": {
+      "enabled_as_ultimate_fallback": true,
+      "priority": 3,
+      "target_networks": ["x_twitter", "pinterest"]
+    }
+  },
+  "asset_resolutions": {
+    "instagram_square": { "width": 1080, "height": 1080 },
+    "pinterest_vertical": { "width": 1000, "height": 1500 },
+    "twitter_landscape": { "width": 1200, "height": 628 }
+  }
+}
