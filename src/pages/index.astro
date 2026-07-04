@@ -67,37 +67,37 @@ const orgSchema = {
   <script type="application/ld+json" slot="schema" is:inline set:html={JSON.stringify(orgSchema)} />
 
   <!-- ═══════════════════ HERO ═══════════════════ -->
-  <section class="max-w-screen-xl mx-auto px-4 py-16 lg:py-24 border-b border-gray-800">
-    <div class="inline-flex items-center justify-between px-3 py-1 mb-8 text-sm font-mono text-brand_cta bg-green-900/20 border border-brand_cta rounded-full">
+  <section class="max-w-screen-xl mx-auto px-4 py-16 lg:py-24 border-b border-borders_subtle">
+    <div class="inline-flex items-center justify-between px-3 py-1 mb-8 text-sm font-mono text-brand_cta bg-teal-50 border border-brand_cta/20 rounded-full">
       <span class="text-xs uppercase tracking-widest font-bold flex items-center gap-2">
         <span class="w-2 h-2 rounded-full bg-brand_cta animate-pulse"></span>
         [ INGESTION &amp; REDISTRIBUTION LOOP ACTIVE ]
       </span>
     </div>
     
-    <h1 class="mb-8 font-heading text-5xl font-black tracking-tight leading-none text-white md:text-6xl lg:text-8xl uppercase">
+    <h1 class="mb-8 font-heading text-5xl font-extrabold tracking-tight leading-none text-text_primary md:text-6xl lg:text-8xl uppercase">
       Sovereign B2B<br />
-      <span class="text-gray-500">Digital Logistics.</span>
+      <span class="text-text_secondary">Digital Logistics.</span>
     </h1>
     
-    <p class="mb-10 text-lg font-normal text-gray-400 lg:text-xl sm:px-16 xl:px-0 max-w-3xl">
+    <p class="mb-10 text-lg font-normal text-text_secondary lg:text-xl sm:px-16 xl:px-0 max-w-3xl">
       We construct zero-maintenance structural pipelines, high-speed mobile eSIM configurations, and localized search reputation machines for global remote operators.
-      <strong class="text-gray-300 font-bold"> No bloat. No vendor lock-in. Pure infrastructure.</strong>
+      <strong class="text-text_primary font-bold"> No bloat. No vendor lock-in. Pure infrastructure.</strong>
     </p>
 
     <div class="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
-        <a href="/solutions/crm-system" class="inline-flex justify-center items-center py-4 px-8 text-sm font-bold font-mono tracking-widest text-center text-white bg-brand_cta hover:bg-brand_cta_hover focus:ring-4 focus:ring-green-300 dark:focus:ring-green-900 uppercase">
+        <a href="/solutions/crm-system" class="inline-flex justify-center items-center py-4 px-8 text-sm font-bold font-mono tracking-widest text-center text-white bg-brand_cta hover:bg-brand_cta_hover focus:ring-4 focus:ring-teal-300 uppercase">
             ACQUIRE PIPELINE
             <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
             </svg>
         </a>
-        <a href="/blog" class="inline-flex justify-center items-center py-4 px-8 text-sm font-bold font-mono tracking-widest text-center text-gray-300 border border-gray-700 hover:bg-gray-800 hover:text-white focus:ring-4 focus:ring-gray-800 uppercase transition-colors">
+        <a href="/blog" class="inline-flex justify-center items-center py-4 px-8 text-sm font-bold font-mono tracking-widest text-center text-text_secondary border border-borders_subtle hover:bg-canvas_accent hover:text-text_primary focus:ring-4 focus:ring-gray-200 uppercase transition-colors">
             VIEW INTELLIGENCE FEED
         </a>  
     </div>
     
-    <p class="font-mono text-xs tracking-wider text-gray-500 uppercase">
+    <p class="font-mono text-xs tracking-wider text-text_secondary uppercase">
       No credit card required. Instant self-setup. Cancel any time.
     </p>
   </section>
@@ -106,14 +106,14 @@ const orgSchema = {
   <MarketPulseTicker />
 
   <!-- ═══════════════════ STATS STRIP ═══════════════════ -->
-  <section class="border-b border-gray-800 bg-black">
+  <section class="border-b border-borders_subtle bg-canvas_accent">
     <div class="max-w-screen-xl px-4 py-8 mx-auto text-center lg:py-16">
-        <dl class="grid max-w-screen-md gap-8 mx-auto text-gray-900 sm:grid-cols-4 dark:text-white">
+        <dl class="grid max-w-screen-md gap-8 mx-auto text-text_primary sm:grid-cols-4">
             {stats.map((stat) => (
               <div class="flex flex-col items-center justify-center">
                   <dt class="mb-2 text-4xl font-extrabold font-heading tracking-tight">{stat.value}</dt>
-                  <dd class="text-gray-500 font-medium">{stat.label}</dd>
-                  <dd class="font-mono text-xs text-gray-600 uppercase tracking-widest mt-1">{stat.sub}</dd>
+                  <dd class="text-text_secondary font-medium">{stat.label}</dd>
+                  <dd class="font-mono text-xs text-text_secondary/80 uppercase tracking-widest mt-1">{stat.sub}</dd>
               </div>
             ))}
         </dl>
@@ -121,33 +121,33 @@ const orgSchema = {
   </section>
 
   <!-- ═══════════════════ PILLARS ═══════════════════ -->
-  <section class="max-w-screen-xl px-4 py-16 mx-auto lg:py-24 border-b border-gray-800">
+  <section class="max-w-screen-xl px-4 py-16 mx-auto lg:py-24 border-b border-borders_subtle">
     <div class="max-w-screen-md mb-8 lg:mb-16">
-      <span class="bg-gray-800 text-gray-300 text-xs font-mono font-bold uppercase tracking-widest me-2 px-3 py-1 rounded">GROWTH VECTORS</span>
-      <h2 class="mt-6 mb-4 text-4xl tracking-tight font-black font-heading text-white uppercase">
+      <span class="bg-canvas_accent text-text_secondary text-xs font-mono font-bold uppercase tracking-widest me-2 px-3 py-1 rounded border border-borders_subtle">GROWTH VECTORS</span>
+      <h2 class="mt-6 mb-4 text-4xl tracking-tight font-extrabold font-heading text-text_primary uppercase">
         Select Your Operational Perimeter.
       </h2>
     </div>
     <div class="grid lg:grid-cols-3 gap-8">
       {pillarData.map((pillar, i) => (
-        <div class="p-8 bg-gray-900 border border-gray-800 rounded-none shadow-sm dark:bg-gray-900 dark:border-gray-800 hover:border-brand_cta transition-colors group">
+        <div class="p-8 bg-white border border-borders_subtle rounded-sm shadow-subtle hover:border-brand_cta transition-colors group">
           <div class="flex items-center justify-between mb-4">
-            <span class="bg-black border border-gray-700 text-gray-400 text-xs font-mono tracking-widest uppercase px-3 py-1 rounded-sm">
+            <span class="bg-canvas_accent border border-borders_subtle text-text_secondary text-xs font-mono tracking-widest uppercase px-3 py-1 rounded-sm">
               [{String(i + 1).padStart(2, '0')}] {pillar.tag}
             </span>
           </div>
-          <div class="w-12 h-12 flex items-center justify-center border border-gray-700 bg-black text-gray-400 mb-6 group-hover:text-brand_cta group-hover:border-brand_cta transition-colors">
+          <div class="w-12 h-12 flex items-center justify-center border border-borders_subtle bg-canvas_accent text-text_secondary mb-6 group-hover:text-brand_cta group-hover:border-brand_cta transition-colors">
             <Fragment set:html={pillar.icon} />
           </div>
-          <h3 class="mb-4 text-2xl font-black tracking-tight text-white font-heading uppercase">{pillar.title}</h3>
-          <p class="mb-6 font-light text-gray-400 font-body">{pillar.body}</p>
-          <a href={pillar.cta.href} class="inline-flex items-center font-mono font-bold text-xs uppercase tracking-widest text-brand_cta hover:text-white transition-colors">
+          <h3 class="mb-4 text-2xl font-bold tracking-tight text-text_primary font-heading uppercase">{pillar.title}</h3>
+          <p class="mb-6 font-light text-text_secondary font-body">{pillar.body}</p>
+          <a href={pillar.cta.href} class="inline-flex items-center font-mono font-bold text-xs uppercase tracking-widest text-brand_cta hover:text-brand_cta_hover transition-colors">
             {pillar.cta.label}
             <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
             </svg>
           </a>
-          <div class="mt-6 pt-4 border-t border-gray-800 font-mono text-[10px] text-gray-500 uppercase tracking-widest">
+          <div class="mt-6 pt-4 border-t border-borders_subtle font-mono text-[10px] text-text_secondary uppercase tracking-widest">
             STATUS: {pillar.status}
           </div>
         </div>
@@ -156,26 +156,26 @@ const orgSchema = {
   </section>
 
   <!-- ═══════════════════ INTELLIGENCE FEED ═══════════════════ -->
-  <section class="max-w-screen-xl px-4 py-16 mx-auto lg:py-24 border-b border-gray-800">
+  <section class="max-w-screen-xl px-4 py-16 mx-auto lg:py-24 border-b border-borders_subtle">
     <div class="flex items-end justify-between mb-8 lg:mb-16">
       <div class="max-w-screen-md">
-        <span class="bg-gray-800 text-gray-300 text-xs font-mono font-bold uppercase tracking-widest me-2 px-3 py-1 rounded">INTELLIGENCE FEED</span>
-        <h2 class="mt-6 mb-4 text-4xl tracking-tight font-black font-heading text-white uppercase">Latest Briefings.</h2>
+        <span class="bg-canvas_accent text-text_secondary text-xs font-mono font-bold uppercase tracking-widest me-2 px-3 py-1 rounded border border-borders_subtle">INTELLIGENCE FEED</span>
+        <h2 class="mt-6 mb-4 text-4xl tracking-tight font-extrabold font-heading text-text_primary uppercase">Latest Briefings.</h2>
       </div>
-      <a href="/blog" class="hidden md:inline-flex items-center font-mono font-bold text-xs uppercase tracking-widest text-gray-400 hover:text-white transition-colors">
+      <a href="/blog" class="hidden md:inline-flex items-center font-mono font-bold text-xs uppercase tracking-widest text-text_secondary hover:text-brand_cta transition-colors">
         VIEW ALL <span class="ml-2" aria-hidden="true">→</span>
       </a>
     </div>
 
     <div class="grid lg:grid-cols-2 gap-8">
-      <article class="p-8 bg-gray-900 border border-gray-800">
-        <div class="flex justify-between items-center mb-5 text-gray-500">
-            <span class="bg-black border border-gray-700 text-gray-400 text-xs font-mono font-bold uppercase tracking-widest px-3 py-1 rounded-sm">esim_data_plans</span>
+      <article class="p-8 bg-white border border-borders_subtle shadow-subtle rounded-sm">
+        <div class="flex justify-between items-center mb-5 text-text_secondary">
+            <span class="bg-canvas_accent border border-borders_subtle text-text_secondary text-xs font-mono font-bold uppercase tracking-widest px-3 py-1 rounded-sm">esim_data_plans</span>
             <span class="text-sm font-mono uppercase tracking-widest">Jul 4, 2026</span>
         </div>
-        <h2 class="mb-4 text-2xl font-black tracking-tight text-white font-heading uppercase hover:text-brand_cta transition-colors"><a href="/blog">The Future of Global Connectivity for Remote Teams</a></h2>
-        <p class="mb-6 font-light text-gray-400 font-body">How enterprise eSIM infrastructure is replacing legacy SIM provisioning — and what it means for B2B operations in 2026.</p>
-        <a href="/blog" class="inline-flex items-center font-mono font-bold text-xs uppercase tracking-widest text-brand_cta hover:text-white transition-colors">
+        <h2 class="mb-4 text-2xl font-bold tracking-tight text-text_primary font-heading uppercase hover:text-brand_cta transition-colors"><a href="/blog">The Future of Global Connectivity for Remote Teams</a></h2>
+        <p class="mb-6 font-light text-text_secondary font-body">How enterprise eSIM infrastructure is replacing legacy SIM provisioning — and what it means for B2B operations in 2026.</p>
+        <a href="/blog" class="inline-flex items-center font-mono font-bold text-xs uppercase tracking-widest text-brand_cta hover:text-brand_cta_hover transition-colors">
             READ BRIEFING
             <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
@@ -183,14 +183,14 @@ const orgSchema = {
         </a>
       </article>
 
-      <article class="p-8 bg-gray-900 border border-gray-800">
-        <div class="flex justify-between items-center mb-5 text-gray-500">
-            <span class="bg-black border border-gray-700 text-gray-400 text-xs font-mono font-bold uppercase tracking-widest px-3 py-1 rounded-sm">ai_business_tools_suite</span>
+      <article class="p-8 bg-white border border-borders_subtle shadow-subtle rounded-sm">
+        <div class="flex justify-between items-center mb-5 text-text_secondary">
+            <span class="bg-canvas_accent border border-borders_subtle text-text_secondary text-xs font-mono font-bold uppercase tracking-widest px-3 py-1 rounded-sm">ai_business_tools_suite</span>
             <span class="text-sm font-mono uppercase tracking-widest">Jul 4, 2026</span>
         </div>
-        <h2 class="mb-4 text-2xl font-black tracking-tight text-white font-heading uppercase hover:text-brand_cta transition-colors"><a href="/blog">Google Rewrites the Search Interface</a></h2>
-        <p class="mb-6 font-light text-gray-400 font-body">The largest upgrade to Google Search in 25 years is live. AI Mode now merges with standard results — and it changes local SEO authority fundamentally.</p>
-        <a href="/blog" class="inline-flex items-center font-mono font-bold text-xs uppercase tracking-widest text-brand_cta hover:text-white transition-colors">
+        <h2 class="mb-4 text-2xl font-bold tracking-tight text-text_primary font-heading uppercase hover:text-brand_cta transition-colors"><a href="/blog">Google Rewrites the Search Interface</a></h2>
+        <p class="mb-6 font-light text-text_secondary font-body">The largest upgrade to Google Search in 25 years is live. AI Mode now merges with standard results — and it changes local SEO authority fundamentally.</p>
+        <a href="/blog" class="inline-flex items-center font-mono font-bold text-xs uppercase tracking-widest text-brand_cta hover:text-brand_cta_hover transition-colors">
             READ BRIEFING
             <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
@@ -201,16 +201,16 @@ const orgSchema = {
   </section>
 
   <!-- ═══════════════════ RESELLPORTAL WIDGET ═══════════════════ -->
-  <section class="max-w-screen-xl px-4 py-8 mx-auto border-b border-gray-800">
-    <ResellPortalWidget productSku="ai-blog-generator" resellportalStatus="pending" theme="dark-brutalist" />
+  <section class="max-w-screen-xl px-4 py-8 mx-auto border-b border-borders_subtle">
+    <ResellPortalWidget productSku="ai-blog-generator" resellportalStatus="pending" theme="light" />
   </section>
 
   <!-- ═══════════════════ WAITLIST ═══════════════════ -->
-  <section class="max-w-screen-xl px-4 py-16 mx-auto lg:py-24 border-b border-gray-800">
+  <section class="max-w-screen-xl px-4 py-16 mx-auto lg:py-24 border-b border-borders_subtle">
     <div class="max-w-screen-md mb-8 lg:mb-16">
-      <span class="bg-gray-800 text-gray-300 text-xs font-mono font-bold uppercase tracking-widest me-2 px-3 py-1 rounded">PRIORITY ACCESS</span>
-      <h2 class="mt-6 mb-4 text-4xl tracking-tight font-black font-heading text-white uppercase">Secure Your Position in the Queue.</h2>
-      <p class="mb-8 font-light text-gray-400 sm:text-xl font-body">Early operators receive 30% off first 3 months, dedicated onboarding, and direct access to the operational intelligence feed.</p>
+      <span class="bg-canvas_accent text-text_secondary text-xs font-mono font-bold uppercase tracking-widest me-2 px-3 py-1 rounded border border-borders_subtle">PRIORITY ACCESS</span>
+      <h2 class="mt-6 mb-4 text-4xl tracking-tight font-extrabold font-heading text-text_primary uppercase">Secure Your Position in the Queue.</h2>
+      <p class="mb-8 font-light text-text_secondary sm:text-xl font-body">Early operators receive 30% off first 3 months, dedicated onboarding, and direct access to the operational intelligence feed.</p>
     </div>
     <div class="max-w-screen-md">
       <WaitingListForm />
