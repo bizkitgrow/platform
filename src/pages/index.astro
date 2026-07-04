@@ -2,131 +2,233 @@
 import brandManifest from '../../config/brand_manifest.json';
 import systemArchitecture from '../../system_architecture.json';
 import WaitingListForm from '../components/WaitingListForm.astro';
-import PillarCard from '../components/ui/PillarCard.astro';
+import MarketPulseTicker from '../components/MarketPulseTicker.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { buildAudienceIntentSchema } from '../utils/seo_metadata_builder';
 
 const brandName = systemArchitecture.tenant_settings.brand_name;
 const currentUrl = 'https://bizkitgrow.vercel.app/';
 
-const seoSchema = buildAudienceIntentSchema('pillar_1_mobility', currentUrl);
-
 const pillars = brandManifest.audience_demand_matrix.intent_clusters;
+
+const stats = [
+  { value: '190+', label: 'Countries', sub: 'GLOBAL COVERAGE' },
+  { value: '3', label: 'Core Pillars', sub: 'GROWTH VECTORS' },
+  { value: '100%', label: 'Automated', sub: 'ZERO MAINTENANCE' },
+  { value: '<420ms', label: 'Edge Latency', sub: 'RESPONSE TIME' },
+];
+
+const pillarData = [
+  {
+    tag: 'PILLAR_01 // CONNECTIVITY',
+    title: 'Global eSIM Infrastructure',
+    body: "Instant cellular routing across 190+ sovereign networks. Enterprise-grade eSIM provisioning with dedicated financial-grade encryption — no roaming friction, full uptime guarantee.",
+    cta: { href: '/esim/united-states', label: 'DEPLOY CONNECTIVITY' },
+    status: 'ROUTING_STABLE',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>`,
+  },
+  {
+    tag: 'PILLAR_02 // SEARCH AUTHORITY',
+    title: 'Reputation Gating Engine',
+    body: "Automated Google Business Profile optimization, review capture sequences, and local semantic indexation. Own the search grid in high-value zip codes without volatile ad spend.",
+    cta: { href: '/reputation/new-york', label: 'ACTIVATE AUTHORITY' },
+    status: 'CRAWLING_ACTIVE',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>`,
+  },
+  {
+    tag: 'PILLAR_03 // FLOW AUTOMATION',
+    title: 'Operational CRM Suite',
+    body: "Consolidate invoicing, AI-powered scheduling, and secure e-signature workflows into a single client portal. Cut administrative overhead and recover lost revenue from billing friction.",
+    cta: { href: '/solutions/crm-system', label: 'INITIALIZE SYSTEM' },
+    status: 'SYSTEMS_STABLE',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>`,
+  },
+];
+
+// Organization + WebSite JSON-LD
+const orgSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: brandName,
+  url: currentUrl,
+  description: "Autonomous B2B infrastructure for global remote operators: sovereign connectivity, reputation gating, and back-office automation.",
+  sameAs: ['https://bizkitgrow.vercel.app'],
+  contactPoint: {
+    '@type': 'ContactPoint',
+    contactType: 'customer service',
+    email: systemArchitecture.tenant_settings.support_email,
+  },
+};
 ---
 
-<BaseLayout 
-  title="Autonomous B2B Digital Infrastructure" 
-  description="Consolidate secure remote networks, automated local authority building, and back-office pipelines under one secure perimeter."
+<BaseLayout
+  title="Sovereign B2B Digital Infrastructure"
+  description="Consolidate global eSIM connectivity, automated local search authority, and back-office pipelines under a single secure perimeter. Built for remote operators, agencies, and consultants."
   canonicalUrl={currentUrl}
 >
-  <script type="application/ld+json" slot="schema" set:html={JSON.stringify(seoSchema)} />
+  <script type="application/ld+json" slot="schema" is:inline set:html={JSON.stringify(orgSchema)} />
 
-  <!-- Hero Frame -->
-  <section class="max-w-[1280px] mx-auto px-6 py-24 md:py-32 text-center">
-    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-background-surface border border-border-subtle text-text-primary text-xs font-semibold uppercase tracking-wider mb-8">
-      <span class="w-1.5 h-1.5 rounded-full bg-interactive-normal animate-pulse"></span>
-      Sovereign Growth Engine Active
+  <!-- ═══════════════════ HERO ═══════════════════ -->
+  <section class="max-w-7xl mx-auto px-6 pt-24 pb-20 border-b border-[#1c1c1e]" aria-labelledby="hero-headline">
+
+    <div class="font-['JetBrains_Mono'] text-[10px] uppercase tracking-[0.2em] text-[#00ff66] mb-5 flex items-center gap-2">
+      <span class="w-1.5 h-1.5 rounded-full bg-[#00ff66] animate-pulse"></span>
+      [ INGESTION &amp; REDISTRIBUTION LOOP ACTIVE ]
     </div>
 
-    <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold text-text-primary tracking-tight max-w-4xl mx-auto leading-tight mb-8">
-      Precision Operational Infrastructure for <span class="text-interactive-normal">B2B Enterprises</span>
+    <h1 id="hero-headline" class="font-['Outfit'] text-5xl sm:text-7xl md:text-8xl font-black tracking-tighter leading-[0.88] text-white uppercase max-w-5xl">
+      Sovereign B2B<br />
+      <span class="text-[#3f3f46]">Digital Logistics.</span>
     </h1>
 
-    <p class="text-lg sm:text-xl text-text-secondary max-w-2xl mx-auto leading-relaxed mb-10">
-      Consolidate secure remote networks, automated local search authority, and back-office pipelines within a single centralized perimeter.
+    <p class="mt-8 text-base md:text-lg text-[#71717a] max-w-2xl leading-relaxed">
+      We construct zero-maintenance structural pipelines, high-speed mobile eSIM configurations, and localized search reputation machines for global remote operators.
+      <strong class="text-[#a1a1aa] font-medium"> No bloat. No vendor lock-in. Pure infrastructure.</strong>
     </p>
 
-    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-      <a href="#pillars" class="h-12 px-8 inline-flex items-center justify-center rounded-xl bg-interactive-normal hover:bg-interactive-hover text-text-inverse text-sm font-bold shadow-sm transition-all duration-150">
-        Explore Growth Pillars
+    <div class="mt-10 flex flex-col sm:flex-row gap-4 font-['JetBrains_Mono'] text-[11px]">
+      <a
+        href="/solutions/crm-system"
+        id="hero-primary-cta"
+        class="inline-flex items-center justify-between gap-4 bg-[#ff4500] hover:bg-[#ff5714] text-white font-bold px-6 py-4 transition-colors group"
+      >
+        <span>ACQUIRE PIPELINE</span>
+        <span class="transform group-hover:translate-x-1 transition-transform" aria-hidden="true">→</span>
       </a>
-      <a href="#waitlist" class="h-12 px-8 inline-flex items-center justify-center rounded-xl border border-border-subtle hover:border-text-primary bg-background-surface text-text-primary text-sm font-semibold transition-all">
-        Secure Priority Access
+      <a
+        href="/blog"
+        id="hero-secondary-cta"
+        class="inline-flex items-center justify-between gap-4 border border-[#1c1c1e] hover:border-[#3f3f46] text-[#71717a] hover:text-white px-6 py-4 transition-colors"
+      >
+        <span>VIEW INTELLIGENCE FEED</span>
+        <span aria-hidden="true">↗</span>
       </a>
     </div>
-    <div class="mt-4 text-xs text-text-secondary font-medium tracking-wide">
-      No credit card required. Instant self-setup.
-    </div>
+
+    <p class="mt-5 font-['JetBrains_Mono'] text-[9px] tracking-wider text-[#3f3f46] uppercase">
+      No credit card required. Instant self-setup. Cancel any time.
+    </p>
   </section>
 
-  <!-- Pillars Grid -->
-  <section id="pillars" class="max-w-[1280px] mx-auto px-6 py-20 border-t border-border-subtle">
-    <div class="text-center mb-16">
-      <h2 class="text-3xl font-extrabold text-text-primary mb-4">Select Your Operational Perimeter</h2>
-      <p class="text-text-secondary max-w-xl mx-auto">Deploy target growth solutions matching commercial B2B query intents.</p>
-    </div>
+  <!-- ═══════════════════ LIVE TICKER ═══════════════════ -->
+  <MarketPulseTicker />
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-      <!-- Pillar 1 -->
-      <PillarCard 
-        title="Global Connectivity" 
-        subtext={pillars.pillar_1_mobility.conversion_copy_tokens.subheadline} 
-        ctaLabel={pillars.pillar_1_mobility.conversion_copy_tokens.cta_label}
-        sku="rp_sku_esim_global_v1"
-      >
-        <svg slot="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
-      </PillarCard>
-      <!-- Pillar 2 -->
-      <PillarCard 
-        title="Search Authority" 
-        subtext={pillars.pillar_2_growth.conversion_copy_tokens.subheadline} 
-        ctaLabel={pillars.pillar_2_growth.conversion_copy_tokens.cta_label}
-        sku="rp_sku_reputation_gmb_auto"
-      >
-        <svg slot="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
-      </PillarCard>
-      <!-- Pillar 3 -->
-      <PillarCard 
-        title="Operational Automation" 
-        subtext={pillars.pillar_3_operations.conversion_copy_tokens.subheadline} 
-        ctaLabel={pillars.pillar_3_operations.conversion_copy_tokens.cta_label}
-        sku="rp_sku_b2b_suite_agency"
-      >
-        <svg slot="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
-      </PillarCard>
-    </div>
-  </section>
-
-  <!-- Recent Intelligence Section -->
-  <section class="max-w-[1280px] mx-auto px-6 py-20 border-t border-border-subtle bg-background-surface/30">
-    <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
-      <div>
-        <h2 class="text-3xl font-extrabold text-text-primary mb-4">Operational Intelligence</h2>
-        <p class="text-text-secondary max-w-xl">Deep analysis, local search coordinate shifts, and remote network updates.</p>
-      </div>
-      <a href="/blog" class="mt-4 md:mt-0 text-sm font-bold text-interactive-normal hover:text-interactive-hover inline-flex items-center gap-1">
-        View All Intelligence Briefs
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-      </a>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-      <article class="p-8 bg-background-surface border border-border-subtle hover:border-interactive-normal rounded-2xl transition-all duration-150 flex flex-col group shadow-sm">
-        <div class="flex items-center gap-3 text-xs text-text-secondary mb-4 font-medium">
-          <span>July 4, 2026</span>
-          <span class="w-1 h-1 rounded-full bg-border-strong"></span>
-          <span>3 min read</span>
+  <!-- ═══════════════════ STATS STRIP ═══════════════════ -->
+  <section class="max-w-7xl mx-auto px-6 py-12 border-b border-[#1c1c1e]" aria-label="Platform metrics">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-0 divide-x divide-[#1c1c1e]">
+      {stats.map((stat) => (
+        <div class="px-6 first:pl-0 last:pr-0">
+          <div class="font-['Outfit'] text-4xl font-black text-white tracking-tight">{stat.value}</div>
+          <div class="text-sm text-[#a1a1aa] mt-1">{stat.label}</div>
+          <div class="font-['JetBrains_Mono'] text-[9px] text-[#52525b] uppercase tracking-wider mt-1">{stat.sub}</div>
         </div>
-        <h3 class="text-xl font-bold text-text-primary mb-3 leading-snug group-hover:text-interactive-normal transition-colors">
-          <a href="/blog/the-future-of-connectivity-and-mobility">
-            The Future of Connectivity and Mobility
+      ))}
+    </div>
+  </section>
+
+  <!-- ═══════════════════ PILLARS ═══════════════════ -->
+  <section id="pillars" class="max-w-7xl mx-auto px-6 py-20 border-b border-[#1c1c1e]" aria-labelledby="pillars-heading">
+    <div class="mb-12">
+      <div class="font-['JetBrains_Mono'] text-[10px] text-[#52525b] uppercase tracking-widest mb-3">GROWTH VECTORS</div>
+      <h2 id="pillars-heading" class="font-['Outfit'] text-4xl font-black text-white uppercase tracking-tight">
+        Select Your Operational<br />Perimeter.
+      </h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-0 divide-y md:divide-y-0 md:divide-x divide-[#1c1c1e]">
+      {pillarData.map((pillar, i) => (
+        <article class="py-8 md:px-8 first:pl-0 last:pr-0 group">
+          <div class="font-['JetBrains_Mono'] text-[9px] text-[#52525b] uppercase tracking-widest mb-4">
+            [{String(i + 1).padStart(2, '0')}] {pillar.tag}
+          </div>
+          <div class="w-10 h-10 border border-[#1c1c1e] flex items-center justify-center text-[#71717a] group-hover:border-[#00ff66] group-hover:text-[#00ff66] transition-colors mb-4" aria-hidden="true">
+            <Fragment set:html={pillar.icon} />
+          </div>
+          <h3 class="font-['Outfit'] text-2xl font-black text-white uppercase tracking-tight mb-3">
+            {pillar.title}
+          </h3>
+          <p class="text-sm text-[#71717a] leading-relaxed mb-6">
+            {pillar.body}
+          </p>
+          <a
+            href={pillar.cta.href}
+            class="font-['JetBrains_Mono'] text-[10px] tracking-widest text-[#00ff66] hover:text-white transition-colors uppercase inline-flex items-center gap-2"
+          >
+            {pillar.cta.label} <span aria-hidden="true">→</span>
           </a>
+          <div class="mt-4 font-['JetBrains_Mono'] text-[9px] text-[#52525b] uppercase tracking-wider">
+            STATUS: {pillar.status}
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <!-- ═══════════════════ INTELLIGENCE FEED ═══════════════════ -->
+  <section class="max-w-7xl mx-auto px-6 py-20 border-b border-[#1c1c1e]" aria-labelledby="intel-heading">
+    <div class="flex items-end justify-between mb-12">
+      <div>
+        <div class="font-['JetBrains_Mono'] text-[10px] text-[#52525b] uppercase tracking-widest mb-3">INTELLIGENCE FEED</div>
+        <h2 id="intel-heading" class="font-['Outfit'] text-4xl font-black text-white uppercase tracking-tight">
+          Latest Briefings.
+        </h2>
+      </div>
+      <a
+        href="/blog"
+        class="font-['JetBrains_Mono'] text-[10px] text-[#71717a] hover:text-white uppercase tracking-widest transition-colors hidden md:flex items-center gap-2"
+      >
+        VIEW ALL <span aria-hidden="true">→</span>
+      </a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-0 divide-y md:divide-y-0 md:divide-x divide-[#1c1c1e]">
+      <article class="py-8 md:pr-8 group">
+        <div class="font-['JetBrains_Mono'] text-[9px] text-[#52525b] uppercase tracking-widest mb-3">esim_data_plans // Jul 4, 2026</div>
+        <h3 class="font-['Outfit'] text-xl font-black text-white uppercase tracking-tight mb-3 group-hover:text-[#a1a1aa] transition-colors">
+          <a href="/blog">The Future of Global Connectivity for Remote Teams</a>
         </h3>
-        <p class="text-sm text-text-secondary leading-relaxed mb-6 flex-grow">
-          In today's fast-paced corporate environment, mobility and connectivity dictate market leadership. Explore how advanced networks enable unprecedented scale.
+        <p class="text-sm text-[#71717a] leading-relaxed mb-4">
+          How enterprise eSIM infrastructure is replacing legacy SIM provisioning — and what it means for B2B operations in 2026.
         </p>
-        <a href="/blog/the-future-of-connectivity-and-mobility" class="text-xs font-bold text-interactive-normal hover:text-interactive-hover inline-flex items-center gap-1 group-hover:underline">
-          Read Briefing
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 transform transition-transform group-hover:translate-x-1" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        <a href="/blog" class="font-['JetBrains_Mono'] text-[10px] text-[#00ff66] uppercase tracking-widest hover:text-white transition-colors inline-flex items-center gap-1">
+          READ BRIEFING <span aria-hidden="true">→</span>
+        </a>
+      </article>
+
+      <article class="py-8 md:pl-8 group">
+        <div class="font-['JetBrains_Mono'] text-[9px] text-[#52525b] uppercase tracking-widest mb-3">ai_business_tools_suite // Jul 4, 2026</div>
+        <h3 class="font-['Outfit'] text-xl font-black text-white uppercase tracking-tight mb-3 group-hover:text-[#a1a1aa] transition-colors">
+          <a href="/blog">Google Rewrites the Search Interface — Here Is What B2B Operators Must Know</a>
+        </h3>
+        <p class="text-sm text-[#71717a] leading-relaxed mb-4">
+          The largest upgrade to Google Search in 25 years is live. AI Mode now merges with standard results — and it changes local SEO authority fundamentally.
+        </p>
+        <a href="/blog" class="font-['JetBrains_Mono'] text-[10px] text-[#00ff66] uppercase tracking-widest hover:text-white transition-colors inline-flex items-center gap-1">
+          READ BRIEFING <span aria-hidden="true">→</span>
         </a>
       </article>
     </div>
+
+    <div class="mt-8 md:hidden">
+      <a href="/blog" class="font-['JetBrains_Mono'] text-[10px] text-[#71717a] hover:text-white uppercase tracking-widest transition-colors inline-flex items-center gap-2">
+        VIEW ALL BRIEFINGS <span aria-hidden="true">→</span>
+      </a>
+    </div>
   </section>
 
-  <!-- Lead Capture Form -->
-  <section class="bg-background-base py-20 border-t border-b border-border-subtle">
-    <div class="max-w-[1280px] mx-auto px-6">
+  <!-- ═══════════════════ WAITLIST ═══════════════════ -->
+  <section id="waitlist" class="border-b border-[#1c1c1e]">
+    <div class="max-w-7xl mx-auto px-6 py-20">
+      <div class="max-w-2xl">
+        <div class="font-['JetBrains_Mono'] text-[10px] text-[#52525b] uppercase tracking-widest mb-4">PRIORITY ACCESS</div>
+        <h2 class="font-['Outfit'] text-4xl font-black text-white uppercase tracking-tight mb-4">
+          Secure Your Position<br />in the Queue.
+        </h2>
+        <p class="text-sm text-[#71717a] leading-relaxed mb-8">
+          Early operators receive 30% off first 3 months, dedicated onboarding, and direct access to the operational intelligence feed.
+        </p>
+      </div>
       <WaitingListForm />
     </div>
   </section>
+
 </BaseLayout>

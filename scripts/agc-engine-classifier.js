@@ -1,123 +1,43 @@
 /**
- * Deterministic keyword-based product classification
+ * Deterministic Content Classifier
+ * Maps article content → product key → internal route
+ * No hardcoded brand names — all routing through config
  */
 
-const productSkuMap = {
-  ai_business_tools_suite: 'rp_sku_b2b_suite_agency',
-  invoicing_with_ai: 'rp_sku_invoice_ledger_ai',
-  appointment_booking: 'rp_sku_booking_calendar_v1',
-  document_signing_software: 'rp_sku_esign_crypto_secure',
-  crm_system: 'rp_sku_crm_multi_tenant',
-  reputation_management: 'rp_sku_reputation_gmb_auto',
-  vpn_service: 'rp_sku_vpn_secure_edge',
-  business_phone_number: 'rp_sku_voip_us_uk',
-  esim_data_plans: 'rp_sku_esim_global_v1',
-  domain_registration: 'rp_sku_domain_registry',
-  cloud_storage: 'rp_sku_cloud_storage_redundant',
-  ai_website_builder: 'rp_sku_website_builder_ai',
-  wordpress_plugin_installer_pack: 'rp_sku_wp_plugin_bundle',
-  web_hosting: 'rp_sku_hosting_container_isolated',
-  web_design_service: 'rp_sku_design_task_fixed',
-  email_marketing: 'rp_sku_email_drip_sequence',
-  smm_services: 'rp_sku_smm_signals_pack',
-  social_media_automation: 'rp_sku_social_cron_engine',
-  link_in_bio: 'rp_sku_linktree_premium_canvas',
-  monthly_seo_service: 'rp_sku_seo_hyperlocal_pack',
-};
+const CLASSIFICATION_RULES = [
+  { keywords: ['esim', 'e-sim', 'sim card', 'roaming', 'international data', 'global connectivity', 'cellular', '5g roaming'], key: 'esim_data_plans', route: '/esim' },
+  { keywords: ['vpn', 'proxy', 'cybersecurity', 'encryption', 'secure network', 'zero trust', 'firewall'], key: 'esim_data_plans', route: '/esim' },
+  { keywords: ['google business', 'gmb', 'google maps', 'review', 'reputation', 'local seo', 'local search', 'local listing', 'nap citation'], key: 'reputation_management', route: '/reputation' },
+  { keywords: ['seo', 'backlink', 'serp', 'search engine', 'organic traffic', 'keyword rank', 'technical seo'], key: 'reputation_management', route: '/reputation' },
+  { keywords: ['crm', 'customer relationship', 'client management', 'sales pipeline', 'lead nurture', 'hubspot', 'salesforce'], key: 'ai_business_tools_suite', route: '/solutions/crm-system' },
+  { keywords: ['invoice', 'billing', 'payment gateway', 'accounts receivable', 'stripe', 'payroll'], key: 'ai_business_tools_suite', route: '/solutions' },
+  { keywords: ['ai tool', 'automation', 'workflow', 'saas', 'machine learning', 'llm', 'generative ai', 'openai', 'anthropic', 'gemini', 'gpt'], key: 'ai_business_tools_suite', route: '/solutions' },
+  { keywords: ['nvda', 'nvidia', 'msft', 'microsoft', 'googl', 'alphabet', 'aapl', 'apple', 'market', 'stock', 'earnings', 'tech sector'], key: 'ai_business_tools_suite', route: '/solutions' },
+];
 
 /**
- * Classify article into one of 20 product + route combinations.
  * @param {string} title
  * @param {string} content
- * @returns {{ key: string, sku: string, category_slug: string }}
+ * @returns {{ key: string, route: string, confidence: number }}
  */
-function getProductAndRoute(title, content) {
+function classifyContent(title, content) {
   const text = `${title} ${content}`.toLowerCase();
-  let key = 'ai_business_tools_suite';
-  let category_slug = 'operational-automation';
+  let bestMatch = null;
+  let bestScore = 0;
 
-  // --- PILLAR 1: Connectivity & Mobility ---
-  if (text.includes('esim') || text.includes('sim card') || text.includes('roaming')) {
-    key = 'esim_data_plans';
-    category_slug = 'connectivity-mobility';
-  } else if (text.includes('vpn') || text.includes('proxy') || text.includes('cybersecurity')) {
-    key = 'vpn_service';
-    category_slug = 'connectivity-mobility';
-  } else if (
-    text.includes('phone number') ||
-    text.includes('virtual number') ||
-    text.includes('voip')
-  ) {
-    key = 'business_phone_number';
-    category_slug = 'connectivity-mobility';
-  } else if (text.includes('cloud storage') || text.includes('backup') || text.includes('drive')) {
-    key = 'cloud_storage';
-    category_slug = 'connectivity-mobility';
-  }
-  // --- PILLAR 2: Growth & Marketing ---
-  else if (
-    text.includes('gmb') ||
-    text.includes('google maps') ||
-    text.includes('review') ||
-    text.includes('reputation')
-  ) {
-    key = 'reputation_management';
-    category_slug = 'local-authority';
-  } else if (text.includes('seo') || text.includes('backlink') || text.includes('serp')) {
-    key = 'monthly_seo_service';
-    category_slug = 'local-authority';
-  } else if (text.includes('website builder') || text.includes('landing page')) {
-    key = 'ai_website_builder';
-    category_slug = 'local-authority';
-  } else if (text.includes('domain') || text.includes('tld')) {
-    key = 'domain_registration';
-    category_slug = 'local-authority';
-  } else if (text.includes('hosting') || text.includes('vps') || text.includes('cpanel')) {
-    key = 'web_hosting';
-    category_slug = 'local-authority';
-  } else if (text.includes('web design') || text.includes('ui ux')) {
-    key = 'web_design_service';
-    category_slug = 'local-authority';
-  } else if (text.includes('social media automation') || text.includes('buffer')) {
-    key = 'social_media_automation';
-    category_slug = 'local-authority';
-  } else if (text.includes('followers') || text.includes('likes') || text.includes('smm')) {
-    key = 'smm_services';
-    category_slug = 'local-authority';
-  } else if (text.includes('link in bio') || text.includes('linktree')) {
-    key = 'link_in_bio';
-    category_slug = 'local-authority';
-  }
-  // --- PILLAR 3: Operational Automation ---
-  else if (text.includes('crm') || text.includes('customer relationship')) {
-    key = 'crm_system';
-    category_slug = 'operational-automation';
-  } else if (text.includes('invoice') || text.includes('billing') || text.includes('payment')) {
-    key = 'invoicing_with_ai';
-    category_slug = 'operational-automation';
-  } else if (
-    text.includes('booking') ||
-    text.includes('appointment') ||
-    text.includes('calendar')
-  ) {
-    key = 'appointment_booking';
-    category_slug = 'operational-automation';
-  } else if (text.includes('esign') || text.includes('signature') || text.includes('contract')) {
-    key = 'document_signing_software';
-    category_slug = 'operational-automation';
-  } else if (text.includes('wordpress') || text.includes('wp plugin')) {
-    key = 'wordpress_plugin_installer_pack';
-    category_slug = 'operational-automation';
-  } else if (text.includes('email marketing') || text.includes('newsletter')) {
-    key = 'email_marketing';
-    category_slug = 'operational-automation';
+  for (const rule of CLASSIFICATION_RULES) {
+    const score = rule.keywords.filter((kw) => text.includes(kw)).length;
+    if (score > bestScore) {
+      bestScore = score;
+      bestMatch = rule;
+    }
   }
 
-  return {
-    key,
-    sku: productSkuMap[key] || 'rp_sku_b2b_suite_agency',
-    category_slug,
-  };
+  if (!bestMatch || bestScore === 0) {
+    return { key: 'ai_business_tools_suite', route: '/solutions', confidence: 0 };
+  }
+
+  return { key: bestMatch.key, route: bestMatch.route, confidence: bestScore };
 }
 
-module.exports = { getProductAndRoute };
+module.exports = { classifyContent };

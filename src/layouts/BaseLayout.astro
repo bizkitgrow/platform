@@ -1,21 +1,76 @@
 ---
-import brandManifest from '../../config/brand_manifest.json';
+import { navigationLinks, footerLinks } from '../utils/navigation';
 import systemArchitecture from '../../system_architecture.json';
-import uxDesignToken from '../../ux_design_token.json';
-import '@astrouxds/tokens/dist/css/index.css';
 
 interface Props {
   title: string;
   description: string;
-  canonicalUrl: string;
+  canonicalUrl?: string;
+  schemaType?: 'WebSite' | 'Product' | 'Article' | 'LocalBusiness';
+  ogImage?: string;
+  articleMeta?: {
+    datePublished?: string;
+    dateModified?: string;
+    keywords?: string[];
+    pillar?: string;
+  };
 }
 
-const { title = '', description = '', canonicalUrl = '' } = Astro.props;
+const {
+  title,
+  description,
+  canonicalUrl,
+  schemaType = 'WebSite',
+  ogImage,
+  articleMeta,
+} = Astro.props;
+
 const brandName = systemArchitecture.tenant_settings.brand_name;
-const tokens = uxDesignToken.design_system.tokens;
-const safeTitle = title || '';
-const safeDescription = description || '';
-const safeCanonicalUrl = canonicalUrl || Astro.url.href;
+const supportEmail = systemArchitecture.tenant_settings.support_email;
+const safeCanonical = canonicalUrl || Astro.url.href;
+const safeOgImage = ogImage || new URL('/og-image.webp', safeCanonical).href;
+const safeTitle = `${title} | ${brandName}`;
+const ONESIGNAL_APP_ID = '498d3a2b-c642-41a3-b70c-c4b1185c958c';
+
+// Build context-aware JSON-LD structured data
+const structuredData: Record<string, unknown> = {
+  '@context': 'https://schema.org',
+  '@type': schemaType,
+  name: brandName,
+  url: safeCanonical,
+  description,
+};
+
+if (schemaType === 'Article' && articleMeta) {
+  Object.assign(structuredData, {
+    '@type': 'Article',
+    headline: title,
+    datePublished: articleMeta.datePublished || new Date().toISOString(),
+    dateModified: articleMeta.dateModified || new Date().toISOString(),
+    keywords: (articleMeta.keywords || []).join(', '),
+    speakable: {
+      '@type': 'SpeakableSpecification',
+      cssSelector: ['h1', 'h2', '.article-summary'],
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: brandName,
+      url: 'https://bizkitgrow.vercel.app',
+    },
+  });
+}
+
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: brandName,
+  url: 'https://bizkitgrow.vercel.app',
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: 'https://bizkitgrow.vercel.app/blog?q={search_term_string}',
+    'query-input': 'required name=search_term_string',
+  },
+};
 ---
 
 <!DOCTYPE html>
@@ -23,158 +78,308 @@ const safeCanonicalUrl = canonicalUrl || Astro.url.href;
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
-  <title>{safeTitle} | {brandName}</title>
-  <meta name="description" content={safeDescription} />
-  <link rel="canonical" href={safeCanonicalUrl} />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-  <!-- OpenGraph Tags compliant with Naver / B2B Authority -->
+  <title>{safeTitle}</title>
+  <meta name="description" content={description.slice(0, 160)} />
+  <link rel="canonical" href={safeCanonical} />
+
+  <!-- Robots: Allow all crawlers + LLMs -->
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+
+  <!-- OpenGraph -->
   <meta property="og:site_name" content={brandName} />
-  <meta property="og:title" content={safeTitle.slice(0, 40)} />
-  <meta property="og:description" content={safeDescription.slice(0, 80)} />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content={safeCanonicalUrl} />
-  <meta property="og:image" content={new URL('/og-image.webp', safeCanonicalUrl).href} />
-  
+  <meta property="og:title" content={title.slice(0, 60)} />
+  <meta property="og:description" content={description.slice(0, 160)} />
+  <meta property="og:type" content={schemaType === 'Article' ? 'article' : 'website'} />
+  <meta property="og:url" content={safeCanonical} />
+  <meta property="og:image" content={safeOgImage} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content={safeTitle.slice(0, 40)} />
-  <meta name="twitter:description" content={safeDescription.slice(0, 80)} />
-  <meta name="twitter:image" content={new URL('/og-image.webp', safeCanonicalUrl).href} />
+  <meta name="twitter:title" content={title.slice(0, 60)} />
+  <meta name="twitter:description" content={description.slice(0, 160)} />
+  <meta name="twitter:image" content={safeOgImage} />
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="/favicon.png" />
 
-  <!-- Verification Tags -->
+  <!-- Verification -->
   <meta name="naver-site-verification" content="verified_bizkitgrow" />
 
-  <!-- Google Fonts Inter -->
+  <!-- Google Fonts: Performance-optimized preload -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Outfit:wght@800;900&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
 
+  <!-- Structured Data: WebSite (always) -->
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(websiteSchema)} />
 
+  <!-- Structured Data: Page-specific -->
+  {schemaType !== 'WebSite' && (
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(structuredData)} />
+  )}
 
-  <!-- Dynamic JSON-LD Schema Injection Slot -->
+  <!-- Schema slot for page-level overrides -->
   <slot name="schema" />
 
-  <style define:vars={{
-    fontFamily: tokens.typography.family,
-    headingFamily: tokens.typography.heading_family
-  }}>
-    body {
-      font-family: var(--fontFamily);
+  <!-- OneSignal Web SDK v16 -->
+  <script is:inline>
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async function(OneSignal) {
+      await OneSignal.init({
+        appId: "498d3a2b-c642-41a3-b70c-c4b1185c958c",
+        allowLocalhostAsSecureOrigin: true,
+        serviceWorkerPath: "/OneSignalSDKWorker.js",
+        notifyButton: { enable: false },
+        promptOptions: {
+          slidedown: {
+            prompts: [{
+              type: "push",
+              autoPrompt: true,
+              text: {
+                actionMessage: "Get real-time B2B intelligence, eSIM alerts, and market updates delivered instantly.",
+                acceptButton: "Subscribe",
+                cancelButton: "Not now",
+              },
+              delay: { pageViews: 1, timeDelay: 5 },
+            }]
+          }
+        }
+      });
+    });
+  </script>
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer is:inline></script>
+
+  <style>
+    :root {
+      --canvas: #000000;
+      --surface: #0a0a0a;
+      --border: #1c1c1e;
+      --text-primary: #f4f4f5;
+      --text-muted: #71717a;
+      --accent-green: #00ff66;
+      --accent-orange: #ff4500;
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-heading: 'Outfit', sans-serif;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
     }
-    h1, h2, h3, h4, h5, h6 {
-      font-family: var(--headingFamily);
-      letter-spacing: -0.02em;
+
+    html { background: var(--canvas); color: var(--text-primary); }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--canvas);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* Technical grid background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(to right, #1c1c1e 1px, transparent 1px),
+        linear-gradient(to bottom, #1c1c1e 1px, transparent 1px);
+      background-size: 64px 64px;
+      mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, #000 60%, transparent 100%);
+      opacity: 0.4;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    /* Mono utility */
+    .font-mono { font-family: var(--font-mono); }
+    .font-heading { font-family: var(--font-heading); }
+
+    /* Selection */
+    ::selection { background: rgba(0, 255, 102, 0.2); color: #f4f4f5; }
+
+    /* Focus rings */
+    :focus-visible { outline: 1.5px solid var(--accent-green); outline-offset: 3px; }
+
+    /* Smooth scroll */
+    @media (prefers-reduced-motion: no-preference) {
+      html { scroll-behavior: smooth; }
     }
   </style>
 </head>
-<body class="antialiased selection:bg-interactive-hover selection:text-text-inverse bg-background-base text-text-primary min-h-screen flex flex-col">
-  <header class="border-b border-border-subtle sticky top-0 bg-background-surface/80 backdrop-blur-md z-50">
-    <div class="max-w-[1280px] mx-auto px-6 h-16 flex items-center justify-between">
-      <a href="/" class="text-xl font-extrabold tracking-tight text-text-primary flex items-center gap-2 hover:opacity-90">
-        <span class="w-8 h-8 rounded-lg bg-interactive-normal flex items-center justify-center text-text-inverse text-base">b</span>
-        {brandName}
+<body>
+
+  <!-- Sticky Nav: Flat authority bar -->
+  <header class="sticky top-0 z-50 w-full border-b border-[#1c1c1e] bg-[#000000]/90 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between gap-8">
+
+      <!-- Wordmark -->
+      <a href="/" class="flex items-center gap-1 shrink-0" aria-label="Bizkitgrow home">
+        <span class="font-['Outfit'] text-sm font-black tracking-widest uppercase text-white">
+          BIZKITGROW<span class="text-[#00ff66]">_</span>
+        </span>
       </a>
-      
+
       <!-- Desktop Nav -->
-      <nav class="hidden md:flex items-center gap-8 text-sm font-medium">
-        <a href="/" class={`transition-colors ${Astro.url.pathname === '/' ? 'text-text-primary font-bold' : 'text-text-secondary hover:text-text-primary'}`}>Platform</a>
-        <a href="/esim/united-states" class={`transition-colors ${Astro.url.pathname.startsWith('/esim') ? 'text-text-primary font-bold' : 'text-text-secondary hover:text-text-primary'}`}>Connectivity</a>
-        <a href="/reputation/new-york" class={`transition-colors ${Astro.url.pathname.startsWith('/reputation') ? 'text-text-primary font-bold' : 'text-text-secondary hover:text-text-primary'}`}>Reputation</a>
-        <a href="/solutions/crm-system" class={`transition-colors ${Astro.url.pathname.startsWith('/solutions') ? 'text-text-primary font-bold' : 'text-text-secondary hover:text-text-primary'}`}>Solutions</a>
-        <a href="/blog" class={`transition-colors ${Astro.url.pathname.startsWith('/blog') ? 'text-text-primary font-bold' : 'text-text-secondary hover:text-text-primary'}`}>Intelligence</a>
+      <nav class="hidden md:flex items-center gap-8" aria-label="Main navigation">
+        <span class="flex items-center gap-1.5 font-['JetBrains_Mono'] text-[10px] text-[#00ff66] tracking-wider">
+          <span class="w-1.5 h-1.5 rounded-full bg-[#00ff66] animate-pulse"></span>
+          EDGE: ONLINE
+        </span>
+        {navigationLinks.map((link) => (
+          <a
+            href={link.href}
+            class={`font-['JetBrains_Mono'] text-[10px] tracking-widest uppercase transition-colors hover:text-white ${Astro.url.pathname === link.href || (link.href !== '/' && Astro.url.pathname.startsWith(link.href)) ? 'text-white' : 'text-[#71717a]'}`}
+          >
+            {link.label}
+          </a>
+        ))}
       </nav>
-      
-      <div class="flex items-center gap-4">
-        <a href="#waitlist" class="hidden sm:inline-flex h-9 px-4 items-center justify-center rounded-lg bg-interactive-normal hover:bg-interactive-hover text-text-inverse text-xs font-semibold tracking-wide transition-colors">
-          Initialize System
+
+      <!-- CTA -->
+      <div class="flex items-center gap-3">
+        <a
+          href="#waitlist"
+          class="hidden sm:flex items-center gap-2 bg-[#ff4500] hover:bg-[#ff5714] text-white font-['JetBrains_Mono'] text-[10px] font-bold tracking-widest uppercase px-4 py-2 transition-colors"
+        >
+          ACQUIRE ACCESS
+          <span aria-hidden="true">→</span>
         </a>
-        
+
         <!-- Mobile Menu Toggle -->
-        <button id="mobile-menu-btn" class="md:hidden p-2 text-text-primary">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+        <button
+          id="mobile-menu-btn"
+          class="md:hidden p-2 text-[#71717a] hover:text-white transition-colors"
+          aria-label="Toggle navigation menu"
+          aria-expanded="false"
+          aria-controls="mobile-nav"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="4" x2="20" y1="12" y2="12"/>
+            <line x1="4" x2="20" y1="6" y2="6"/>
+            <line x1="4" x2="20" y1="18" y2="18"/>
+          </svg>
         </button>
       </div>
     </div>
-    
-    <!-- Mobile Nav -->
-    <div id="mobile-nav" class="hidden md:hidden border-t border-border-subtle bg-background-surface px-6 py-4 space-y-4">
-      <a href="/" class={`block transition-colors ${Astro.url.pathname === '/' ? 'text-text-primary font-bold' : 'text-text-secondary hover:text-text-primary'}`}>Platform</a>
-      <a href="/esim/united-states" class={`block transition-colors ${Astro.url.pathname.startsWith('/esim') ? 'text-text-primary font-bold' : 'text-text-secondary hover:text-text-primary'}`}>Connectivity</a>
-      <a href="/reputation/new-york" class={`block transition-colors ${Astro.url.pathname.startsWith('/reputation') ? 'text-text-primary font-bold' : 'text-text-secondary hover:text-text-primary'}`}>Reputation</a>
-      <a href="/solutions/crm-system" class={`block transition-colors ${Astro.url.pathname.startsWith('/solutions') ? 'text-text-primary font-bold' : 'text-text-secondary hover:text-text-primary'}`}>Solutions</a>
-      <a href="/blog" class={`block transition-colors ${Astro.url.pathname.startsWith('/blog') ? 'text-text-primary font-bold' : 'text-text-secondary hover:text-text-primary'}`}>Intelligence</a>
-      <a href="#waitlist" class="block w-full h-9 px-4 mt-4 text-center rounded-lg bg-interactive-normal text-text-inverse text-xs font-semibold leading-9 tracking-wide">
-        Initialize System
+
+    <!-- Mobile Nav Drawer -->
+    <div
+      id="mobile-nav"
+      class="hidden md:hidden border-t border-[#1c1c1e] bg-[#000000] px-6 py-6 space-y-4"
+      role="navigation"
+      aria-label="Mobile navigation"
+    >
+      {navigationLinks.map((link) => (
+        <a
+          href={link.href}
+          class="block font-['JetBrains_Mono'] text-[11px] tracking-widest uppercase text-[#71717a] hover:text-white transition-colors py-1"
+        >
+          {link.label}
+        </a>
+      ))}
+      <a
+        href="#waitlist"
+        class="block w-full text-center bg-[#ff4500] text-white font-['JetBrains_Mono'] text-[10px] font-bold tracking-widest uppercase px-4 py-3 mt-4 transition-colors hover:bg-[#ff5714]"
+      >
+        ACQUIRE ACCESS →
       </a>
     </div>
   </header>
 
   <script is:inline>
-    // Simple mobile menu toggle logic
-    document.addEventListener('DOMContentLoaded', () => {
-      const btn = document.getElementById('mobile-menu-btn');
-      const nav = document.getElementById('mobile-nav');
+    (function() {
+      var btn = document.getElementById('mobile-menu-btn');
+      var nav = document.getElementById('mobile-nav');
       if (btn && nav) {
-        btn.addEventListener('click', () => {
+        btn.addEventListener('click', function() {
+          var isExpanded = btn.getAttribute('aria-expanded') === 'true';
+          btn.setAttribute('aria-expanded', String(!isExpanded));
           nav.classList.toggle('hidden');
         });
       }
-    });
+    })();
   </script>
 
-  <!-- Main View Frame -->
-  <div class="flex-grow">
+  <!-- Main Content -->
+  <main class="flex-grow">
     <slot />
-  </div>
+  </main>
 
   <!-- Corporate Footer -->
-  <footer class="border-t border-border-subtle bg-background-surface py-12 mt-20">
-    <div class="max-w-[1280px] mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
-      <div class="text-sm text-text-secondary">
-        © {new Date().getFullYear()} {systemArchitecture.tenant_settings.parent_company_copyright}. All operational assets secure.
+  <footer class="border-t border-[#1c1c1e] bg-[#000000] py-16 mt-auto">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+
+        <!-- Brand Column -->
+        <div class="md:col-span-2">
+          <span class="font-['Outfit'] text-sm font-black tracking-widest uppercase text-white">
+            BIZKITGROW<span class="text-[#00ff66]">_</span>
+          </span>
+          <p class="mt-4 text-sm text-[#71717a] leading-relaxed max-w-sm">
+            Autonomous B2B infrastructure for global remote operators: sovereign connectivity, reputation gating, and back-office automation — all on a single edge.
+          </p>
+          <div class="mt-6 flex items-center gap-2 font-['JetBrains_Mono'] text-[10px] text-[#00ff66]">
+            <span class="w-1.5 h-1.5 rounded-full bg-[#00ff66] animate-pulse"></span>
+            ALL SYSTEMS OPERATIONAL
+          </div>
+        </div>
+
+        <!-- Product Links -->
+        <div>
+          <h3 class="font-['JetBrains_Mono'] text-[10px] tracking-widest uppercase text-[#71717a] mb-4">PRODUCT</h3>
+          <ul class="space-y-3">
+            {footerLinks.product.map((link) => (
+              <li>
+                <a href={link.href} class="text-sm text-[#a1a1aa] hover:text-white transition-colors">
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <!-- Legal Links -->
+        <div>
+          <h3 class="font-['JetBrains_Mono'] text-[10px] tracking-widest uppercase text-[#71717a] mb-4">LEGAL</h3>
+          <ul class="space-y-3">
+            {footerLinks.company.map((link) => (
+              <li>
+                <a href={link.href} class="text-sm text-[#a1a1aa] hover:text-white transition-colors">
+                  {link.label}
+                </a>
+              </li>
+            ))}
+            <li>
+              <a href={`mailto:${supportEmail}`} class="text-sm text-[#a1a1aa] hover:text-white transition-colors">
+                Operations Support
+              </a>
+            </li>
+          </ul>
+        </div>
       </div>
-      <div class="flex gap-6 text-xs text-text-secondary">
-        <a href="/terms" class="hover:underline text-text-primary">Terms of Authority</a>
-        <a href="/privacy" class="hover:underline text-text-primary">Privacy Perimeter</a>
-        <a href={`mailto:${systemArchitecture.tenant_settings.support_email}`} class="hover:underline text-text-primary">Operations Support</a>
+
+      <!-- Bottom Bar -->
+      <div class="border-t border-[#1c1c1e] pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+        <p class="font-['JetBrains_Mono'] text-[10px] text-[#3f3f46] tracking-wider uppercase">
+          © {new Date().getFullYear()} {systemArchitecture.tenant_settings.parent_company_copyright}. All operational assets secure.
+        </p>
+        <p class="font-['JetBrains_Mono'] text-[10px] text-[#3f3f46] tracking-wider uppercase">
+          NODE: AP-SOUTHEAST-1 // EDGE: VERCEL
+        </p>
       </div>
     </div>
   </footer>
 
-  <!-- GTM Lazy Hydration Optimization -->
-  <script is:inline>
-    window.addEventListener('load', () => {
-      if ('requestIdleCallback' in window) {
-        requestIdleCallback(() => {
-          // Lazy init GTM Container
-          console.log('[Telemetry] Lazy-hydrating GTM trackers...');
-        });
-      } else {
-        setTimeout(() => {
-          console.log('[Telemetry] Hydrating GTM trackers...');
-        }, 3000);
-      }
-    });
-  </script>
-
-  <!-- Lenis Smooth Scroll Engine -->
+  <!-- Lenis Smooth Scroll -->
   <script>
     import Lenis from 'lenis';
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      infinite: false,
-    });
-
-    function raf(time: number) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
+    const lenis = new Lenis({ duration: 1.0, easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
+    function raf(time: number) { lenis.raf(time); requestAnimationFrame(raf); }
     requestAnimationFrame(raf);
   </script>
+
 </body>
 </html>

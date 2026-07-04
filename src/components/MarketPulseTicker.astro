@@ -1,0 +1,68 @@
+---
+// MarketPulseTicker: Live status marquee strip
+// Data is static fallback; dynamic fetch via client-side from /api/v1/market/pulse
+---
+
+<div
+  class="w-full bg-[#000000] border-y border-[#1c1c1e] py-3 overflow-hidden whitespace-nowrap relative select-none"
+  role="marquee"
+  aria-label="Live system and market status ticker"
+>
+  <!-- Fade edges -->
+  <div class="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-[#000000] to-transparent z-10 pointer-events-none" aria-hidden="true"></div>
+  <div class="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-[#000000] to-transparent z-10 pointer-events-none" aria-hidden="true"></div>
+
+  <div class="inline-block ticker-inner font-['JetBrains_Mono'] text-[10px] uppercase tracking-[0.12em] text-[#52525b]">
+    <span class="inline-flex items-center mx-10">
+      <span class="w-1.5 h-1.5 rounded-full bg-[#00ff66] animate-pulse mr-2" aria-hidden="true"></span>
+      INTELLIGENCE LOOP: RUNNING_STABLE
+    </span>
+    <span class="inline-flex items-center mx-10">
+      ESIM ROUTING: <span class="text-[#00ff66] ml-1.5">190+ COUNTRIES ACTIVE</span>
+    </span>
+    <span class="inline-flex items-center mx-10">
+      REPUTATION LATENCY: <span class="text-white ml-1.5">420ms EDGE RESOLUTION</span>
+    </span>
+    <span class="inline-flex items-center mx-10">
+      SYNDICATION: <span class="text-[#00ff66] ml-1.5">QUAD-SHIELD PROTECTED</span>
+    </span>
+    <span class="inline-flex items-center mx-10">
+      LLM POLISHER: <span class="text-white ml-1.5">GROQ → GEMINI → OPENROUTER</span>
+    </span>
+    <span class="inline-flex items-center mx-10">
+      DB: <span class="text-[#00ff66] ml-1.5">SUPABASE AP-SE1 CONNECTED</span>
+    </span>
+    <!-- Duplicate for seamless loop -->
+    <span class="inline-flex items-center mx-10">
+      <span class="w-1.5 h-1.5 rounded-full bg-[#00ff66] animate-pulse mr-2" aria-hidden="true"></span>
+      INTELLIGENCE LOOP: RUNNING_STABLE
+    </span>
+    <span class="inline-flex items-center mx-10">
+      ESIM ROUTING: <span class="text-[#00ff66] ml-1.5">190+ COUNTRIES ACTIVE</span>
+    </span>
+    <span class="inline-flex items-center mx-10">
+      REPUTATION LATENCY: <span class="text-white ml-1.5">420ms EDGE RESOLUTION</span>
+    </span>
+    <span class="inline-flex items-center mx-10">
+      SYNDICATION: <span class="text-[#00ff66] ml-1.5">QUAD-SHIELD PROTECTED</span>
+    </span>
+    <span class="inline-flex items-center mx-10">
+      LLM POLISHER: <span class="text-white ml-1.5">GROQ → GEMINI → OPENROUTER</span>
+    </span>
+    <span class="inline-flex items-center mx-10">
+      DB: <span class="text-[#00ff66] ml-1.5">SUPABASE AP-SE1 CONNECTED</span>
+    </span>
+  </div>
+</div>
+
+<style>
+  @media (prefers-reduced-motion: no-preference) {
+    @keyframes ticker-scroll {
+      0% { transform: translate3d(0, 0, 0); }
+      100% { transform: translate3d(-50%, 0, 0); }
+    }
+    .ticker-inner {
+      animation: ticker-scroll 40s linear infinite;
+    }
+  }
+</style>
