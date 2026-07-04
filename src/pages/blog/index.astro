@@ -50,23 +50,41 @@ const posts =
   canonicalUrl={currentUrl}
 >
   <main class="max-w-5xl mx-auto px-6 py-20">
-    <header class="mb-16 border-b border-gray-150 pb-10 dark:border-gray-800">
+    <header class="mb-12 border-b border-gray-150 pb-10 dark:border-gray-800">
       <h1 class="text-4xl sm:text-5xl font-black text-gray-900 tracking-tight mb-4 dark:text-white">
         Intelligence Briefings
       </h1>
       <p class="text-base text-gray-500 leading-relaxed dark:text-gray-400 max-w-2xl">
         Sovereign operational data-mining, localized search insights, and mobility network briefs tailored for the automated enterprise.
       </p>
+
+      <!-- Category Filter Bar (Astro Blog Kit & Starter Essentials Inspired) -->
+      <div class="flex flex-wrap gap-2 mt-8">
+        <button data-filter="all" class="filter-btn px-4 py-1.5 rounded-full text-xs font-bold bg-blue-700 text-white dark:bg-blue-600 transition-all">
+          All Briefings
+        </button>
+        <button data-filter="connectivity" class="filter-btn px-4 py-1.5 rounded-full text-xs font-bold bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 transition-all">
+          Connectivity
+        </button>
+        <button data-filter="security" class="filter-btn px-4 py-1.5 rounded-full text-xs font-bold bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 transition-all">
+          Security Audit
+        </button>
+        <button data-filter="operations" class="filter-btn px-4 py-1.5 rounded-full text-xs font-bold bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 transition-all">
+          Operations
+        </button>
+      </div>
     </header>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8" id="posts-grid">
       {posts.map((post) => (
-        <article class="flex flex-col bg-white border border-gray-200 rounded-3xl overflow-hidden transition-all duration-200 hover:shadow-md hover:scale-[1.01] group dark:bg-gray-800 dark:border-gray-700">
+        <article data-category={post.pillar} class="post-card flex flex-col bg-white border border-gray-200 rounded-3xl overflow-hidden transition-all duration-200 hover:shadow-md hover:scale-[1.01] group dark:bg-gray-800 dark:border-gray-700">
           <div class="p-8 flex flex-col flex-grow">
             <div class="flex items-center gap-3 text-xs text-gray-400 mb-4 font-semibold uppercase tracking-wider dark:text-gray-500">
               <span>{post.createdAt}</span>
               <span class="w-1.5 h-1.5 rounded-full bg-gray-300 dark:bg-gray-700"></span>
               <span>{post.readingTime}</span>
+              <span class="w-1.5 h-1.5 rounded-full bg-gray-300 dark:bg-gray-700"></span>
+              <span class="text-blue-600 dark:text-blue-400 font-bold uppercase">{post.pillar}</span>
             </div>
             
             <h3 class="text-2xl font-black text-gray-900 mb-3 leading-snug group-hover:text-blue-600 transition-colors dark:text-white dark:group-hover:text-blue-400">
@@ -88,4 +106,34 @@ const posts =
       ))}
     </div>
   </main>
+
+  <script is:inline>
+    // Client-side quick filter logic
+    const buttons = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('.post-card');
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const filter = btn.getAttribute('data-filter');
+        
+        // Update active button state styling
+        buttons.forEach(b => {
+          b.classList.remove('bg-blue-700', 'text-white', 'dark:bg-blue-600');
+          b.classList.add('bg-gray-100', 'text-gray-600', 'dark:bg-gray-800', 'dark:text-gray-400');
+        });
+        btn.classList.add('bg-blue-700', 'text-white', 'dark:bg-blue-600');
+        btn.classList.remove('bg-gray-100', 'text-gray-600', 'dark:bg-gray-800', 'dark:text-gray-400');
+
+        // Toggle cards visibility
+        cards.forEach(card => {
+          const category = card.getAttribute('data-category');
+          if (filter === 'all' || category === filter || (filter === 'connectivity' && category.includes('esim'))) {
+            card.classList.remove('hidden');
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+      });
+    });
+  </script>
 </BaseLayout>
