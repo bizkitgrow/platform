@@ -1,6 +1,7 @@
 .vercel
 node_modules
 .env
+dist/
 
 # Secure keys
 *.key
