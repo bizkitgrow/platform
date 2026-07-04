@@ -1,0 +1,55 @@
+{"message":"connected.","label":"vite","level":"info"}
+{"message":"Generated 9ms","label":"types","level":"info"}
+{"message":"connected.","label":"vite","level":"info"}
+{"message":"Re-optimizing dependencies because vite config has changed","label":"vite","level":"info"}
+{"message":" astro  v7.0.6 ready in 8694 ms\n┃ Local    http://localhost:4321/\n┃ Network  use --host to expose","label":"SKIP_FORMAT","level":"info"}
+{"message":"watching for file changes...","label":null,"level":"info"}
+{"message":"`cache.set()` was called but caching is not enabled. Configure a cache provider in your Astro config under `cache` to enable caching.","label":"cache","level":"warn"}
+{"message":"[200] / 216ms","label":null,"level":"info"}
+{"message":"[200] / 204ms","label":null,"level":"info"}
+{"message":"[optimizer] bundling dependencies...","label":"vite","level":"info"}
+{"message":"dependencies optimized: flowbite, lenis","label":"vite","level":"info"}
+{"message":"[200] / 172ms","label":null,"level":"info"}
+Database query failed, using fallback: Failed query: select "id", "title", "slug", "content", "ai_summary", "original_image", "hash", "meta_desc", "category_id", "source_url", "target_product_sku", "resellportal_order_id", "resellportal_status", "webhook_processed", "created_at" from "posts" order by "posts"."created_at" desc limit $1
+params: 24
+{"message":"[200] /blog 1732ms","label":null,"level":"info"}
+{"message":"/src/components/MarketPulseTicker.astro?astro&type=style&index=0&lang.css, /src/components/ResellPortalWidget.astro?astro&type=style&index=0&lang.css, /node_modules/@astrojs/tailwind/base.css, /src/styles/global.css, /src/layouts/BaseLayout.astro?astro&type=style&index=0&lang.css","label":"watch","level":"info"}
+{"message":"src/layouts/BaseLayout.astro","label":"watch","level":"info"}
+Database query failed, using fallback: Failed query: select "id", "title", "slug", "content", "ai_summary", "original_image", "hash", "meta_desc", "category_id", "source_url", "target_product_sku", "resellportal_order_id", "resellportal_status", "webhook_processed", "created_at" from "posts" order by "posts"."created_at" desc limit $1
+params: 24
+{"message":"[200] /blog 200ms","label":null,"level":"info"}
+{"message":"[console.error] Error: Can only be used on: https://bizkitgrow.vercel.app\n    at https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:18361\n    at https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:18423\n    at async t.zr (https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:135403)\n    at async t.init (https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:136036)\n    at async http://localhost:4321/blog:4:7\n    at async https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:140457","label":"vite","level":"error"}
+{"message":".vercel/output/static/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/privacy/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/terms/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/australia/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/germany/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/united-states/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/berlin/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/london/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/canada/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/sydney/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/united-kingdom/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/new-york/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/toronto/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/appointment-booking/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/crm-system/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/invoicing-with-ai/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/privacy/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/sydney/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/new-york/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/toronto/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/london/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/berlin/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/terms/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/invoicing-with-ai/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/crm-system/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/appointment-booking/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/australia/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/germany/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/united-states/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/canada/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/united-kingdom/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/canada/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/united-kingdom/index.html","label":"watch","level":"info"}

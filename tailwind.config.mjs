@@ -32,8 +32,6 @@ export default {
     },
   },
   plugins: [
-    require('@astrouxds/tailwind'),
-    require('tailwindcss-plugin-custom-elements'),
     require('flowbite/plugin'),
   ],
 };
