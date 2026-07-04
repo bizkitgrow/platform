@@ -5,5 +5,11 @@ node_modules
 # Secure keys
 *.key
 *.key.pub
+# Misc
+.DS_Store
+*.pem
+
+# Local configuration
+mcp.json
 .secrets/
 docs/

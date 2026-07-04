@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "n8n-cloud-mcp": {
+      "type": "http",
+      "url": "https://bizkitgrow.app.n8n.cloud/mcp-server/http",
+      "headers": {
+        "Authorization": "Bearer YOUR_N8N_CLOUD_MCP_TOKEN"
+      }
+    },
+    "n8n-oracle-mcp": {
+      "type": "http",
+      "url": "http://168.110.222.15:5678/mcp-server/http",
+      "headers": {
+        "Authorization": "Bearer YOUR_N8N_ORACLE_MCP_TOKEN"
+      }
+    }
+  }
+}
