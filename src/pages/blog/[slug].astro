@@ -279,15 +279,53 @@ const articleSchema = {
         />
 
         <!-- Source Credit -->
-        {activePost.sourceCredit && (
+        {activePost.sourceUrl && (
           <div class="mt-12 p-6 border-l-4 border-brand_cta bg-canvas_accent rounded-r-sm">
              <p class="font-mono text-xs uppercase tracking-widest text-text_secondary font-bold mb-2">SOURCE MATERIAL &amp; ATTRIBUTION</p>
              <p class="text-sm text-text_secondary">
                This intelligence briefing integrates external context sourced from: 
-               <a href={activePost.sourceCredit} target="_blank" rel="noopener noreferrer" class="text-brand_cta hover:underline break-all">{activePost.sourceCredit}</a>
+               <a href={activePost.sourceUrl} target="_blank" rel="noopener noreferrer" class="text-brand_cta hover:underline break-all">{activePost.sourceUrl}</a>
              </p>
           </div>
         )}
+
+        <!-- Embed Briefing Widget -->
+        <div class="mt-8 p-6 border border-borders_subtle bg-canvas_accent rounded-sm shadow-subtle hover:border-brand_cta transition-colors">
+          <p class="font-mono text-xs uppercase tracking-widest text-text_primary font-bold mb-3">EMBED BRIEFING</p>
+          <p class="text-xs text-text_secondary mb-4">
+            Integrate this intelligence briefing directly into your corporate dashboard or portal.
+          </p>
+          <div class="flex gap-2">
+            <input 
+              type="text" 
+              readonly 
+              value={`<iframe src="${Astro.url.href}" width="100%" height="600" style="border:1px solid #E2E8F0; border-radius:0px;"></iframe>`}
+              class="w-full bg-white border border-borders_subtle px-3 py-2 text-xs font-mono text-text_primary rounded-sm focus:outline-none"
+              id="embed-code-input"
+            />
+            <button 
+              id="copy-embed-btn"
+              class="font-mono text-[10px] uppercase tracking-widest bg-brand_cta text-white px-4 py-2 hover:bg-brand_cta_hover transition-colors font-bold rounded-sm shrink-0"
+            >
+              COPY CODE
+            </button>
+          </div>
+        </div>
+
+        <script>
+          const copyBtn = document.getElementById('copy-embed-btn');
+          const input = document.getElementById('embed-code-input') as HTMLInputElement;
+          if (copyBtn && input) {
+            copyBtn.addEventListener('click', () => {
+              input.select();
+              navigator.clipboard.writeText(input.value);
+              copyBtn.textContent = 'COPIED';
+              setTimeout(() => {
+                copyBtn.textContent = 'COPY CODE';
+              }, 2000);
+            });
+          }
+        </script>
  
         {aiMeta.tags && Array.isArray(aiMeta.tags) && aiMeta.tags.length > 0 && (
           <div class="mt-8 flex flex-wrap gap-2">
