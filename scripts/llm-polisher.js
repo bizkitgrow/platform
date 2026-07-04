@@ -5,13 +5,27 @@ const { executeAgnosticAiRefinement } = require('./universal-ai-adapter');
  * Text Polishing Engine using multi-key free inference cascade
  * (Gemini -> OpenRouter -> Grok)
  */
-async function polishText(rawText) {
-  console.log('[LLM-POLISHER] Passing raw text to inference cascade...');
+async function polishText(rawText, targetPillar) {
+  console.log('[LLM-POLISHER] Passing raw text to inference cascade for pillar:', targetPillar);
 
   let llmResponse = null;
 
   try {
+    let pillarContext = '';
+    if (targetPillar === 'esim_data_plans') {
+      pillarContext =
+        'FOCUS: Emphasize global connectivity, B2B enterprise roaming, and latency reduction solutions for nomads and global teams.';
+    } else if (targetPillar === 'reputation_management') {
+      pillarContext =
+        'FOCUS: Emphasize Google Local Search Authority, review gating, crisis mitigation, and brand trust automation.';
+    } else if (targetPillar === 'ai_business_tools_suite') {
+      pillarContext =
+        'FOCUS: Emphasize document routing, back-office automation, CRM integrations, and operational efficiency.';
+    }
+
     const prompt = `You are a professional B2B content editor and copywriter. Analyze the following raw text and transform it into a polished, high-quality, SEO-optimized blog article. 
+
+${pillarContext}
 
 CRITICAL WRITING STYLE RULES (Elements of Agent Style & Avoid AI Writing):
 1. Do not assume the reader shares your tacit knowledge.

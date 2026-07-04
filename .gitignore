@@ -1,3 +1,8 @@
 .vercel
 node_modules
 .env
+
+# Secure keys
+*.key
+*.key.pub
+.secrets/

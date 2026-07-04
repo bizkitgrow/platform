@@ -36,9 +36,9 @@ async function fetchActiveRssSources() {
     console.log('[MINER] No feeds found. Seeding high-margin RSS targets...');
     const seedRes = await pool.query(`
       INSERT INTO rss_sources (url, target_pillar) VALUES 
-      ('https://news.ycombinator.com/rss', 'esim_data_plans'),
-      ('https://techcrunch.com/feed/', 'ai_business_tools_suite'),
-      ('https://www.theverge.com/rss/index.xml', 'reputation_management')
+      ('https://www.rcrwireless.com/feed', 'esim_data_plans'),
+      ('https://searchengineland.com/feed', 'reputation_management'),
+      ('https://venturebeat.com/category/ai/feed', 'ai_business_tools_suite')
       RETURNING *
     `);
     return seedRes.rows;
@@ -99,6 +99,11 @@ async function scrapeContent(url) {
 }
 
 async function runMiner() {
+  const isDryRun = process.argv.includes('--dry-run');
+  if (isDryRun) {
+    console.log('[MINER] Running in DRY-RUN mode. No database inserts will occur.');
+  }
+
   const startTime = Date.now();
   console.log('[MINER] Starting production miner...');
   let itemsFetched = 0;
@@ -114,9 +119,47 @@ async function runMiner() {
         continue;
       }
 
-      // Enforce absolute UNIQUE index check via MD5 hash
-      const hash = crypto.createHash('md5').update(rawText).digest('hex');
-      console.log(`[MINER] Content hash generated: ${hash}`);
+      // Extract title and base link for strict deduplication hashing
+      const titleMatch = rawText.match(/Title:\s*(.+)/);
+      const linkMatch = rawText.match(/Link:\s*(.+)/);
+      const extractedTitle = titleMatch ? titleMatch[1].trim() : '';
+      let extractedLink = linkMatch ? linkMatch[1].trim() : '';
+
+      // Remove query strings for canonical link
+      if (extractedLink.includes('?')) {
+        extractedLink = extractedLink.split('?')[0];
+      }
+
+      const dedupString = `${extractedTitle}-${extractedLink}`;
+      const hash = crypto.createHash('md5').update(dedupString).digest('hex');
+      console.log(`[MINER] Content hash generated: ${hash} from "${dedupString}"`);
+
+      // Keyword filtering (must contain at least 2 relevant terms)
+      const lowerText = rawText.toLowerCase();
+      const keywords = [
+        'ai',
+        'esim',
+        'reputation',
+        'search',
+        'connectivity',
+        'automation',
+        'b2b',
+        'enterprise',
+        'software',
+        'technology',
+        'startup',
+        'saas',
+        'data',
+        'cloud',
+        'digital',
+      ];
+      const matchCount = keywords.filter((kw) => lowerText.includes(kw)).length;
+      if (matchCount < 2) {
+        console.log(
+          `[MINER] Skipping source ${source.url} due to low keyword match count (${matchCount}).`,
+        );
+        continue;
+      }
 
       // Check DB duplication
       const dupCheck = await pool.query('SELECT id FROM posts WHERE hash = $1', [hash]);
@@ -126,7 +169,7 @@ async function runMiner() {
       }
 
       // Pass to Text Polishing Engine (LLM)
-      const polishedResult = await llmPolisher.polishText(rawText);
+      const polishedResult = await llmPolisher.polishText(rawText, source.target_pillar);
 
       // Apply GEO-SEO Conversational Tagging
       const optimizedSeoBody = applyGeoSeoOptimizations(
@@ -137,6 +180,14 @@ async function runMiner() {
 
       // Pass to Asset Generator
       const imageUrl = assetGenerator.generateImage(polishedResult.image_prompt);
+
+      // If Dry Run, output JSON and skip insertions
+      if (isDryRun) {
+        console.log('--- DRY RUN OUTPUT ---');
+        console.log(JSON.stringify(polishedResult, null, 2));
+        console.log('----------------------');
+        continue;
+      }
 
       // Insert Post
       const slug = `${polishedResult.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${Date.now()}`;
@@ -151,7 +202,7 @@ async function runMiner() {
           optimizedSeoBody,
           hash,
           polishedResult.meta_desc,
-          source.target_pillar, // This now correctly dynamically stores the prioritized pillar bucket
+          source.target_pillar,
           source.url,
         ],
       );
@@ -199,12 +250,14 @@ async function runMiner() {
       }
     }
 
-    // Success Automation Log
-    const duration = Date.now() - startTime;
-    await pool.query(
-      'INSERT INTO automation_logs (items_fetched, status, execution_duration_ms) VALUES ($1, $2, $3)',
-      [itemsFetched, 'SUCCESS', duration],
-    );
+    if (!isDryRun) {
+      // Success Automation Log
+      const duration = Date.now() - startTime;
+      await pool.query(
+        'INSERT INTO automation_logs (items_fetched, status, execution_duration_ms) VALUES ($1, $2, $3)',
+        [itemsFetched, 'SUCCESS', duration],
+      );
+    }
   } catch (error) {
     console.error('[MINER] [ERROR]', error.message);
     const duration = Date.now() - startTime;
