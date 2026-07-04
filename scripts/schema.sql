@@ -50,3 +50,12 @@ INSERT INTO categories (name, slug) VALUES
   ('Reputation', 'reputation'),
   ('Operations', 'operations')
 ON CONFLICT (slug) DO NOTHING;
+
+-- RLS Policies
+-- Allow public read access to posts and categories
+CREATE POLICY "Allow public read access on posts" ON public.posts FOR SELECT USING (true);
+CREATE POLICY "Allow public read access on categories" ON public.categories FOR SELECT USING (true);
+
+-- Deny all public access to sensitive tables (accessed via service_role bypassing RLS)
+CREATE POLICY "Deny public access on waiting_list" ON public.waiting_list FOR ALL USING (false);
+CREATE POLICY "Deny public access on automation_logs" ON public.automation_logs FOR ALL USING (false);
