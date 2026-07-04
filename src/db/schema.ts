@@ -1,10 +1,19 @@
-import { bigint, boolean, integer, pgTable, text, timestamp, varchar } from 'drizzle-orm/pg-core';
+import {
+  bigint,
+  bigserial,
+  boolean,
+  integer,
+  pgTable,
+  text,
+  timestamp,
+  varchar,
+} from 'drizzle-orm/pg-core';
 
 // ============================================================
 // Table: categories
 // ============================================================
 export const categories = pgTable('categories', {
-  id: bigint('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),
+  id: bigserial('id', { mode: 'number' }).primaryKey(),
   name: varchar('name', { length: 255 }).notNull(),
   slug: varchar('slug', { length: 255 }).notNull().unique(),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
@@ -14,7 +23,7 @@ export const categories = pgTable('categories', {
 // Table: rss_sources
 // ============================================================
 export const rssSources = pgTable('rss_sources', {
-  id: bigint('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),
+  id: bigserial('id', { mode: 'number' }).primaryKey(),
   url: text('url').notNull().unique(),
   targetPillar: varchar('target_pillar', { length: 255 }).notNull(),
   isActive: boolean('is_active').default(true),
@@ -26,7 +35,7 @@ export const rssSources = pgTable('rss_sources', {
 // Table: posts
 // ============================================================
 export const posts = pgTable('posts', {
-  id: bigint('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),
+  id: bigserial('id', { mode: 'number' }).primaryKey(),
   title: varchar('title', { length: 255 }).notNull(),
   slug: varchar('slug', { length: 255 }).notNull().unique(),
   content: text('content').notNull(),
@@ -46,7 +55,7 @@ export const posts = pgTable('posts', {
 // Table: media_assets
 // ============================================================
 export const mediaAssets = pgTable('media_assets', {
-  id: bigint('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),
+  id: bigserial('id', { mode: 'number' }).primaryKey(),
   postId: bigint('post_id', { mode: 'number' }).references(() => posts.id, { onDelete: 'cascade' }),
   promptString: text('prompt_string').notNull(),
   pollinationsUrl: text('pollinations_url').notNull(),
@@ -57,7 +66,7 @@ export const mediaAssets = pgTable('media_assets', {
 // Table: social_shares
 // ============================================================
 export const socialShares = pgTable('social_shares', {
-  id: bigint('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),
+  id: bigserial('id', { mode: 'number' }).primaryKey(),
   postId: bigint('post_id', { mode: 'number' }).references(() => posts.id, { onDelete: 'cascade' }),
   status: varchar('status', { length: 50 }).notNull().default('PENDING'),
   platform: varchar('platform', { length: 50 }),
@@ -69,7 +78,7 @@ export const socialShares = pgTable('social_shares', {
 // Table: waiting_list
 // ============================================================
 export const waitingList = pgTable('waiting_list', {
-  id: bigint('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),
+  id: bigserial('id', { mode: 'number' }).primaryKey(),
   email: varchar('email', { length: 255 }).notNull().unique(),
   businessName: varchar('business_name', { length: 255 }),
   targetedService: varchar('targeted_service', { length: 255 }).default('General'),
@@ -81,7 +90,7 @@ export const waitingList = pgTable('waiting_list', {
 // Table: automation_logs
 // ============================================================
 export const automationLogs = pgTable('automation_logs', {
-  id: bigint('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),
+  id: bigserial('id', { mode: 'number' }).primaryKey(),
   itemsFetched: integer('items_fetched').default(0),
   status: varchar('status', { length: 100 }).notNull(),
   executionDurationMs: bigint('execution_duration_ms', { mode: 'number' }).default(0),

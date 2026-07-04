@@ -94,6 +94,13 @@ INSERT INTO categories (name, slug) VALUES
   ('Operations', 'operations')
 ON CONFLICT (slug) DO NOTHING;
 
+-- Insert Default RSS Sources
+INSERT INTO rss_sources (url, target_pillar) VALUES 
+  ('https://news.ycombinator.com/rss', 'connectivity'),
+  ('https://techcrunch.com/feed/', 'operations'),
+  ('https://www.theverge.com/rss/index.xml', 'reputation')
+ON CONFLICT (url) DO NOTHING;
+
 -- RLS Policies
 DROP POLICY IF EXISTS "Allow public read access on posts" ON public.posts;
 CREATE POLICY "Allow public read access on posts" ON public.posts FOR SELECT USING (true);

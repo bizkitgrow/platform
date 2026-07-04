@@ -1,5 +1,6 @@
 const crypto = require('node:crypto');
 const { Pool } = require('pg');
+const cheerio = require('cheerio');
 const llmPolisher = require('./llm-polisher');
 const assetGenerator = require('./asset-generator');
 require('dotenv').config();
@@ -30,21 +31,71 @@ async function fetchActiveRssSources() {
   console.log('[MINER] Fetching active RSS sources from database...');
   const res = await pool.query('SELECT * FROM rss_sources WHERE is_active = true');
 
-  // If database is empty, seed a fallback RSS feed to keep pipeline running
+  // If database is empty, seed fallback RSS feeds targeting highest-margin ResellPortal buckets
   if (res.rows.length === 0) {
-    console.log('[MINER] No feeds found. Seeding HN RSS target...');
-    const seedRes = await pool.query(
-      "INSERT INTO rss_sources (url, target_pillar) VALUES ('https://news.ycombinator.com/rss', 'connectivity') RETURNING *",
-    );
+    console.log('[MINER] No feeds found. Seeding high-margin RSS targets...');
+    const seedRes = await pool.query(`
+      INSERT INTO rss_sources (url, target_pillar) VALUES 
+      ('https://news.ycombinator.com/rss', 'esim_data_plans'),
+      ('https://techcrunch.com/feed/', 'ai_business_tools_suite'),
+      ('https://www.theverge.com/rss/index.xml', 'reputation_management')
+      RETURNING *
+    `);
     return seedRes.rows;
   }
 
   return res.rows;
 }
 
+const Parser = require('rss-parser');
+const parser = new Parser();
+
 async function scrapeContent(url) {
   console.log(`[MINER] Scraping content from ${url}...`);
-  return `This is a raw extracted text from ${url} regarding connectivity solutions and mobility data trends.`;
+  try {
+    const feed = await parser.parseURL(url);
+    if (!feed.items || feed.items.length === 0) {
+      console.log(`[MINER] No items found in feed ${url}`);
+      return null;
+    }
+
+    // Pick the latest item or a random one, let's just take the first one
+    const item = feed.items[0];
+
+    console.log(`[MINER] Fetching full article body from: ${item.link}`);
+    let fullArticleText = item.content || item.contentSnippet || item.description || '';
+
+    try {
+      const articleRes = await fetch(item.link);
+      if (articleRes.ok) {
+        const html = await articleRes.text();
+        const $ = cheerio.load(html);
+
+        // Strip out noisy elements
+        $('script, style, nav, footer, header, aside, .ad, .advertisement, iframe, svg').remove();
+
+        // Extract meaningful text
+        const bodyText = $('body').text().replace(/\s+/g, ' ').trim();
+        // Take a substantial chunk (up to 6000 chars) for LLM context, ensuring it doesn't overload tokens
+        fullArticleText = bodyText.substring(0, 6000);
+      }
+    } catch (fetchErr) {
+      console.warn(
+        `[MINER] Full HTML fetch failed for ${item.link}, falling back to RSS snippet. Error: ${fetchErr.message}`,
+      );
+    }
+
+    // Construct a raw text representation
+    let rawText = `Title: ${item.title}\n`;
+    rawText += `Link: ${item.link}\n`;
+    rawText += `Published: ${item.pubDate || ''}\n`;
+    rawText += `Content: ${fullArticleText}\n`;
+
+    return rawText;
+  } catch (err) {
+    console.error(`[MINER] Failed to parse RSS feed ${url}:`, err.message);
+    return null;
+  }
 }
 
 async function runMiner() {
@@ -57,6 +108,11 @@ async function runMiner() {
 
     for (const source of sources) {
       const rawText = await scrapeContent(source.url);
+
+      if (!rawText) {
+        console.log(`[MINER] Skipping source ${source.url} due to missing content.`);
+        continue;
+      }
 
       // Enforce absolute UNIQUE index check via MD5 hash
       const hash = crypto.createHash('md5').update(rawText).digest('hex');
@@ -95,7 +151,7 @@ async function runMiner() {
           optimizedSeoBody,
           hash,
           polishedResult.meta_desc,
-          'esim_data_plans',
+          source.target_pillar, // This now correctly dynamically stores the prioritized pillar bucket
           source.url,
         ],
       );
@@ -118,6 +174,26 @@ async function runMiner() {
 
       itemsFetched++;
       console.log(`[MINER] Successfully logged post ID ${newPostId} into DB.`);
+
+      // Trigger ISR Revalidation for the blog listing page
+      if (process.env.VERCEL_REVALIDATE_URL && process.env.VERCEL_REVALIDATE_SECRET) {
+        try {
+          console.log('[MINER] Triggering ISR revalidation...');
+          const revRes = await fetch(
+            `${process.env.VERCEL_REVALIDATE_URL}?secret=${process.env.VERCEL_REVALIDATE_SECRET}&path=/blog`,
+            {
+              method: 'POST',
+            },
+          );
+          if (revRes.ok) {
+            console.log('[MINER] Revalidation successful.');
+          } else {
+            console.error('[MINER] Revalidation failed:', await revRes.text());
+          }
+        } catch (revErr) {
+          console.error('[MINER] Revalidation network error:', revErr.message);
+        }
+      }
     }
 
     // Success Automation Log

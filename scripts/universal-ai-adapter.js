@@ -1,7 +1,122 @@
 /**
- * Agnostic AI Refinement with Failover Routing: Gemini -> OpenRouter -> Grok
- * This file is purely synchronous I/O and does NOT have database dependencies.
+ * LLM Provider Abstraction Layer
+ * Implements Factory & Adapter design patterns to provide a unified
+ * interface for different LLM providers (Gemini, OpenRouter, Grok).
  */
+
+class LLMProvider {
+  /**
+   * Generates a polished content response.
+   * @param {string} prompt The full prompt string
+   * @returns {Promise<object>} The parsed JSON object
+   */
+  async generateResponse(prompt) {
+    throw new Error('Method not implemented.');
+  }
+}
+
+class GeminiAdapter extends LLMProvider {
+  constructor(apiKey) {
+    super();
+    this.apiKey = apiKey;
+    this.url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+  }
+
+  async generateResponse(prompt) {
+    const response = await fetch(this.url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: { responseMimeType: 'application/json' },
+      }),
+    });
+    if (!response.ok) throw new Error(`Gemini responded with status ${response.status}`);
+    const data = await response.json();
+    try {
+      const rawText = data.candidates[0].content.parts[0].text;
+      return JSON.parse(rawText);
+    } catch (e) {
+      throw new Error('Gemini failed to return valid JSON');
+    }
+  }
+}
+
+class OpenRouterAdapter extends LLMProvider {
+  constructor(apiKey) {
+    super();
+    this.apiKey = apiKey;
+    this.url = 'https://openrouter.ai/api/v1/chat/completions';
+  }
+
+  async generateResponse(prompt) {
+    const response = await fetch(this.url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.apiKey}`,
+      },
+      body: JSON.stringify({
+        model: 'google/gemini-flash-1.5-exp',
+        messages: [{ role: 'user', content: prompt }],
+        response_format: { type: 'json_object' },
+      }),
+    });
+    if (!response.ok) throw new Error(`OpenRouter responded with status ${response.status}`);
+    const data = await response.json();
+    return this._extractJson(data.choices[0].message.content);
+  }
+
+  _extractJson(rawText) {
+    const jsonRegex = /\{[\s\S]*\}/;
+    const match = rawText.match(jsonRegex);
+    if (!match) throw new Error('OpenRouter LLM failed to output JSON block.');
+    return JSON.parse(match[0]);
+  }
+}
+
+class GrokAdapter extends LLMProvider {
+  constructor(apiKey) {
+    super();
+    this.apiKey = apiKey;
+    this.url = 'https://api.x.ai/v1/chat/completions';
+  }
+
+  async generateResponse(prompt) {
+    const response = await fetch(this.url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.apiKey}`,
+      },
+      body: JSON.stringify({
+        model: 'grok-beta',
+        messages: [{ role: 'user', content: prompt }],
+      }),
+    });
+    if (!response.ok) throw new Error(`Grok responded with status ${response.status}`);
+    const data = await response.json();
+    return this._extractJson(data.choices[0].message.content);
+  }
+
+  _extractJson(rawText) {
+    const jsonRegex = /\{[\s\S]*\}/;
+    const match = rawText.match(jsonRegex);
+    if (!match) throw new Error('Grok LLM failed to output JSON block.');
+    return JSON.parse(match[0]);
+  }
+}
+
+const LLMFactory = {
+  getProviders() {
+    const providers = [];
+    if (process.env.GEMINI_API_KEY) providers.push(new GeminiAdapter(process.env.GEMINI_API_KEY));
+    if (process.env.OPENROUTER_API_KEY)
+      providers.push(new OpenRouterAdapter(process.env.OPENROUTER_API_KEY));
+    if (process.env.GROK_API_KEY) providers.push(new GrokAdapter(process.env.GROK_API_KEY));
+    return providers;
+  },
+};
 
 /**
  * Pintu gerbang utama pengolahan teks otonom dengan sistem failover otomatis.
@@ -9,67 +124,22 @@
  * @returns {Promise<object>} Output terstruktur yang sudah dibersihkan
  */
 async function executeAgnosticAiRefinement(prompt) {
-  const providers = [
-    {
-      name: 'gemini',
-      url: `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
-      payload: { contents: [{ parts: [{ text: prompt }] }] },
-      parse: (res) => res.candidates[0].content.parts[0].text,
-    },
-    {
-      name: 'openrouter',
-      url: 'https://openrouter.ai/api/v1/chat/completions',
-      payload: {
-        model: 'google/gemini-flash-1.5-exp',
-        messages: [{ role: 'user', content: prompt }],
-      },
-      parse: (res) => res.choices[0].message.content,
-    },
-    {
-      name: 'grok',
-      url: 'https://api.x.ai/v1/chat/completions',
-      payload: {
-        model: 'grok-beta',
-        messages: [{ role: 'user', content: prompt }],
-      },
-      parse: (res) => res.choices[0].message.content,
-    },
-  ];
+  const providers = LLMFactory.getProviders();
+
+  if (providers.length === 0) {
+    throw new Error(
+      'Critical Configuration Error: No AI Provider API keys found in environment variables.',
+    );
+  }
 
   for (const provider of providers) {
     try {
-      console.log(`Attempting data refinement via AI Provider: ${provider.name}`);
-
-      const response = await fetch(provider.url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(provider.name === 'openrouter' && {
-            Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
-          }),
-          ...(provider.name === 'grok' && { Authorization: `Bearer ${process.env.GROK_API_KEY}` }),
-        },
-        body: JSON.stringify(provider.payload),
-      });
-
-      if (!response.ok)
-        throw new Error(`Provider ${provider.name} returned status code ${response.status}`);
-
-      const json = await response.json();
-      const rawText = provider.parse(json);
-
-      // Ekstraksi paksa objek JSON dari respon LLM untuk mencegah halusinasi teks markdown
-      const jsonRegex = /\{[\s\S]*\}/;
-      const match = rawText.match(jsonRegex);
-
-      if (!match) throw new Error('LLM failed to output a compliant structured JSON block.');
-
-      return JSON.parse(match[0]);
+      console.log(`[AI-ADAPTER] Attempting inference via ${provider.constructor.name}...`);
+      return await provider.generateResponse(prompt);
     } catch (err) {
       console.warn(
-        `Provider ${provider.name} failure encountered: ${err.message}. Cascading to next available node...`,
+        `[AI-ADAPTER] Provider ${provider.constructor.name} failure: ${err.message}. Cascading to next available node...`,
       );
-      // Warning logged, callers will handle storing failover logs if needed.
     }
   }
 
@@ -78,4 +148,10 @@ async function executeAgnosticAiRefinement(prompt) {
   );
 }
 
-module.exports = { executeAgnosticAiRefinement };
+module.exports = {
+  executeAgnosticAiRefinement,
+  LLMFactory,
+  GeminiAdapter,
+  OpenRouterAdapter,
+  GrokAdapter,
+};

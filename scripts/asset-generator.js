@@ -11,7 +11,7 @@ function generateImage(prompt) {
   const height = 1080;
   const nologo = true;
 
-  const url = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=${width}&height=${height}&nologo=${nologo}`;
+  const url = `https://image.pollinations.ai/p/${encodedPrompt}?width=${width}&height=${height}&nologo=${nologo}`;
 
   return url;
 }

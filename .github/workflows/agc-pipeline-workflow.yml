@@ -47,5 +47,6 @@ jobs:
           VERCEL_REVALIDATE_URL: ${{ secrets.VERCEL_REVALIDATE_URL }}
           ALPHA_VANTAGE_KEY: ${{ secrets.ALPHA_VANTAGE_KEY }}
           RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: |
-          node scripts/main-pipeline.js
+          node scripts/production-miner.js

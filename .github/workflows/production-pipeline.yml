@@ -1,0 +1,62 @@
+name: Production Pipeline Automation
+
+on:
+  schedule:
+    - cron: '0 */6 * * *' # Every 6 hours
+  workflow_dispatch: # Allow manual triggers
+
+jobs:
+  heavy-data-mining:
+    name: Execute Deep Miner & AI Polish
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run Production Miner
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          GROK_API_KEY: ${{ secrets.GROK_API_KEY }}
+          VERCEL_REVALIDATE_URL: ${{ secrets.VERCEL_REVALIDATE_URL }}
+          VERCEL_REVALIDATE_SECRET: ${{ secrets.VERCEL_REVALIDATE_SECRET }}
+        run: node scripts/production-miner.js
+
+  social-syndication:
+    name: Execute Social Webhook Dispatch
+    needs: heavy-data-mining
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run Syndicator
+        # Assuming scripts/test-syndicate.js was renamed/restructured or we create a dedicated scripts/syndicate.js
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          N8N_WEBHOOK_URL: ${{ secrets.N8N_WEBHOOK_URL }}
+          BASE_URL: ${{ secrets.BASE_URL }}
+        run: node scripts/syndicate.js

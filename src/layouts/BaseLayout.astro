@@ -72,27 +72,59 @@ const safeCanonicalUrl = canonicalUrl || Astro.url.href;
   </style>
 </head>
 <body class="antialiased selection:bg-interactive-hover selection:text-text-inverse bg-background-base text-text-primary min-h-screen flex flex-col">
-  <!-- Dynamic Navigation Header -->
   <header class="border-b border-border-subtle sticky top-0 bg-background-surface/80 backdrop-blur-md z-50">
     <div class="max-w-[1280px] mx-auto px-6 h-16 flex items-center justify-between">
       <a href="/" class="text-xl font-extrabold tracking-tight text-text-primary flex items-center gap-2 hover:opacity-90">
         <span class="w-8 h-8 rounded-lg bg-interactive-normal flex items-center justify-center text-text-inverse text-base">b</span>
         {brandName}
       </a>
-      <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-text-secondary">
-        <a href="/" class="hover:text-text-primary transition-colors">Platform</a>
-        <a href="/esim/united-states" class="hover:text-text-primary transition-colors">Connectivity</a>
-        <a href="/reputation/new-york" class="hover:text-text-primary transition-colors">Reputation</a>
-        <a href="/solutions/crm-system" class="hover:text-text-primary transition-colors">Solutions</a>
-        <a href="/blog" class="hover:text-text-primary transition-colors">Intelligence</a>
+      
+      <!-- Desktop Nav -->
+      <nav class="hidden md:flex items-center gap-8 text-sm font-medium">
+        <a href="/" class={`transition-colors ${Astro.url.pathname === '/' ? 'text-text-primary font-bold' : 'text-text-secondary hover:text-text-primary'}`}>Platform</a>
+        <a href="/esim/united-states" class={`transition-colors ${Astro.url.pathname.startsWith('/esim') ? 'text-text-primary font-bold' : 'text-text-secondary hover:text-text-primary'}`}>Connectivity</a>
+        <a href="/reputation/new-york" class={`transition-colors ${Astro.url.pathname.startsWith('/reputation') ? 'text-text-primary font-bold' : 'text-text-secondary hover:text-text-primary'}`}>Reputation</a>
+        <a href="/solutions/crm-system" class={`transition-colors ${Astro.url.pathname.startsWith('/solutions') ? 'text-text-primary font-bold' : 'text-text-secondary hover:text-text-primary'}`}>Solutions</a>
+        <a href="/blog" class={`transition-colors ${Astro.url.pathname.startsWith('/blog') ? 'text-text-primary font-bold' : 'text-text-secondary hover:text-text-primary'}`}>Intelligence</a>
       </nav>
+      
       <div class="flex items-center gap-4">
-        <a href="#waitlist" class="h-9 px-4 inline-flex items-center justify-center rounded-lg bg-interactive-normal hover:bg-interactive-hover text-text-inverse text-xs font-semibold tracking-wide transition-colors">
+        <a href="#waitlist" class="hidden sm:inline-flex h-9 px-4 items-center justify-center rounded-lg bg-interactive-normal hover:bg-interactive-hover text-text-inverse text-xs font-semibold tracking-wide transition-colors">
           Initialize System
         </a>
+        
+        <!-- Mobile Menu Toggle -->
+        <button id="mobile-menu-btn" class="md:hidden p-2 text-text-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+        </button>
       </div>
     </div>
+    
+    <!-- Mobile Nav -->
+    <div id="mobile-nav" class="hidden md:hidden border-t border-border-subtle bg-background-surface px-6 py-4 space-y-4">
+      <a href="/" class={`block transition-colors ${Astro.url.pathname === '/' ? 'text-text-primary font-bold' : 'text-text-secondary hover:text-text-primary'}`}>Platform</a>
+      <a href="/esim/united-states" class={`block transition-colors ${Astro.url.pathname.startsWith('/esim') ? 'text-text-primary font-bold' : 'text-text-secondary hover:text-text-primary'}`}>Connectivity</a>
+      <a href="/reputation/new-york" class={`block transition-colors ${Astro.url.pathname.startsWith('/reputation') ? 'text-text-primary font-bold' : 'text-text-secondary hover:text-text-primary'}`}>Reputation</a>
+      <a href="/solutions/crm-system" class={`block transition-colors ${Astro.url.pathname.startsWith('/solutions') ? 'text-text-primary font-bold' : 'text-text-secondary hover:text-text-primary'}`}>Solutions</a>
+      <a href="/blog" class={`block transition-colors ${Astro.url.pathname.startsWith('/blog') ? 'text-text-primary font-bold' : 'text-text-secondary hover:text-text-primary'}`}>Intelligence</a>
+      <a href="#waitlist" class="block w-full h-9 px-4 mt-4 text-center rounded-lg bg-interactive-normal text-text-inverse text-xs font-semibold leading-9 tracking-wide">
+        Initialize System
+      </a>
+    </div>
   </header>
+
+  <script is:inline>
+    // Simple mobile menu toggle logic
+    document.addEventListener('DOMContentLoaded', () => {
+      const btn = document.getElementById('mobile-menu-btn');
+      const nav = document.getElementById('mobile-nav');
+      if (btn && nav) {
+        btn.addEventListener('click', () => {
+          nav.classList.toggle('hidden');
+        });
+      }
+    });
+  </script>
 
   <!-- Main View Frame -->
   <div class="flex-grow">

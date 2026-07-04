@@ -1,4 +1,6 @@
 ---
+export const prerender = false;
+
 import { desc } from 'drizzle-orm';
 import { db } from '../../db/client';
 import { posts as postsTable } from '../../db/schema';
@@ -21,6 +23,7 @@ const fallbackPosts = [
       "In today's fast-paced corporate environment, mobility and connectivity dictate market leadership. Discover how advanced networks enable unprecedented scale.",
     readingTime: '3 min read',
     createdAt: 'July 4, 2026',
+    pillar: 'connectivity',
   },
 ];
 
@@ -40,6 +43,7 @@ const posts =
               year: 'numeric',
             })
           : 'July 4, 2026',
+        pillar: p.targetProductKey || 'operations',
       }))
     : fallbackPosts;
 ---
