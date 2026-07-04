@@ -1,3 +1,11 @@
+DROP TABLE IF EXISTS social_shares CASCADE;
+DROP TABLE IF EXISTS media_assets CASCADE;
+DROP TABLE IF EXISTS posts CASCADE;
+DROP TABLE IF EXISTS rss_sources CASCADE;
+DROP TABLE IF EXISTS categories CASCADE;
+DROP TABLE IF EXISTS waiting_list CASCADE;
+DROP TABLE IF EXISTS automation_logs CASCADE;
+
 -- Table 1: categories
 CREATE TABLE IF NOT EXISTS categories (
   id BIGSERIAL PRIMARY KEY,
@@ -87,12 +95,24 @@ INSERT INTO categories (name, slug) VALUES
 ON CONFLICT (slug) DO NOTHING;
 
 -- RLS Policies
+DROP POLICY IF EXISTS "Allow public read access on posts" ON public.posts;
 CREATE POLICY "Allow public read access on posts" ON public.posts FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Allow public read access on categories" ON public.categories;
 CREATE POLICY "Allow public read access on categories" ON public.categories FOR SELECT USING (true);
 
 -- Deny all public access to sensitive tables
+DROP POLICY IF EXISTS "Deny public access on waiting_list" ON public.waiting_list;
 CREATE POLICY "Deny public access on waiting_list" ON public.waiting_list FOR ALL USING (false);
+
+DROP POLICY IF EXISTS "Deny public access on automation_logs" ON public.automation_logs;
 CREATE POLICY "Deny public access on automation_logs" ON public.automation_logs FOR ALL USING (false);
+
+DROP POLICY IF EXISTS "Deny public access on rss_sources" ON public.rss_sources;
 CREATE POLICY "Deny public access on rss_sources" ON public.rss_sources FOR ALL USING (false);
+
+DROP POLICY IF EXISTS "Deny public access on media_assets" ON public.media_assets;
 CREATE POLICY "Deny public access on media_assets" ON public.media_assets FOR ALL USING (false);
+
+DROP POLICY IF EXISTS "Deny public access on social_shares" ON public.social_shares;
 CREATE POLICY "Deny public access on social_shares" ON public.social_shares FOR ALL USING (false);

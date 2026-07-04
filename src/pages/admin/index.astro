@@ -1,4 +1,6 @@
 ---
+export const prerender = false;
+
 import { count, desc } from 'drizzle-orm';
 import { db } from '../../db/client';
 import {
@@ -9,6 +11,26 @@ import {
   waitingList,
 } from '../../db/schema';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+
+// Basic Authentication Gate for Admin Perimeter
+const authHeader = Astro.request.headers.get('Authorization');
+if (!authHeader || !authHeader.startsWith('Basic ')) {
+  Astro.response.headers.set('WWW-Authenticate', 'Basic realm="Bizkitgrow Admin Perimeter"');
+  return new Response('Unauthorized Access', { status: 401 });
+}
+
+try {
+  const credentials = Buffer.from(authHeader.split(' ')[1], 'base64').toString('ascii');
+  const [username, password] = credentials.split(':');
+
+  if (username !== import.meta.env.ADMIN_USERNAME || password !== import.meta.env.ADMIN_PASSWORD) {
+    Astro.response.headers.set('WWW-Authenticate', 'Basic realm="Bizkitgrow Admin Perimeter"');
+    return new Response('Unauthorized Access', { status: 401 });
+  }
+} catch (err) {
+  Astro.response.headers.set('WWW-Authenticate', 'Basic realm="Bizkitgrow Admin Perimeter"');
+  return new Response('Unauthorized Access', { status: 401 });
+}
 
 const currentUrl = 'https://bizkitgrow.vercel.app/admin';
 
