@@ -1,8 +1,9 @@
-import { defineConfig } from 'astro/config';
-import vercel from '@astrojs/vercel';
-import tailwind from '@astrojs/tailwind';
+import icon from 'astro-icon';
 import sitemap from '@astrojs/sitemap';
+import tailwind from '@astrojs/tailwind';
+import vercel from '@astrojs/vercel';
 import robotsTxt from 'astro-ai-robots-txt';
+import { defineConfig } from 'astro/config';
 
 export default defineConfig({
   site: 'https://bizkitgrow.vercel.app',
@@ -18,6 +19,11 @@ export default defineConfig({
     }),
     sitemap(),
     robotsTxt(),
+    icon({
+      include: {
+        tabler: ['*'],
+      },
+    }),
   ],
   vite: {
     ssr: {

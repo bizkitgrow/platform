@@ -1,22 +1,19 @@
 require('dotenv').config();
 const { createClient } = require('@supabase/supabase-js');
 
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY
-);
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
 
 async function processPendingShares(supabaseClient, recordId, dispatchResult) {
   const targetStatus = dispatchResult.success ? 'SUCCESS' : 'FAILED';
-  
+
   const { error } = await supabaseClient
     .from('social_shares')
-    .update({ 
-      status: targetStatus, 
-      error_log: dispatchResult.error || null
+    .update({
+      status: targetStatus,
+      error_log: dispatchResult.error || null,
     })
     .eq('id', recordId);
-    
+
   if (error) {
     console.error(`[DATABASE ERROR] Failed to flush social row state: ${error.message}`);
   } else {
@@ -38,8 +35,12 @@ async function runDispatcher() {
   const payload = {
     title: process.env.POST_TITLE || 'Bizkitgrow: Sovereign B2B Infrastructure Update',
     slug: process.env.POST_SLUG || 'bizkitgrow-intelligence',
-    social_caption: process.env.POST_CAPTION || 'No-slop B2B intelligence. Global eSIM, local authority, and operational automation — on a single edge. #B2B #Connectivity #AI',
-    image_url: process.env.POST_IMAGE || 'https://image.pollinations.ai/prompt/Brutalist%20telemetry%20B2B%20dashboard%2C%20black%20and%20neon%20green%2C%20flat%20design?width=1080&height=1080&nologo=true',
+    social_caption:
+      process.env.POST_CAPTION ||
+      'No-slop B2B intelligence. Global eSIM, local authority, and operational automation — on a single edge. #B2B #Connectivity #AI',
+    image_url:
+      process.env.POST_IMAGE ||
+      'https://image.pollinations.ai/prompt/Brutalist%20telemetry%20B2B%20dashboard%2C%20black%20and%20neon%20green%2C%20flat%20design?width=1080&height=1080&nologo=true',
   };
 
   // --- GATE 1: n8n Cloud Primary ---
@@ -47,10 +48,11 @@ async function runDispatcher() {
     try {
       console.log('[GATE 1] Dispatching to n8n Cloud...');
       const res = await dispatchWithTimeout(process.env.N8N_CLOUD_WEBHOOK_URL, payload, 6000);
-      if (res.ok) { 
-        console.log('[GATE 1 SUCCESS]'); 
-        if (process.env.PENDING_SHARE_ID) await processPendingShares(supabase, process.env.PENDING_SHARE_ID, { success: true });
-        process.exit(0); 
+      if (res.ok) {
+        console.log('[GATE 1 SUCCESS]');
+        if (process.env.PENDING_SHARE_ID)
+          await processPendingShares(supabase, process.env.PENDING_SHARE_ID, { success: true });
+        process.exit(0);
       }
       console.warn('[GATE 1] Returned non-OK status:', res.status);
     } catch (e) {
@@ -63,10 +65,11 @@ async function runDispatcher() {
     try {
       console.log('[GATE 2] Dispatching to Oracle n8n...');
       const res = await dispatchWithTimeout(process.env.N8N_ORACLE_WEBHOOK_URL, payload, 6000);
-      if (res.ok) { 
-        console.log('[GATE 2 SUCCESS]'); 
-        if (process.env.PENDING_SHARE_ID) await processPendingShares(supabase, process.env.PENDING_SHARE_ID, { success: true });
-        process.exit(0); 
+      if (res.ok) {
+        console.log('[GATE 2 SUCCESS]');
+        if (process.env.PENDING_SHARE_ID)
+          await processPendingShares(supabase, process.env.PENDING_SHARE_ID, { success: true });
+        process.exit(0);
       }
       console.warn('[GATE 2] Returned non-OK status:', res.status);
     } catch (e) {
@@ -76,7 +79,9 @@ async function runDispatcher() {
 
   // --- GATE 3: Direct API Fallback (X/Twitter + Pinterest only) ---
   // Note: Instagram & Facebook require OAuth 2.0 renewal — handled in Gate 1/2 only
-  console.log('[GATE 3] Activating direct API fallback. Meta syndication deferred (OAuth token security).');
+  console.log(
+    '[GATE 3] Activating direct API fallback. Meta syndication deferred (OAuth token security).',
+  );
 
   if (process.env.X_TWITTER_BEARER_TOKEN) {
     console.log('[GATE 3] X/Twitter direct dispatch...');
@@ -94,7 +99,8 @@ async function runDispatcher() {
         signal: AbortSignal.timeout(8000),
       });
       const tweetData = await tweetRes.json();
-      if (process.env.PENDING_SHARE_ID) await processPendingShares(supabase, process.env.PENDING_SHARE_ID, { success: true });
+      if (process.env.PENDING_SHARE_ID)
+        await processPendingShares(supabase, process.env.PENDING_SHARE_ID, { success: true });
       console.log('[GATE 3] X dispatch result:', JSON.stringify(tweetData));
     } catch (e) {
       console.error('[GATE 3 X FAIL]', e.message);
@@ -122,7 +128,8 @@ async function runDispatcher() {
         signal: AbortSignal.timeout(8000),
       });
       const pinData = await pinRes.json();
-      if (process.env.PENDING_SHARE_ID) await processPendingShares(supabase, process.env.PENDING_SHARE_ID, { success: true });
+      if (process.env.PENDING_SHARE_ID)
+        await processPendingShares(supabase, process.env.PENDING_SHARE_ID, { success: true });
       console.log('[GATE 3] Pinterest dispatch result:', JSON.stringify(pinData));
     } catch (e) {
       console.error('[GATE 3 Pinterest FAIL]', e.message);
@@ -137,7 +144,7 @@ async function runDispatcher() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Basic ${process.env.ONESIGNAL_REST_API_KEY}`
+          Authorization: `Basic ${process.env.ONESIGNAL_REST_API_KEY}`,
         },
         body: JSON.stringify({
           app_id: process.env.ONESIGNAL_APP_ID,
@@ -145,7 +152,7 @@ async function runDispatcher() {
           headings: { en: payload.title },
           contents: { en: payload.social_caption },
           url: `https://bizkitgrow.vercel.app/blog/${payload.slug}`,
-          chrome_web_image: payload.image_url
+          chrome_web_image: payload.image_url,
         }),
         signal: AbortSignal.timeout(8000),
       });

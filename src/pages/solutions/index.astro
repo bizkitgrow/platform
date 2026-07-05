@@ -1,0 +1,51 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/widgets/Hero.astro';
+import Features from '../../components/widgets/Features.astro';
+import ResellPortalWidget from '../../components/ResellPortalWidget.astro';
+
+const currentUrl = 'https://bizkitgrow.vercel.app/solutions';
+---
+
+<BaseLayout
+  title="Flow Automation | Bizkitgrow"
+  description="Consolidate invoicing, AI-powered scheduling, and secure e-signature workflows."
+  canonicalUrl={currentUrl}
+>
+  <Hero
+    tagline="PILLAR 03 // FLOW AUTOMATION"
+    title="Operational CRM Suite"
+    subtitle="Consolidate invoicing, AI-powered scheduling, and secure e-signature workflows into a single client portal."
+    actions={[
+      { text: 'INITIALIZE SYSTEM', href: '#features', icon: 'tabler:bolt', variant: 'primary' },
+    ]}
+  />
+
+  <div class="max-w-screen-xl px-4 py-8 mx-auto border-b border-borders_subtle">
+    <ResellPortalWidget productSku="crm-suite" resellportalStatus="active" theme="dark" />
+  </div>
+
+  <Features
+    id="features"
+    tagline="Components"
+    title="Automate the Back-Office"
+    subtitle="Cut administrative overhead and recover lost revenue from billing friction."
+    items={[
+      {
+        title: 'Invoicing with AI',
+        description: 'Auto-generate invoices based on CRM activity and follow up autonomously.',
+        icon: 'tabler:receipt',
+      },
+      {
+        title: 'Appointment Booking',
+        description: 'Sync your calendar across timezones with intelligent buffer management.',
+        icon: 'tabler:calendar',
+      },
+      {
+        title: 'Secure E-Signatures',
+        description: 'Cryptographically verified signatures for rapid contract execution.',
+        icon: 'tabler:signature',
+      },
+    ]}
+  />
+</BaseLayout>

@@ -5,7 +5,7 @@ import { leads } from '../../db/schema';
 export const POST: APIRoute = async ({ request }) => {
   try {
     const data = await request.json();
-    
+
     if (!data.email) {
       return new Response(JSON.stringify({ error: 'Email is required' }), {
         status: 400,

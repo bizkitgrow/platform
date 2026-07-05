@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/widgets/Hero.astro';
+
+const currentUrl = 'https://bizkitgrow.vercel.app/terms';
+---
+
+<BaseLayout
+  title="Terms of Service | Bizkitgrow"
+  description="Terms and conditions for utilizing the Bizkitgrow Sovereign B2B Logistics platform."
+  canonicalUrl={currentUrl}
+>
+  <Hero
+    tagline="LEGAL"
+    title="Terms of Service"
+    subtitle="Effective Date: July 5, 2026"
+  />
+
+  <main class="max-w-3xl mx-auto px-4 py-16">
+    <div class="prose prose-invert prose-brutalist lg:prose-xl max-w-none">
+      <h2>1. Operational Perimeter Agreement</h2>
+      <p>By accessing the Bizkitgrow platform, you agree to these operational parameters. Our infrastructure is provided "as is" with guaranteed SLA uptimes for enterprise tiers.</p>
+      
+      <h2>2. Connectivity Usage</h2>
+      <p>Sovereign eSIM bandwidth is subject to fair use policies within the 190+ covered regions. Continuous robotic abuse will trigger automatic throttling at the edge.</p>
+
+      <h2>3. Data Sovereignty</h2>
+      <p>Your intelligence feeds and CRM data remain encrypted and siloed. We do not train external LLMs on your proprietary operational data without explicit consent.</p>
+    </div>
+  </main>
+</BaseLayout>

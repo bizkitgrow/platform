@@ -46,11 +46,27 @@ async function runFinancialIngestion() {
       // Strict dedup hash: title + canonical URL (no query strings)
       const cleanUrl = (item.url || '').split('?')[0].split('#')[0].toLowerCase().trim();
       const cleanTitle = (item.title || '').toLowerCase().replace(/[\s\W]+/g, '');
-      const contentHash = crypto.createHash('md5').update(`${cleanTitle}:${cleanUrl}`).digest('hex');
+      const contentHash = crypto
+        .createHash('md5')
+        .update(`${cleanTitle}:${cleanUrl}`)
+        .digest('hex');
 
       // Keyword guard: must be relevant
       const text = `${item.title} ${item.summary}`.toLowerCase();
-      const relevantKeywords = ['ai', 'tech', 'cloud', 'chip', 'data', 'software', 'enterprise', 'connectivity', 'esim', 'network', 'automation', 'saas'];
+      const relevantKeywords = [
+        'ai',
+        'tech',
+        'cloud',
+        'chip',
+        'data',
+        'software',
+        'enterprise',
+        'connectivity',
+        'esim',
+        'network',
+        'automation',
+        'saas',
+      ];
       const matchCount = relevantKeywords.filter((k) => text.includes(k)).length;
       if (matchCount < 2) {
         console.log(`[FINANCIAL ENGINE] Skipping low-relevance item: "${item.title.slice(0, 60)}"`);
@@ -76,7 +92,9 @@ async function runFinancialIngestion() {
         sentimentScore: item.overall_sentiment_score || 0,
       };
 
-      console.log(`[FINANCIAL ENGINE] Staged: [${payload.sentimentLabel}] ${payload.title.slice(0, 70)}`);
+      console.log(
+        `[FINANCIAL ENGINE] Staged: [${payload.sentimentLabel}] ${payload.title.slice(0, 70)}`,
+      );
 
       if (isDryRun) {
         console.log('--- DRY RUN OUTPUT ---');
@@ -96,7 +114,15 @@ async function runFinancialIngestion() {
         const result = await pool.query(
           `INSERT INTO posts (title, slug, content, meta_desc, hash, source_url, target_product_key)
            VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id`,
-          [payload.title, payload.slug, payload.content, payload.metaDesc, payload.hash, payload.sourceUrl, payload.targetPillar]
+          [
+            payload.title,
+            payload.slug,
+            payload.content,
+            payload.metaDesc,
+            payload.hash,
+            payload.sourceUrl,
+            payload.targetPillar,
+          ],
         );
         console.log(`[FINANCIAL ENGINE] Inserted post ID ${result.rows[0].id}`);
         ingested++;
@@ -106,10 +132,10 @@ async function runFinancialIngestion() {
     }
 
     if (!isDryRun) {
-      await pool.query(
-        'INSERT INTO automation_logs (items_fetched, status) VALUES ($1, $2)',
-        [ingested, 'SUCCESS']
-      );
+      await pool.query('INSERT INTO automation_logs (items_fetched, status) VALUES ($1, $2)', [
+        ingested,
+        'SUCCESS',
+      ]);
     }
 
     console.log(`[FINANCIAL ENGINE] Ingestion complete. ${ingested} articles stored.`);
@@ -117,10 +143,10 @@ async function runFinancialIngestion() {
     console.error('[FINANCIAL ENGINE] CRITICAL FAILURE:', err.message);
     if (!process.argv.includes('--dry-run')) {
       try {
-        await pool.query(
-          'INSERT INTO automation_logs (items_fetched, status) VALUES ($1, $2)',
-          [0, 'FAILED']
-        );
+        await pool.query('INSERT INTO automation_logs (items_fetched, status) VALUES ($1, $2)', [
+          0,
+          'FAILED',
+        ]);
       } catch {}
     }
     process.exit(1);

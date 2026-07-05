@@ -1,0 +1,61 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/widgets/Hero.astro';
+import Pricing from '../../components/widgets/Pricing.astro';
+import ResellPortalWidget from '../../components/ResellPortalWidget.astro';
+
+const currentUrl = 'https://bizkitgrow.vercel.app/esim';
+---
+
+<BaseLayout
+  title="Global Connectivity | Bizkitgrow"
+  description="Enterprise-grade eSIM provisioning with dedicated financial-grade encryption."
+  canonicalUrl={currentUrl}
+>
+  <Hero
+    tagline="PILLAR 01 // CONNECTIVITY"
+    title="Global eSIM Infrastructure"
+    subtitle="Instant cellular routing across 190+ sovereign networks. No roaming friction, full uptime guarantee."
+    actions={[
+      { text: 'START PROVISIONING', href: '#pricing', icon: 'tabler:download', variant: 'primary' },
+    ]}
+  />
+
+  <div class="max-w-screen-xl px-4 py-8 mx-auto border-b border-borders_subtle">
+    <ResellPortalWidget productSku="esim-global-pass" resellportalStatus="active" theme="dark" />
+  </div>
+
+  <Pricing
+    id="pricing"
+    title="Flexible routing plans"
+    subtitle="Pay only for the bandwidth you use."
+    prices={[
+      {
+        title: 'Operator Standard',
+        subtitle: 'For individual remote workers',
+        price: 19,
+        period: 'Per Month',
+        items: [
+          { description: '10GB Global Data' },
+          { description: '190+ Countries' },
+          { description: '4G/5G Speeds' },
+        ],
+        callToAction: { target: '_blank', text: 'Get Started', href: '#' },
+      },
+      {
+        title: 'Enterprise Swarm',
+        subtitle: 'For distributed teams',
+        price: 99,
+        period: 'Per Month',
+        items: [
+          { description: '100GB Pooled Data' },
+          { description: 'Priority Routing' },
+          { description: 'Dedicated Account Manager' },
+        ],
+        callToAction: { target: '_blank', text: 'Contact Sales', href: '#' },
+        hasRibbon: true,
+        ribbonTitle: 'POPULAR',
+      },
+    ]}
+  />
+</BaseLayout>

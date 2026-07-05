@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/widgets/Hero.astro';
+
+const currentUrl = 'https://bizkitgrow.vercel.app/privacy';
+---
+
+<BaseLayout
+  title="Privacy Policy | Bizkitgrow"
+  description="Privacy and data protection protocols for the Bizkitgrow platform."
+  canonicalUrl={currentUrl}
+>
+  <Hero
+    tagline="LEGAL"
+    title="Privacy Policy"
+    subtitle="Effective Date: July 5, 2026"
+  />
+
+  <main class="max-w-3xl mx-auto px-4 py-16">
+    <div class="prose prose-invert prose-brutalist lg:prose-xl max-w-none">
+      <h2>1. Telemetry & Analytics</h2>
+      <p>We log minimal operational telemetry to maintain system uptime. Financial data and eSIM routing traffic are end-to-end encrypted and completely inaccessible to our internal teams.</p>
+      
+      <h2>2. Third-Party Intelligence</h2>
+      <p>Our Search Authority engine interfaces with Google APIs. Your data is passed securely and is never sold to secondary data brokers.</p>
+
+      <h2>3. Right to Erasure</h2>
+      <p>You maintain full sovereign control over your deployment. Execute a complete data wipe from the Admin Portal at any time.</p>
+    </div>
+  </main>
+</BaseLayout>

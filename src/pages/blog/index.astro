@@ -113,16 +113,30 @@ const blogListSchema = {
         Curated B2B intelligence on global connectivity shifts, local search algorithm changes, and operational automation tools. Updated autonomously.
       </p>
 
-      <!-- Filters -->
-      <div class="flex flex-wrap gap-2 mt-8" role="group" aria-label="Filter by category">
-        {filters.map((f, i) => (
-          <button
-            data-filter={f.key}
-            class={`filter-btn font-['JetBrains_Mono'] text-[9px] uppercase tracking-widest px-4 py-2 border transition-colors ${i === 0 ? 'border-brand_cta text-brand_cta' : 'border-borders_subtle text-text_secondary hover:border-text_secondary hover:text-text_primary'}`}
-          >
-            {f.label}
-          </button>
-        ))}
+      <!-- Search and Filters -->
+      <div class="mt-8 flex flex-col md:flex-row md:items-center justify-between gap-6 border-t border-borders_subtle pt-6">
+        <div class="flex flex-wrap gap-2" role="group" aria-label="Filter by category">
+          {filters.map((f, i) => (
+            <button
+              data-filter={f.key}
+              class={`filter-btn font-['JetBrains_Mono'] text-[9px] uppercase tracking-widest px-4 py-2 border transition-colors ${i === 0 ? 'border-brand_cta text-brand_cta' : 'border-borders_subtle text-text_secondary hover:border-text_secondary hover:text-text_primary'}`}
+            >
+              {f.label}
+            </button>
+          ))}
+        </div>
+        
+        <div class="relative w-full md:w-72">
+          <input 
+            type="text" 
+            id="search-input" 
+            placeholder="SEARCH BRIEFINGS..." 
+            class="w-full bg-canvas border border-borders_subtle px-4 py-3 text-[10px] font-mono text-text_primary uppercase tracking-widest focus:outline-none focus:border-brand_cta transition-colors rounded-sm"
+          />
+          <div class="absolute right-3 top-1/2 -translate-y-1/2 text-borders_subtle">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+          </div>
+        </div>
       </div>
     </header>
 
@@ -134,6 +148,7 @@ const blogListSchema = {
         return (
           <article
             data-category={post.pillar}
+            data-slug={post.slug}
             class="post-card border border-borders_subtle -mt-px -ml-px group hover:border-borders transition-colors bg-canvas"
           >
             <div class="p-8 flex flex-col h-full">
@@ -183,30 +198,72 @@ const blogListSchema = {
 
   </main>
 
-  <script is:inline>
+  <script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.min.js" is:inline></script>
+  <script is:inline define:vars={{ posts: posts }}>
     var btns = document.querySelectorAll('.filter-btn');
     var cards = document.querySelectorAll('.post-card');
+    var searchInput = document.getElementById('search-input');
+    
+    // Initialize Fuse.js for client-side search
+    var fuse = new Fuse(posts, {
+      keys: ['title', 'excerpt', 'pillar'],
+      threshold: 0.3,
+      includeScore: true
+    });
+    
+    var currentFilter = 'all';
+    var searchQuery = '';
 
+    function renderPosts() {
+      var activeSlugs = new Set();
+      
+      // Step 1: Search
+      if (searchQuery.trim() !== '') {
+        var results = fuse.search(searchQuery);
+        results.forEach(function(r) {
+          activeSlugs.add(r.item.slug);
+        });
+      } else {
+        posts.forEach(function(p) { activeSlugs.add(p.slug); });
+      }
+      
+      // Step 2: Filter and UI Update
+      cards.forEach(function(card) {
+        var cat = card.getAttribute('data-category');
+        var slug = card.getAttribute('data-slug');
+        var matchesCategory = currentFilter === 'all' || cat === currentFilter;
+        var matchesSearch = activeSlugs.has(slug);
+        
+        if (matchesCategory && matchesSearch) {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+    }
+
+    // Filter Click Handlers
     btns.forEach(function(btn) {
       btn.addEventListener('click', function() {
-        var filter = btn.getAttribute('data-filter');
-
+        currentFilter = btn.getAttribute('data-filter');
+        
         btns.forEach(function(b) {
           b.classList.remove('border-brand_cta', 'text-brand_cta');
           b.classList.add('border-borders_subtle', 'text-text_secondary');
         });
         btn.classList.add('border-brand_cta', 'text-brand_cta');
         btn.classList.remove('border-borders_subtle', 'text-text_secondary');
-
-        cards.forEach(function(card) {
-          var cat = card.getAttribute('data-category');
-          if (filter === 'all' || cat === filter) {
-            card.classList.remove('hidden');
-          } else {
-            card.classList.add('hidden');
-          }
-        });
+        
+        renderPosts();
       });
     });
+
+    // Search Input Handler
+    if (searchInput) {
+      searchInput.addEventListener('input', function(e) {
+        searchQuery = e.target.value;
+        renderPosts();
+      });
+    }
   </script>
 </BaseLayout>

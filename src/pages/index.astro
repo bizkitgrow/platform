@@ -1,59 +1,28 @@
 ---
-import brandManifest from '../../config/brand_manifest.json';
-import systemArchitecture from '../../system_architecture.json';
-import MarketPulseTicker from '../components/MarketPulseTicker.astro';
-import ResellPortalWidget from '../components/ResellPortalWidget.astro';
-import WaitingListForm from '../components/WaitingListForm.astro';
-import BaseLayout from '../layouts/BaseLayout.astro';
-
-const brandName = systemArchitecture.tenant_settings.brand_name;
-const currentUrl = 'https://bizkitgrow.vercel.app/';
-
-const stats = [
-  { value: '190+', label: 'Countries', sub: 'GLOBAL COVERAGE' },
-  { value: '3', label: 'Core Pillars', sub: 'GROWTH VECTORS' },
-  { value: '100%', label: 'Automated', sub: 'ZERO MAINTENANCE' },
-  { value: '<420ms', label: 'Edge Latency', sub: 'RESPONSE TIME' },
-];
-
-const pillarData = [
-  {
-    tag: 'PILLAR_01 // CONNECTIVITY',
-    title: 'Global eSIM Infrastructure',
-    body: 'Instant cellular routing across 190+ sovereign networks. Enterprise-grade eSIM provisioning with dedicated financial-grade encryption — no roaming friction, full uptime guarantee.',
-    cta: { href: '/esim/united-states', label: 'DEPLOY CONNECTIVITY' },
-    status: 'ROUTING_STABLE',
-    icon: `<svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>`,
-  },
-  {
-    tag: 'PILLAR_02 // SEARCH AUTHORITY',
-    title: 'Reputation Gating Engine',
-    body: 'Automated Google Business Profile optimization, review capture sequences, and local semantic indexation. Own the search grid in high-value zip codes without volatile ad spend.',
-    cta: { href: '/reputation/new-york', label: 'ACTIVATE AUTHORITY' },
-    status: 'CRAWLING_ACTIVE',
-    icon: `<svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>`,
-  },
-  {
-    tag: 'PILLAR_03 // FLOW AUTOMATION',
-    title: 'Operational CRM Suite',
-    body: 'Consolidate invoicing, AI-powered scheduling, and secure e-signature workflows into a single client portal. Cut administrative overhead and recover lost revenue from billing friction.',
-    cta: { href: '/solutions/crm-system', label: 'INITIALIZE SYSTEM' },
-    status: 'SYSTEMS_STABLE',
-    icon: `<svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>`,
-  },
-];
-
 import { desc } from 'drizzle-orm';
 import { db } from '../db/client';
 import { posts as postsTable } from '../db/schema';
+import systemArchitecture from '../../system_architecture.json';
+import brandManifest from '../../config/brand_manifest.json';
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/widgets/Hero.astro';
+import Features from '../components/widgets/Features.astro';
+import Stats from '../components/widgets/Stats.astro';
+import Steps from '../components/widgets/Steps.astro';
+import CallToAction from '../components/widgets/CallToAction.astro';
+import BlogHighlightedPosts from '../components/widgets/BlogHighlightedPosts.astro';
+import ResellPortalWidget from '../components/ResellPortalWidget.astro';
+
+const brandName = systemArchitecture.tenant_settings.brand_name;
+const currentUrl = 'https://bizkitgrow.vercel.app/';
 
 const orgSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: brandName,
   url: currentUrl,
-  description:
-    'Autonomous B2B infrastructure for global remote operators: sovereign connectivity, reputation gating, and back-office automation.',
+  description: 'Autonomous B2B infrastructure for global remote operators: sovereign connectivity, reputation gating, and back-office automation.',
   sameAs: ['https://bizkitgrow.vercel.app'],
   contactPoint: {
     '@type': 'ContactPoint',
@@ -69,172 +38,124 @@ try {
   console.error('Database query failed for index:', err.message);
 }
 
-const displayPosts = recentPosts.length > 0 ? recentPosts.map(p => ({
-  title: p.title,
-  slug: p.slug,
-  excerpt: p.metaDesc || 'Read the complete analysis from the Bizkitgrow intelligence feed.',
-  createdAt: p.createdAt ? new Date(p.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Jul 4, 2026',
-  pillar: p.targetProductSku || 'ai_business_tools_suite'
-})) : [
-  {
-    title: 'The Future of Global Connectivity for Remote Teams',
-    slug: 'the-future-of-connectivity-and-mobility',
-    excerpt: 'How enterprise eSIM infrastructure is replacing legacy SIM provisioning — and what it means for B2B operations in 2026.',
-    createdAt: 'Jul 4, 2026',
-    pillar: 'esim_data_plans',
-  },
-  {
-    title: 'Google Rewrites the Search Interface',
-    slug: 'google-rewrites-search-2026',
-    excerpt: 'The largest upgrade to Google Search in 25 years is live. AI Mode now merges with standard results — and it changes local SEO authority fundamentally.',
-    createdAt: 'Jul 4, 2026',
-    pillar: 'ai_business_tools_suite',
-  }
-];
+const displayPosts =
+  recentPosts.length > 0
+    ? recentPosts.map((p) => ({
+        title: p.title,
+        slug: p.slug,
+        excerpt: p.metaDesc || 'Read the complete analysis from the Bizkitgrow intelligence feed.',
+        publishDate: p.createdAt ? new Date(p.createdAt) : new Date(),
+        image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80',
+        tags: [p.targetProductSku || 'ai_business_tools_suite'],
+      }))
+    : [];
 ---
 
 <BaseLayout
   title="Sovereign B2B Digital Infrastructure"
-  description="Consolidate global eSIM connectivity, automated local search authority, and back-office pipelines under a single secure perimeter. Built for remote operators, agencies, and consultants."
+  description="Consolidate global eSIM connectivity, automated local search authority, and back-office pipelines under a single secure perimeter."
   canonicalUrl={currentUrl}
 >
   <script type="application/ld+json" slot="schema" is:inline set:html={JSON.stringify(orgSchema)} />
 
-  <!-- ═══════════════════ HERO ═══════════════════ -->
-  <section class="max-w-screen-xl mx-auto px-4 py-16 lg:py-24 border-b border-borders_subtle">
-    <div class="inline-flex items-center justify-between px-3 py-1 mb-8 text-sm font-mono text-brand_cta bg-teal-50 border border-brand_cta/20 rounded-full">
-      <span class="text-xs uppercase tracking-widest font-bold flex items-center gap-2">
-        <span class="w-2 h-2 rounded-full bg-brand_cta animate-pulse"></span>
-        [ INGESTION &amp; REDISTRIBUTION LOOP ACTIVE ]
-      </span>
-    </div>
-    
-    <h1 class="mb-8 font-heading text-5xl font-extrabold tracking-tight leading-none text-text_primary md:text-6xl lg:text-8xl uppercase">
-      Sovereign B2B<br />
-      <span class="text-text_secondary">Digital Logistics.</span>
-    </h1>
-    
-    <p class="mb-10 text-lg font-normal text-text_secondary lg:text-xl sm:px-16 xl:px-0 max-w-3xl">
+  <Hero
+    actions={[
+      { text: 'ACCESS PLATFORM', href: '/solutions/crm-system', icon: 'tabler:arrow-right', variant: 'primary' },
+      { text: 'VIEW INTELLIGENCE FEED', href: '/blog' }
+    ]}
+  >
+    <Fragment slot="title">
+      Sovereign B2B <br />
+      <span class="text-brand_cta dark:text-brand_cta highlight">Digital Logistics.</span>
+    </Fragment>
+
+    <Fragment slot="subtitle">
       Scale global B2B connectivity, automate local brand authority, and streamline customer flows from a single unified portal. Built for international enterprises and remote teams who demand speed, security, and zero operational friction.
-    </p>
+    </Fragment>
+  </Hero>
 
-    <div class="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
-        <a href="/solutions/crm-system" class="inline-flex justify-center items-center py-4 px-8 text-sm font-bold font-mono tracking-widest text-center text-white bg-brand_cta hover:bg-brand_cta_hover focus:ring-4 focus:ring-teal-300 uppercase">
-            ACCESS PLATFORM
-            <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-            </svg>
-        </a>
-        <a href="/blog" class="inline-flex justify-center items-center py-4 px-8 text-sm font-bold font-mono tracking-widest text-center text-text_secondary border border-borders_subtle hover:bg-canvas_accent hover:text-text_primary focus:ring-4 focus:ring-gray-200 uppercase transition-colors">
-            VIEW INTELLIGENCE FEED
-        </a>  
-    </div>
-    
-    <p class="font-mono text-xs tracking-wider text-text_secondary uppercase">
-      No credit card required. Instant self-setup. Cancel any time.
-    </p>
-  </section>
+  <Stats
+    stats={[
+      { title: 'Countries Covered', amount: '190+' },
+      { title: 'Core Pillars', amount: '3' },
+      { title: 'Automated', amount: '100%' },
+      { title: 'Edge Latency', amount: '<420ms' },
+    ]}
+  />
 
-  <!-- ═══════════════════ LIVE TICKER ═══════════════════ -->
-  <MarketPulseTicker />
+  <Features
+    id="features"
+    tagline="PILLARS"
+    title="Select Your Operational Perimeter."
+    subtitle="Growth Vectors"
+    items={[
+      {
+        title: 'Global eSIM Infrastructure',
+        description: 'Instant cellular routing across 190+ sovereign networks. Enterprise-grade eSIM provisioning with dedicated financial-grade encryption — no roaming friction, full uptime guarantee.',
+        icon: 'tabler:wifi',
+      },
+      {
+        title: 'Reputation Gating Engine',
+        description: 'Automated Google Business Profile optimization, review capture sequences, and local semantic indexation. Own the search grid in high-value zip codes without volatile ad spend.',
+        icon: 'tabler:seo',
+      },
+      {
+        title: 'Operational CRM Suite',
+        description: 'Consolidate invoicing, AI-powered scheduling, and secure e-signature workflows into a single client portal. Cut administrative overhead and recover lost revenue from billing friction.',
+        icon: 'tabler:bolt',
+      },
+    ]}
+  />
 
-  <!-- ═══════════════════ STATS STRIP ═══════════════════ -->
-  <section class="border-b border-borders_subtle bg-canvas_accent">
-    <div class="max-w-screen-xl px-4 py-8 mx-auto text-center lg:py-16">
-        <dl class="grid max-w-screen-md gap-8 mx-auto text-text_primary sm:grid-cols-4">
-            {stats.map((stat) => (
-              <div class="flex flex-col items-center justify-center">
-                  <dt class="mb-2 text-4xl font-extrabold font-heading tracking-tight">{stat.value}</dt>
-                  <dd class="text-text_secondary font-medium">{stat.label}</dd>
-                  <dd class="font-mono text-xs text-text_secondary/80 uppercase tracking-widest mt-1">{stat.sub}</dd>
-              </div>
-            ))}
-        </dl>
-    </div>
-  </section>
+  <Steps
+    title="Get your infrastructure running in minutes."
+    items={[
+      {
+        title: 'Step 1: <span class="font-medium">Sign up</span>',
+        description: 'Create your operator account securely. No credit card required for initial setup.',
+        icon: 'tabler:user-plus',
+      },
+      {
+        title: 'Step 2: <span class="font-medium">Configure routing</span>',
+        description: 'Set your preferred target regions and active product SKUs.',
+        icon: 'tabler:settings',
+      },
+      {
+        title: 'Step 3: <span class="font-medium">Deploy connectivity</span>',
+        description: 'Your digital presence goes live. AI agents begin crawling for search authority immediately.',
+        icon: 'tabler:rocket',
+      },
+      {
+        title: 'Ready!',
+        icon: 'tabler:check',
+      },
+    ]}
+    image={{
+      src: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80',
+      alt: 'Dashboard abstract',
+    }}
+  />
 
-  <!-- ═══════════════════ PILLARS ═══════════════════ -->
-  <section class="max-w-screen-xl px-4 py-16 mx-auto lg:py-24 border-b border-borders_subtle">
-    <div class="max-w-screen-md mb-8 lg:mb-16">
-      <span class="bg-canvas_accent text-text_secondary text-xs font-mono font-bold uppercase tracking-widest me-2 px-3 py-1 rounded border border-borders_subtle">GROWTH VECTORS</span>
-      <h2 class="mt-6 mb-4 text-4xl tracking-tight font-extrabold font-heading text-text_primary uppercase">
-        Select Your Operational Perimeter.
-      </h2>
-    </div>
-    <div class="grid lg:grid-cols-3 gap-8">
-      {pillarData.map((pillar, i) => (
-        <div class="p-8 bg-white border border-borders_subtle rounded-sm shadow-subtle hover:border-brand_cta transition-colors group">
-          <div class="flex items-center justify-between mb-4">
-            <span class="bg-canvas_accent border border-borders_subtle text-text_secondary text-xs font-mono tracking-widest uppercase px-3 py-1 rounded-sm">
-              [{String(i + 1).padStart(2, '0')}] {pillar.tag}
-            </span>
-          </div>
-          <div class="w-12 h-12 flex items-center justify-center border border-borders_subtle bg-canvas_accent text-text_secondary mb-6 group-hover:text-brand_cta group-hover:border-brand_cta transition-colors">
-            <Fragment set:html={pillar.icon} />
-          </div>
-          <h3 class="mb-4 text-2xl font-bold tracking-tight text-text_primary font-heading uppercase">{pillar.title}</h3>
-          <p class="mb-6 font-light text-text_secondary font-body">{pillar.body}</p>
-          <a href={pillar.cta.href} class="inline-flex items-center font-mono font-bold text-xs uppercase tracking-widest text-brand_cta hover:text-brand_cta_hover transition-colors">
-            {pillar.cta.label}
-            <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-            </svg>
-          </a>
-          <div class="mt-6 pt-4 border-t border-borders_subtle font-mono text-[10px] text-text_secondary uppercase tracking-widest">
-            STATUS: {pillar.status}
-          </div>
-        </div>
-      ))}
-    </div>
-  </section>
+  <div class="max-w-screen-xl px-4 py-8 mx-auto border-b border-borders_subtle">
+    <ResellPortalWidget productSku="ai-blog-generator" resellportalStatus="pending" theme="dark" />
+  </div>
 
-  <!-- ═══════════════════ INTELLIGENCE FEED ═══════════════════ -->
-  <section class="max-w-screen-xl px-4 py-16 mx-auto lg:py-24 border-b border-borders_subtle">
-    <div class="flex items-end justify-between mb-8 lg:mb-16">
-      <div class="max-w-screen-md">
-        <span class="bg-canvas_accent text-text_secondary text-xs font-mono font-bold uppercase tracking-widest me-2 px-3 py-1 rounded border border-borders_subtle">INTELLIGENCE FEED</span>
-        <h2 class="mt-6 mb-4 text-4xl tracking-tight font-extrabold font-heading text-text_primary uppercase">Latest Briefings.</h2>
-      </div>
-      <a href="/blog" class="hidden md:inline-flex items-center font-mono font-bold text-xs uppercase tracking-widest text-text_secondary hover:text-brand_cta transition-colors">
-        VIEW ALL <span class="ml-2" aria-hidden="true">→</span>
-      </a>
-    </div>
+  <CallToAction
+    actions={[
+      {
+        variant: 'primary',
+        text: 'INITIALIZE ONBOARDING QUEUE',
+        href: '/solutions/crm-system',
+        icon: 'tabler:download',
+      },
+    ]}
+  >
+    <Fragment slot="title">
+      Secure Your Position in the Queue.
+    </Fragment>
 
-    <div class="grid lg:grid-cols-2 gap-8">
-      {displayPosts.map((post) => (
-        <article class="p-8 bg-white border border-borders_subtle shadow-subtle rounded-sm">
-          <div class="flex justify-between items-center mb-5 text-text_secondary">
-              <span class="bg-canvas_accent border border-borders_subtle text-text_secondary text-xs font-mono font-bold uppercase tracking-widest px-3 py-1 rounded-sm">{post.pillar}</span>
-              <span class="text-sm font-mono uppercase tracking-widest">{post.createdAt}</span>
-          </div>
-          <h2 class="mb-4 text-2xl font-bold tracking-tight text-text_primary font-heading uppercase hover:text-brand_cta transition-colors"><a href={`/blog/${post.slug}`}>{post.title}</a></h2>
-          <p class="mb-6 font-light text-text_secondary font-body">{post.excerpt}</p>
-          <a href={`/blog/${post.slug}`} class="inline-flex items-center font-mono font-bold text-xs uppercase tracking-widest text-brand_cta hover:text-brand_cta_hover transition-colors">
-              READ BRIEFING
-              <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-              </svg>
-          </a>
-        </article>
-      ))}
-    </div>
-  </section>
-
-  <!-- ═══════════════════ RESELLPORTAL WIDGET ═══════════════════ -->
-  <section class="max-w-screen-xl px-4 py-8 mx-auto border-b border-borders_subtle">
-    <ResellPortalWidget productSku="ai-blog-generator" resellportalStatus="pending" theme="light" />
-  </section>
-
-  <!-- ═══════════════════ WAITLIST ═══════════════════ -->
-  <section class="max-w-screen-xl px-4 py-16 mx-auto lg:py-24 border-b border-borders_subtle">
-    <div class="max-w-screen-md mb-8 lg:mb-16">
-      <span class="bg-canvas_accent text-text_secondary text-xs font-mono font-bold uppercase tracking-widest me-2 px-3 py-1 rounded border border-borders_subtle">PRIORITY ACCESS</span>
-      <h2 class="mt-6 mb-4 text-4xl tracking-tight font-extrabold font-heading text-text_primary uppercase">Secure Your Position in the Queue.</h2>
-      <p class="mb-8 font-light text-text_secondary sm:text-xl font-body">Early operators receive 30% off first 3 months, dedicated onboarding, and direct access to the operational intelligence feed.</p>
-    </div>
-    <div class="max-w-screen-md">
-      <WaitingListForm />
-    </div>
-  </section>
+    <Fragment slot="subtitle">
+      Early operators receive 30% off first 3 months, dedicated onboarding, and direct access to the operational intelligence feed.
+    </Fragment>
+  </CallToAction>
 </BaseLayout>
-

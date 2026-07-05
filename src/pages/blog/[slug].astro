@@ -1,6 +1,7 @@
 ---
 import { and, eq, ne } from 'drizzle-orm';
 import AGCParaphraser from '../../components/AGCParaphraser.astro';
+import AlphaVantageWidget from '../../components/AlphaVantageWidget.astro';
 import ResellPortalWidget from '../../components/ResellPortalWidget.astro';
 import { db } from '../../db/client';
 import { posts as postsTable } from '../../db/schema';
@@ -73,7 +74,10 @@ const fallbackPost = {
 
 const activePost = post || fallbackPost;
 const mainContentRaw = activePost.originalContent || activePost.content || '';
-const mainContent = mainContentRaw.replace(/<a([^>]+href="(?!#|\/)[^"]+")[^>]*>/gi, '<a$1 target="_blank" rel="noopener noreferrer">');
+const mainContent = mainContentRaw.replace(
+  /<a([^>]+href="(?!#|\/)[^"]+")[^>]*>/gi,
+  '<a$1 target="_blank" rel="noopener noreferrer">',
+);
 const wordCount = mainContent.replace(/<[^>]*>/g, '').split(/\s+/).length;
 const readingTime = Math.max(2, Math.ceil(wordCount / 200));
 
@@ -122,6 +126,32 @@ const pillarLabels: Record<string, string> = {
 
 const metaDesc = aiMeta.metaDesc || activePost.metaDesc || activePost.title;
 
+// Breadcrumb Schema
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Home',
+      item: 'https://bizkitgrow.vercel.app/'
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: 'Intelligence Feed',
+      item: 'https://bizkitgrow.vercel.app/blog'
+    },
+    {
+      '@type': 'ListItem',
+      position: 3,
+      name: activePost.title,
+      item: Astro.url.href
+    }
+  ]
+};
+
 const articleSchema = {
   '@context': 'https://schema.org',
   '@type': 'Article',
@@ -151,7 +181,7 @@ const articleSchema = {
   schemaType="Article"
   ogImage={heroImageUrl}
 >
-  <script type="application/ld+json" slot="schema" is:inline set:html={JSON.stringify(articleSchema)} />
+  <script type="application/ld+json" slot="schema" is:inline set:html={JSON.stringify([breadcrumbSchema, articleSchema])} />
 
   <!-- Reading Progress Bar -->
   <div class="fixed top-0 left-0 w-full h-[2px] bg-canvas_accent z-50">
@@ -264,6 +294,12 @@ const articleSchema = {
         <!-- Content -->
         <div class="format format-invert lg:format-lg max-w-none prose-brutalist" itemprop="articleBody" set:html={mainContent} />
         
+        {activePost.targetProductSku === 'finance_automation' && (
+          <div class="my-10">
+            <AlphaVantageWidget ticker="AAPL" />
+          </div>
+        )}
+        
         {aiMeta.paraphrasedHook && (
           <AGCParaphraser 
             originalText={mainContent.replace(/<[^>]*>/g, '')}
@@ -366,9 +402,24 @@ const articleSchema = {
  
         {aiMeta.tags && Array.isArray(aiMeta.tags) && aiMeta.tags.length > 0 && (
           <div class="mt-8 flex flex-wrap gap-2">
+            <span class="font-mono text-[10px] text-text_secondary uppercase tracking-widest font-bold self-center mr-2">TAGS:</span>
             {aiMeta.tags.map((tag: string) => (
               <span class="bg-canvas_accent text-text_secondary text-[10px] font-mono font-bold uppercase tracking-widest px-3 py-1 rounded-sm border border-borders_subtle">{tag}</span>
             ))}
+          </div>
+        )}
+
+        <!-- Prev/Next Navigation -->
+        {relatedPosts.length >= 2 && (
+          <div class="mt-12 flex flex-col sm:flex-row gap-4 justify-between border-t border-borders_subtle pt-8">
+            <a href={`/blog/${relatedPosts[0].slug}`} class="flex-1 p-4 border border-borders_subtle hover:border-brand_cta transition-colors bg-canvas_accent group rounded-sm text-left">
+              <span class="block font-mono text-[10px] text-text_secondary uppercase tracking-widest mb-1 group-hover:text-brand_cta">← PREVIOUS</span>
+              <span class="block font-heading text-sm font-black text-text_primary uppercase line-clamp-2">{relatedPosts[0].title}</span>
+            </a>
+            <a href={`/blog/${relatedPosts[1].slug}`} class="flex-1 p-4 border border-borders_subtle hover:border-brand_cta transition-colors bg-canvas_accent group rounded-sm text-right">
+              <span class="block font-mono text-[10px] text-text_secondary uppercase tracking-widest mb-1 group-hover:text-brand_cta">NEXT →</span>
+              <span class="block font-heading text-sm font-black text-text_primary uppercase line-clamp-2">{relatedPosts[1].title}</span>
+            </a>
           </div>
         )}
 

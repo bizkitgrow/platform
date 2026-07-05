@@ -43,7 +43,12 @@ export const onRequest = defineMiddleware(async (context, next) => {
   const body = await response.text();
 
   // Commit dynamic content to static edge cache limits if permitted
-  if (cache && typeof cache.set === 'function' && !skipCache && !response.headers.get('Cache-Control')?.includes('no-store')) {
+  if (
+    cache &&
+    typeof cache.set === 'function' &&
+    !skipCache &&
+    !response.headers.get('Cache-Control')?.includes('no-store')
+  ) {
     await cache.set(key, body, { ttl: 60 }); // Commit to a strict 60-second edge TTL window
   }
 

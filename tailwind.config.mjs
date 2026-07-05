@@ -10,17 +10,17 @@ export default {
   theme: {
     extend: {
       colors: {
-        canvas: '#FFFFFF',
-        canvas_accent: '#F8FAFC',
+        canvas: '#000000',
+        canvas_accent: '#111111',
         brand_cta: '#0f766e', // teal-700
         brand_cta_hover: '#115e59', // teal-800
-        text_primary: '#0F172A', // slate-900
-        text_secondary: '#475569', // slate-600
-        borders_subtle: '#E2E8F0', // slate-200
+        text_primary: '#F8FAFC', // slate-50
+        text_secondary: '#94A3B8', // slate-400
+        borders_subtle: '#334155', // slate-700
       },
       fontFamily: {
-        sans: ['Inter', 'Plus Jakarta Sans', ...defaultTheme.fontFamily.sans],
-        heading: ['Plus Jakarta Sans', ...defaultTheme.fontFamily.sans],
+        sans: ['Outfit', ...defaultTheme.fontFamily.sans],
+        heading: ['Outfit', ...defaultTheme.fontFamily.sans],
         mono: ['JetBrains Mono', ...defaultTheme.fontFamily.mono],
       },
       boxShadow: {
@@ -29,9 +29,23 @@ export default {
       transitionTimingFunction: {
         smooth: 'cubic-bezier(0.4, 0, 0.2, 1)',
       },
+      typography: (theme) => ({
+        DEFAULT: {
+          css: {
+            color: theme('colors.text_primary'),
+            a: {
+              color: theme('colors.brand_cta'),
+              '&:hover': {
+                color: theme('colors.brand_cta_hover'),
+              },
+            },
+          },
+        },
+      }),
     },
   },
   plugins: [
-    require('flowbite/plugin'),
+    require('@tailwindcss/typography'),
+    require('flowbite/plugin')
   ],
 };

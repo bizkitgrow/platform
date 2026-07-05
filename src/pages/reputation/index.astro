@@ -1,0 +1,51 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/widgets/Hero.astro';
+import Features from '../../components/widgets/Features.astro';
+import ResellPortalWidget from '../../components/ResellPortalWidget.astro';
+
+const currentUrl = 'https://bizkitgrow.vercel.app/reputation';
+---
+
+<BaseLayout
+  title="Search Authority | Bizkitgrow"
+  description="Automated Google Business Profile optimization, review capture sequences, and local semantic indexation."
+  canonicalUrl={currentUrl}
+>
+  <Hero
+    tagline="PILLAR 02 // SEARCH AUTHORITY"
+    title="Reputation Gating Engine"
+    subtitle="Own the search grid in high-value zip codes without volatile ad spend. Automated Google Business Profile optimization and review capture."
+    actions={[
+      { text: 'ACTIVATE AUTHORITY', href: '#features', icon: 'tabler:seo', variant: 'primary' },
+    ]}
+  />
+
+  <div class="max-w-screen-xl px-4 py-8 mx-auto border-b border-borders_subtle">
+    <ResellPortalWidget productSku="reputation-ai" resellportalStatus="active" theme="dark" />
+  </div>
+
+  <Features
+    id="features"
+    tagline="Capabilities"
+    title="Dominate Local Search"
+    subtitle="Our system actively intercepts customer experiences."
+    items={[
+      {
+        title: 'Review Gating',
+        description: 'Automatically filter 5-star experiences to public platforms, while routing negative feedback to internal customer service.',
+        icon: 'tabler:star',
+      },
+      {
+        title: 'Semantic Indexation',
+        description: 'Continuous content optimization aligned with the latest search engine algorithms for maximum visibility.',
+        icon: 'tabler:search',
+      },
+      {
+        title: 'Competitor Tracking',
+        description: 'Real-time telemetry on competitor movements in your targeted zip codes.',
+        icon: 'tabler:chart-bar',
+      },
+    ]}
+  />
+</BaseLayout>

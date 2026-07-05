@@ -1,0 +1,55 @@
+---
+import { z } from 'zod';
+
+export interface Props {
+  ticker: string;
+}
+
+const { ticker } = Astro.props;
+const apiKey = import.meta.env.ALPHA_VANTAGE_KEY;
+
+let stockData = null;
+let errorMsg = null;
+
+try {
+  // Using GLOBAL_QUOTE endpoint for quick summary
+  const res = await fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${ticker}&apikey=${apiKey}`);
+  const data = await res.json();
+  
+  if (data['Global Quote'] && data['Global Quote']['05. price']) {
+    stockData = {
+      price: parseFloat(data['Global Quote']['05. price']).toFixed(2),
+      change: parseFloat(data['Global Quote']['09. change']).toFixed(2),
+      changePercent: data['Global Quote']['10. change percent'],
+      latestTradingDay: data['Global Quote']['07. latest trading day'],
+    };
+  } else if (data.Information || data.Note) {
+    // API limit reached or info msg
+    errorMsg = 'API limits reached. Try again later.';
+  } else {
+    errorMsg = 'Data unavailable.';
+  }
+} catch (err: any) {
+  errorMsg = err.message;
+}
+---
+
+<div class="border border-borders_subtle p-4 bg-canvas_accent flex flex-col md:flex-row items-start md:items-center justify-between rounded-sm shadow-subtle gap-4 hover:border-brand_cta transition-colors">
+  <div class="flex flex-col">
+    <div class="font-mono text-[10px] text-text_secondary uppercase tracking-widest font-bold mb-1">MARKET TELEMETRY</div>
+    <div class="font-heading text-xl font-black text-text_primary uppercase tracking-tight">{ticker}</div>
+  </div>
+  
+  {stockData ? (
+    <div class="flex items-center gap-6">
+      <div class="flex flex-col text-right">
+        <div class="font-mono text-2xl font-bold text-text_primary">${stockData.price}</div>
+        <div class={`font-mono text-xs font-bold uppercase tracking-widest ${parseFloat(stockData.change) >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+          {parseFloat(stockData.change) >= 0 ? '▲' : '▼'} {Math.abs(parseFloat(stockData.change))} ({stockData.changePercent})
+        </div>
+      </div>
+    </div>
+  ) : (
+    <div class="font-mono text-xs text-text_secondary">{errorMsg || 'Loading...'}</div>
+  )}
+</div>
