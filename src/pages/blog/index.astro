@@ -190,11 +190,10 @@ const blogListSchema = {
       <!-- Posts Grid (NEWS) -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="posts-grid">
         {posts.map((post, i) => {
-          const encodedTitle = encodeURIComponent(post.title + ' ' + (post.pillar === 'esim_data_plans' ? 'global connectivity' : 'business technology'));
-          const fallbackSeed = post.title.length;
+          const fallbackSeed = post.title.replace(/[^a-zA-Z0-9]/g, '').toLowerCase() || 'bizkitgrow';
           const heroImageUrl = post.originalImage && post.originalImage.trim() !== '' 
             ? post.originalImage 
-            : `https://image.pollinations.ai/prompt/${encodedTitle}?width=600&height=375&nologo=true&seed=${fallbackSeed}`;
+            : `https://picsum.photos/seed/${fallbackSeed}/600/375`;
           
           const label = pillarLabels[post.pillar] || pillarLabels.general;
 

@@ -35,7 +35,7 @@ const displayPosts =
         title: p.title,
         slug: p.slug,
         excerpt: p.metaDesc || 'Read our latest business insights.',
-        image: p.originalImage || `https://image.pollinations.ai/prompt/${encodeURIComponent(`${p.title}, corporate minimalist`)}?width=600&height=400&nologo=true`,
+        image: p.originalImage || `https://picsum.photos/seed/${p.title.replace(/[^a-zA-Z0-9]/g, '').toLowerCase() || 'bizkitgrow'}/600/400`,
         createdAt: p.createdAt ? new Date(p.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Jul 4, 2026',
       }))
     : [];
@@ -50,86 +50,139 @@ const topFeatures = targetSolutions.slice(0, 4);
 >
   <script type="application/ld+json" slot="schema" is:inline set:html={JSON.stringify(orgSchema)} />
 
-  <!-- Hero Section (SaaS / Minimalist Hybrid) -->
-  <section class="relative py-24 md:py-32 lg:py-40 overflow-hidden border-b border-border bg-background">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center max-w-4xl relative z-10">
-      <Badge variant="outline" className="mb-6 uppercase tracking-widest text-[10px] font-mono rounded-full px-3 py-1 bg-background text-foreground border-border">
-        V2.0 is Live
-      </Badge>
-      <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight text-foreground mb-8 leading-[1.1] font-heading">
-        {brandManifest.audience_demand_matrix.intent_clusters.solutions.conversion_copy_tokens.hero_headline}
-      </h1>
-      <p class="text-xl md:text-2xl text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed">
-        {brandManifest.brand_architecture.global_positioning}
-      </p>
-      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-        <a href="/solutions/crm-system">
-          <Button size="lg" className="w-full sm:w-auto text-sm tracking-wide h-14 px-8 uppercase font-bold rounded-none bg-primary text-primary-foreground hover:bg-primary/90">
-            {brandManifest.audience_demand_matrix.intent_clusters.solutions.conversion_copy_tokens.cta_label}
-          </Button>
-        </a>
-        <a href="/blog">
-          <Button variant="outline" size="lg" className="w-full sm:w-auto text-sm tracking-wide h-14 px-8 uppercase font-bold rounded-none border-border bg-background hover:bg-muted text-foreground">
-            Read Guides
-          </Button>
-        </a>
+  <!-- Hero Section (Asymmetric Split) -->
+  <section class="relative py-24 md:py-32 lg:py-40 overflow-hidden border-b-4 border-black bg-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 max-w-7xl">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div>
+          <Badge variant="outline" className="mb-6 uppercase tracking-widest text-[10px] font-mono font-bold rounded-none px-3 py-1 border-2 border-black bg-white text-black">
+            V2.0 is Live
+          </Badge>
+          <h1 class="text-5xl md:text-7xl font-black tracking-tight text-black mb-8 leading-[1.1] font-heading uppercase">
+            {brandManifest.audience_demand_matrix.intent_clusters.solutions.conversion_copy_tokens.hero_headline}
+          </h1>
+          <p class="text-xl md:text-2xl text-gray-700 mb-10 max-w-2xl leading-relaxed font-mono">
+            {brandManifest.brand_architecture.global_positioning}
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4">
+            <a href="/solutions">
+              <Button size="lg" className="w-full sm:w-auto text-sm tracking-widest h-14 px-8 uppercase font-black rounded-none border-2 border-black bg-brand_cta text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-none transition-all">
+                {brandManifest.audience_demand_matrix.intent_clusters.solutions.conversion_copy_tokens.cta_label}
+              </Button>
+            </a>
+            <a href="/blog">
+              <Button variant="outline" size="lg" className="w-full sm:w-auto text-sm tracking-widest h-14 px-8 uppercase font-black rounded-none border-2 border-black bg-white text-black hover:bg-gray-100">
+                Read Guides
+              </Button>
+            </a>
+          </div>
+        </div>
+        <div class="relative hidden lg:block">
+           <div class="aspect-square bg-canvas_accent border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] p-12 flex flex-col justify-between">
+              <div class="font-mono text-xs font-bold uppercase tracking-widest border-b-2 border-black pb-4 mb-4 text-brand_cta flex justify-between">
+                <span>System Status</span>
+                <span>Optimal</span>
+              </div>
+              <div class="space-y-6 flex-grow flex flex-col justify-center">
+                <div class="h-6 bg-gray-200 border-2 border-black w-3/4"></div>
+                <div class="h-6 bg-gray-200 border-2 border-black w-1/2"></div>
+                <div class="h-6 bg-gray-200 border-2 border-black w-5/6"></div>
+                <div class="h-6 bg-brand_cta border-2 border-black w-full mt-8 opacity-90"></div>
+              </div>
+              <div class="mt-auto font-heading text-4xl font-black uppercase text-black">
+                Scale your operations without the friction.
+              </div>
+           </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Solutions/Features Grid -->
-  <section class="py-24 bg-muted/30 border-b border-border">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-16 max-w-2xl mx-auto">
-        <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-foreground mb-4 font-heading">Enterprise-grade tools, simplified.</h2>
-        <p class="text-lg text-muted-foreground">Everything you need to operate, automate, and grow your agency remotely.</p>
+  <!-- 4 Pillars Bento Grid -->
+  <section class="py-24 bg-canvas_accent border-b-4 border-black">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+      <div class="mb-16 max-w-2xl">
+        <h2 class="text-4xl md:text-5xl font-black tracking-tight text-black mb-4 font-heading uppercase">Core Infrastructure.</h2>
+        <p class="text-lg text-gray-700 font-mono">Everything you need to operate, automate, and grow your agency remotely. Built for absolute reliability.</p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-        {topFeatures.map((feature) => (
-          <Card className="rounded-none border border-border shadow-none hover:border-primary/50 transition-colors bg-background">
-            <CardHeader>
-              <CardTitle className="text-xl text-foreground font-heading">{feature.name}</CardTitle>
-              <CardDescription className="text-sm font-mono mt-2 text-muted-foreground">{feature.pillar.toUpperCase()}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p class="text-muted-foreground leading-relaxed">{feature.short_description}</p>
-            </CardContent>
-            <CardFooter>
-              <a href={`/solutions/${feature.slug}`} class="text-sm font-bold uppercase tracking-wider text-primary hover:underline flex items-center gap-2">
-                Learn more
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-              </a>
-            </CardFooter>
-          </Card>
-        ))}
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Connectivity -->
+        <a href="/esim" class="group col-span-1 lg:col-span-2 bg-white border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] p-8 hover:-translate-y-1 hover:shadow-[8px_8px_0px_0px_rgba(13,148,136,1)] transition-all flex flex-col justify-between min-h-[320px]">
+          <div>
+            <div class="font-mono text-[10px] font-bold uppercase tracking-widest text-brand_cta mb-4 border-2 border-brand_cta inline-block px-2 py-1">Pillar 01</div>
+            <h3 class="text-3xl font-black text-black font-heading uppercase mb-2 group-hover:text-brand_cta transition-colors">Connectivity</h3>
+            <p class="text-gray-600 max-w-md font-mono text-sm leading-relaxed">Enterprise VPN networks and global eSIM data plans for your entire remote workforce. Secure access, everywhere.</p>
+          </div>
+          <div class="mt-8 font-mono text-xs font-bold uppercase flex items-center gap-2 text-black">
+            Explore Connectivity <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+          </div>
+        </a>
+
+        <!-- Reputation -->
+        <a href="/reputation" class="group col-span-1 bg-white border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] p-8 hover:-translate-y-1 hover:shadow-[8px_8px_0px_0px_rgba(13,148,136,1)] transition-all flex flex-col justify-between min-h-[320px]">
+          <div>
+            <div class="font-mono text-[10px] font-bold uppercase tracking-widest text-brand_cta mb-4 border-2 border-brand_cta inline-block px-2 py-1">Pillar 02</div>
+            <h3 class="text-3xl font-black text-black font-heading uppercase mb-2 group-hover:text-brand_cta transition-colors">Reputation</h3>
+            <p class="text-gray-600 font-mono text-sm leading-relaxed">Automate local SEO dominance. AI-driven review responders and local lead generation.</p>
+          </div>
+          <div class="mt-8 font-mono text-xs font-bold uppercase flex items-center gap-2 text-black">
+            Explore Reputation <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+          </div>
+        </a>
+
+        <!-- Intelligence -->
+        <a href="/intelligence" class="group col-span-1 bg-white border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] p-8 hover:-translate-y-1 hover:shadow-[8px_8px_0px_0px_rgba(13,148,136,1)] transition-all flex flex-col justify-between min-h-[320px]">
+          <div>
+            <div class="font-mono text-[10px] font-bold uppercase tracking-widest text-brand_cta mb-4 border-2 border-brand_cta inline-block px-2 py-1">Pillar 03</div>
+            <h3 class="text-3xl font-black text-black font-heading uppercase mb-2 group-hover:text-brand_cta transition-colors">Intelligence</h3>
+            <p class="text-gray-600 font-mono text-sm leading-relaxed">Competitor spying algorithms and zero-delay market data feeds to inform your next move.</p>
+          </div>
+          <div class="mt-8 font-mono text-xs font-bold uppercase flex items-center gap-2 text-black">
+            Explore Intelligence <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+          </div>
+        </a>
+
+        <!-- Solutions -->
+        <a href="/solutions" class="group col-span-1 lg:col-span-2 bg-white border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] p-8 hover:-translate-y-1 hover:shadow-[8px_8px_0px_0px_rgba(13,148,136,1)] transition-all flex flex-col justify-between min-h-[320px]">
+          <div>
+            <div class="font-mono text-[10px] font-bold uppercase tracking-widest text-brand_cta mb-4 border-2 border-brand_cta inline-block px-2 py-1">Pillar 04</div>
+            <h3 class="text-3xl font-black text-black font-heading uppercase mb-2 group-hover:text-brand_cta transition-colors">Solutions</h3>
+            <p class="text-gray-600 max-w-md font-mono text-sm leading-relaxed">Scalable cloud hosting, secure decentralized storage, and automated AI invoicing for your back-office.</p>
+          </div>
+          <div class="mt-8 font-mono text-xs font-bold uppercase flex items-center gap-2 text-black">
+            Explore Solutions <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+          </div>
+        </a>
       </div>
     </div>
   </section>
 
   <!-- Intelligence / Blog Section -->
   {displayPosts.length > 0 && (
-    <section class="py-24 bg-background">
-      <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl">
-        <div class="flex items-end justify-between mb-12">
+    <section class="py-24 bg-white border-b-4 border-black">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+        <div class="flex items-end justify-between mb-12 border-b-4 border-black pb-6">
           <div>
-            <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-foreground font-heading">Intelligence</h2>
-            <p class="text-lg text-muted-foreground mt-2">Actionable advice on scaling agencies.</p>
+            <h2 class="text-4xl md:text-5xl font-black tracking-tight text-black font-heading uppercase">Resources</h2>
+            <p class="text-lg text-gray-700 mt-2 font-mono">Actionable advice on scaling agencies.</p>
           </div>
-          <a href="/blog" class="hidden sm:block text-sm font-bold uppercase tracking-wider text-primary hover:underline">View All</a>
+          <a href="/blog" class="hidden sm:inline-flex text-sm font-bold uppercase tracking-widest text-brand_cta hover:text-black transition-colors items-center gap-2">
+            View All <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+          </a>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
           {displayPosts.map((post) => (
-            <a href={`/blog/${post.slug}`} class="group block">
-              <div class="aspect-[16/9] mb-4 overflow-hidden border border-border">
-                <img src={post.image} alt={post.title} class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+            <a href={`/blog/${post.slug}`} class="group block border-4 border-black bg-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-[8px_8px_0px_0px_rgba(13,148,136,1)] transition-all p-4 flex flex-col h-full">
+              <div class="aspect-[16/9] mb-6 overflow-hidden border-2 border-black">
+                <img src={post.image} alt={post.title} class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
               </div>
-              <div class="flex items-center gap-4 text-xs font-mono text-muted-foreground uppercase tracking-wider mb-2">
+              <div class="flex items-center gap-4 text-[10px] font-mono font-bold text-gray-500 uppercase tracking-widest mb-3">
                 <span>{post.createdAt}</span>
               </div>
-              <h3 class="text-xl font-bold leading-snug text-foreground group-hover:text-primary transition-colors font-heading">{post.title}</h3>
-              <p class="mt-2 text-muted-foreground line-clamp-2 leading-relaxed">{post.excerpt}</p>
+              <h3 class="text-2xl font-black leading-snug text-black group-hover:text-brand_cta transition-colors font-heading uppercase mb-3">{post.title}</h3>
+              <p class="text-gray-600 line-clamp-2 leading-relaxed font-mono text-sm mt-auto">{post.excerpt}</p>
             </a>
           ))}
         </div>
@@ -138,13 +191,15 @@ const topFeatures = targetSolutions.slice(0, 4);
   )}
 
   <!-- Final CTA -->
-  <section class="py-32 bg-primary text-primary-foreground text-center">
-    <div class="container mx-auto px-4 max-w-3xl">
-      <h2 class="text-4xl md:text-5xl font-extrabold tracking-tight mb-6 font-heading">Ready to streamline your business?</h2>
-      <p class="text-xl mb-10 text-primary-foreground/80 leading-relaxed">Join thousands of professionals using our tools to save time and increase revenue.</p>
+  <section class="py-32 bg-brand_cta text-white text-center relative overflow-hidden">
+    <!-- Decorative pattern -->
+    <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 24px 24px;"></div>
+    <div class="container mx-auto px-4 max-w-4xl relative z-10 bg-black p-12 md:p-16 border-4 border-black shadow-[8px_8px_0px_0px_rgba(255,255,255,1)]">
+      <h2 class="text-4xl md:text-6xl font-black tracking-tight mb-6 font-heading uppercase text-white">Streamline your business today.</h2>
+      <p class="text-lg md:text-xl mb-10 text-gray-300 leading-relaxed font-mono max-w-2xl mx-auto">Join thousands of professionals using our tools to save time and increase revenue without the technical friction.</p>
       <a href="/solutions">
-        <Button size="lg" variant="secondary" className="text-sm tracking-wide h-14 px-12 uppercase font-bold rounded-none bg-background text-foreground hover:bg-muted">
-          Get Started Today
+        <Button size="lg" className="text-sm tracking-widest h-14 px-12 uppercase font-black rounded-none border-2 border-white bg-white text-black hover:bg-brand_cta hover:text-white hover:border-black transition-colors">
+          Get Started Now
         </Button>
       </a>
     </div>
