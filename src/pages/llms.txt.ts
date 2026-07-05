@@ -5,8 +5,8 @@ export const prerender = true;
 // @ts-ignore
 export const dynamic = 'force-static';
 
-const INDEX_MANIFEST = `# Bizkitgrow Operational Telemetry
-> Autonomous B2B infrastructure for global remote operators: sovereign connectivity, reputation gating, and back-office automation.
+const INDEX_MANIFEST = `# Bizkitgrow Intelligence
+> The All-in-One Growth Platform for Remote Agencies and Consultancies: global connectivity, local SEO, and back-office automation.
 
 ## Core Pillars & Solutions
 - [Global eSIM Channels](${new URL('/esim', siteConfig.url).toString()}) - Instant cellular routing across 190+ sovereign networks.

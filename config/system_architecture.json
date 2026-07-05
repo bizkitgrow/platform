@@ -10,12 +10,12 @@
       "host": "Vercel",
       "framework": "Astro v4 (ISR Mode)",
       "paths": {
-        "/": "Ecosystem Hub Landing Page",
-        "/esim/[country]": "Pillar 1: Programmatic Connectivity Router",
-        "/reputation/[city]": "Pillar 2: Programmatic Local SEO Hub",
-        "/solutions/[service_slug]": "Pillar 3: AI Business Suite Dashboard",
-        "/alternatives/[software_name]": "Cross-Pillar SaaS Alternatives Hub",
-        "/blog/[slug]": "AGC Article View"
+        "/": "Main Landing Page",
+        "/esim/[country]": "Global Connectivity Routing",
+        "/reputation/[city]": "Local SEO Reputation Pages",
+        "/solutions/[service_slug]": "Business Operations Dashboard",
+        "/alternatives/[software_name]": "SaaS Comparison Pages",
+        "/blog/[slug]": "Article View"
       }
     },
     "fulfillment_subdomain": {
@@ -27,5 +27,11 @@
         "skip_client_email": false
       }
     }
+  },
+  "telemetry_and_caching": {
+    "caching_layer": "Upstash Redis",
+    "market_data_primary": "CoinGecko API",
+    "market_data_fallback": "CoinMarketCap API",
+    "news_intelligence": ["Finnhub API", "Alpha Vantage API"]
   }
 }

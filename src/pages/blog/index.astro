@@ -13,10 +13,10 @@ const currentUrl = Astro.site
   : 'https://bizkitgrow.vercel.app/blog';
 
 const pillarLabels: Record<string, string> = {
-  esim_data_plans: 'CONNECTIVITY',
-  reputation_management: 'LOCAL SEO',
-  ai_business_tools_suite: 'AI OPERATIONS',
-  general: 'OPERATIONAL SIGNAL',
+  esim_data_plans: 'TEAM ROAMING',
+  reputation_management: 'CLIENT REVIEWS',
+  ai_business_tools_suite: 'CLIENT PORTALS',
+  general: 'BUSINESS GUIDES',
 };
 
 let dbPosts: any[] = [];
@@ -75,7 +75,7 @@ const blogListSchema = {
   name: 'Bizkitgrow Intelligence Feed',
   url: currentUrl,
   description:
-    'Sovereign B2B operational intelligence: VPN, reputation gating, and AI automation briefings.',
+    'Expert insights on global connectivity, local SEO dominance, and agency automation.',
   blogPost: posts.slice(0, 5).map((p) => ({
     '@type': 'BlogPosting',
     headline: p.title,
@@ -88,8 +88,8 @@ const blogListSchema = {
 ---
 
 <BaseLayout
-  title="Intelligence Feed & Live Market Terminal | Bizkitgrow"
-  description="B2B intelligence briefings, live cryptocurrency prices, TradingView charts, and global market insights — updated autonomously by the Bizkitgrow Intelligence Engine."
+  title="Intelligence Feed | Bizkitgrow"
+  description="Expert insights, live market data, TradingView charts, and B2B growth strategies — updated daily by the Bizkitgrow team."
   canonicalUrl={currentUrl}
 >
   <script type="application/ld+json" slot="schema" is:inline set:html={JSON.stringify(blogListSchema)} />
@@ -159,10 +159,10 @@ const blogListSchema = {
         [ RESOURCES & INSIGHTS // LIVE ]
       </div>
       <h1 class="font-['Outfit'] text-5xl md:text-7xl font-black text-text_primary uppercase tracking-tight">
-        Operational<br />Briefings.
+        Growth &<br />Operations.
       </h1>
       <p class="mt-4 text-sm text-text_secondary max-w-xl leading-relaxed">
-        Autonomous briefings on global connectivity networks, local search engine authority, and automated invoicing systems for remote agencies.
+        Practical guides and resources on managing remote team connectivity, boosting local search visibility, and streamlining agency billing operations.
       </p>
     </header>
 
@@ -175,12 +175,13 @@ const blogListSchema = {
         <input 
           type="search" 
           id="resource-search"
-          placeholder="SEARCH BRIEFINGS ARCHIVE..." 
+          placeholder="SEARCH ARTICLES..." 
           class="w-full bg-canvas_accent border-2 border-black pl-12 pr-4 py-4 font-mono text-sm uppercase font-bold text-black placeholder-gray-500 focus:outline-none focus:border-brand_cta focus:ring-0 transition-colors"
+          aria-label="Search articles"
         />
       </div>
       <div class="w-full md:w-1/3 flex justify-end gap-2 overflow-x-auto pb-2 md:pb-0 scrollbar-hide">
-        <button class="filter-btn active bg-black text-white px-5 py-3 font-mono text-[10px] font-bold uppercase tracking-widest shrink-0 border-2 border-black hover:bg-brand_cta hover:text-black transition-colors" data-filter="news" aria-label="Show briefings">BRIEFINGS</button>
+        <button class="filter-btn active bg-black text-white px-5 py-3 font-mono text-[10px] font-bold uppercase tracking-widest shrink-0 border-2 border-black hover:bg-brand_cta hover:text-black transition-colors" data-filter="news" aria-label="Show articles">ARTICLES</button>
         <button class="filter-btn bg-white text-black px-5 py-3 font-mono text-[10px] font-bold uppercase tracking-widest shrink-0 border-2 border-black hover:bg-brand_cta transition-colors" data-filter="market" aria-label="Show live market terminal">MARKET</button>
       </div>
     </div>
@@ -189,9 +190,11 @@ const blogListSchema = {
       <!-- Posts Grid (NEWS) -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="posts-grid">
         {posts.map((post, i) => {
-          const heroImageUrl = post.originalImage
-            ? post.originalImage
-            : `https://image.pollinations.ai/prompt/${encodeURIComponent(`${post.title}, brutalist style tech card, corporate minimalism`)}?width=600&height=400&nologo=true`;
+          const encodedTitle = encodeURIComponent(post.title + ' ' + (post.pillar === 'esim_data_plans' ? 'global connectivity' : 'business technology'));
+          const fallbackSeed = post.title.length;
+          const heroImageUrl = post.originalImage && post.originalImage.trim() !== '' 
+            ? post.originalImage 
+            : `https://image.pollinations.ai/prompt/${encodedTitle}?width=600&height=375&nologo=true&seed=${fallbackSeed}`;
           
           const label = pillarLabels[post.pillar] || pillarLabels.general;
 
@@ -248,12 +251,12 @@ const blogListSchema = {
         <!-- Pagination Trigger (Load More) -->
         {posts.length > 6 && (
           <div id="posts-load-more-wrap" class="col-span-full text-center mt-12">
-            <button
-              id="posts-load-more"
-              class="font-mono text-[10px] font-black uppercase tracking-widest px-6 py-2.5 border-2 border-black bg-white text-black hover:bg-black hover:text-white transition-colors"
-              aria-label="Load more operational briefings"
+            <button 
+              id="load-more-btn" 
+              class="bg-white text-black border-2 border-black font-mono font-bold uppercase text-[10px] tracking-widest px-8 py-3 hover:bg-brand_cta transition-colors shadow-brutal active:translate-y-1 active:shadow-none"
+              aria-label="Load more articles"
             >
-              LOAD MORE BRIEFINGS ↓
+              LOAD MORE ARTICLES &darr;
             </button>
           </div>
         )}

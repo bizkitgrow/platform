@@ -196,44 +196,6 @@
           <a href="https://www.tradingview.com/?aff_id=168388" rel="noopener nofollow" target="_blank" class="text-brand_cta hover:underline">Advanced Charts by TradingView</a>
         </div>
       </div>
-      <script is:inline>
-        (function () {
-          // Use the official TradingView widget constructor (not external-embedding script)
-          // This method is reliable and does not conflict with Astro's compiler
-          function initTVChart() {
-            if (typeof TradingView !== 'undefined') {
-              new TradingView.widget({
-                container_id: 'tv-advanced-chart-widget',
-                width: '100%',
-                height: 468,
-                symbol: 'NASDAQ:AAPL',
-                interval: 'D',
-                timezone: 'Etc/UTC',
-                theme: 'light',
-                style: '1',
-                locale: 'en',
-                toolbar_bg: '#f1f3f6',
-                enable_publishing: false,
-                allow_symbol_change: true,
-                save_image: true,
-                hide_side_toolbar: false,
-                withdateranges: true,
-                details: true,
-                hotlist: true,
-                calendar: true,
-                studies: ['STD;RSI', 'STD;MACD'],
-                watchlist: ['NASDAQ:NVDA', 'NASDAQ:TSLA', 'BINANCE:BTCUSDT', 'BINANCE:ETHUSDT', 'FOREXCOM:SPXUSD', 'TVC:GOLD', 'FX:EURUSD']
-              });
-            }
-          }
-          // Load the TV charting library, then init
-          var tvScript = document.createElement('script');
-          tvScript.src = 'https://s3.tradingview.com/tv.js';
-          tvScript.async = true;
-          tvScript.onload = initTVChart;
-          document.head.appendChild(tvScript);
-        })();
-      </script>
     </div>
 
     <!-- Finnhub: Performance Chart -->
@@ -264,26 +226,7 @@
         <div class="font-mono text-[10px] font-black uppercase tracking-widest">ECONOMIC CALENDAR</div>
         <span class="font-mono text-[9px] text-gray-500 uppercase tracking-widest">All Currencies · Macro Events</span>
       </div>
-      <div id="tv-econ-cal-container" style="min-height:400px;width:100%"></div>
-      <script is:inline>
-        (function () {
-          var cfg = {
-            colorTheme: 'light',
-            isTransparent: false,
-            width: '100%',
-            height: 400,
-            locale: 'en',
-            importanceFilter: '-1,0,1',
-            countryFilter: 'ar,au,br,ca,cn,de,eu,fr,gb,in,id,it,jp,kr,mx,ru,sa,tr,us,za'
-          };
-          var s = document.createElement('script');
-          s.src = 'https://s3.tradingview.com/external-embedding/embed-widget-economic-calendar.js';
-          s.async = true;
-          s.textContent = JSON.stringify(cfg);
-          var container = document.getElementById('tv-econ-cal-container');
-          if (container) container.appendChild(s);
-        })();
-      </script>
+      <div id="tv-econ-cal-container" style="min-height:400px;width:100%" class="bg-gray-50 flex items-center justify-center font-mono text-[10px] text-gray-400">LOADING ECONOMIC EVENTS...</div>
       <div class="text-right px-4 py-2 font-mono text-[8px] uppercase tracking-widest text-gray-400 border-t border-gray-100">
         Economic Calendar by <a href="https://www.tradingview.com/?aff_id=168388" target="_blank" rel="noopener nofollow" class="text-brand_cta hover:underline">TradingView</a>
       </div>
@@ -527,6 +470,58 @@
   }
 
 
+  // ── TradingView Lazy Initializers ──────────────────────────
+  var tvChartLoaded = false;
+  var tvEconCalLoaded = false;
+
+  function initTVChart() {
+    if (tvChartLoaded || typeof TradingView === 'undefined') return;
+    new TradingView.widget({
+      container_id: 'tv-advanced-chart-widget',
+      width: '100%',
+      height: 468,
+      symbol: 'NASDAQ:AAPL',
+      interval: 'D',
+      timezone: 'Etc/UTC',
+      theme: 'light',
+      style: '1',
+      locale: 'en',
+      toolbar_bg: '#f1f3f6',
+      allow_symbol_change: true,
+      save_image: true,
+      hide_side_toolbar: false,
+      withdateranges: true,
+      details: true,
+      hotlist: true,
+      calendar: true,
+      studies: ['STD;RSI', 'STD;MACD'],
+      watchlist: ['NASDAQ:NVDA', 'NASDAQ:TSLA', 'BINANCE:BTCUSDT', 'BINANCE:ETHUSDT', 'FOREXCOM:SPXUSD', 'TVC:GOLD', 'FX:EURUSD']
+    });
+    tvChartLoaded = true;
+  }
+
+  function initTVEconCal() {
+    if (tvEconCalLoaded) return;
+    var container = document.getElementById('tv-econ-cal-container');
+    if (!container) return;
+    var cfg = {
+      colorTheme: 'light',
+      isTransparent: false,
+      width: '100%',
+      height: 400,
+      locale: 'en',
+      importanceFilter: '-1,0,1',
+      countryFilter: 'ar,au,br,ca,cn,de,eu,fr,gb,in,id,it,jp,kr,mx,ru,sa,tr,us,za'
+    };
+    var s = document.createElement('script');
+    s.src = 'https://s3.tradingview.com/external-embedding/embed-widget-events.js';
+    s.async = true;
+    s.textContent = JSON.stringify(cfg);
+    container.innerHTML = ''; // clear loading indicator
+    container.appendChild(s);
+    tvEconCalLoaded = true;
+  }
+
   // ── Tab Logic ────────────────────────────────────────────────
   const tabs = document.querySelectorAll('.mkt-tab');
   const panels = document.querySelectorAll('.mkt-panel');
@@ -544,7 +539,21 @@
       tab.setAttribute('aria-selected', 'true');
       panels.forEach(p => p.classList.add('hidden'));
       const panel = document.getElementById(target);
-      if (panel) panel.classList.remove('hidden');
+      if (panel) {
+        panel.classList.remove('hidden');
+        if (target === 'mkt-panel-charts') {
+          if (typeof TradingView === 'undefined') {
+            var tvScript = document.createElement('script');
+            tvScript.src = 'https://s3.tradingview.com/tv.js';
+            tvScript.async = true;
+            tvScript.onload = initTVChart;
+            document.head.appendChild(tvScript);
+          } else {
+            initTVChart();
+          }
+          initTVEconCal();
+        }
+      }
     });
   });
 

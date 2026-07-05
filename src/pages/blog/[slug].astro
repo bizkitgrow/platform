@@ -136,11 +136,18 @@ const CTA_MAP: Record<string, { headline: string; body: string; cta: string; hre
 };
 
 const cta = CTA_MAP[activePost.targetProductSku] || CTA_MAP.ai_business_tools_suite;
-const heroImageUrl = activePost.originalImage
-  ? activePost.originalImage
-  : media
-    ? media.pollinationsUrl
-    : `https://image.pollinations.ai/prompt/${encodeURIComponent(`${activePost.title}, brutalist dark tech, neon accents`)}?width=1200&height=630&nologo=true`;
+const encodedTitle = encodeURIComponent(
+  activePost.title +
+    ' ' +
+    (activePost.targetProductSku === 'esim_data_plans'
+      ? 'global connectivity'
+      : 'business technology'),
+);
+const fallbackSeed = activePost.title.length;
+const heroImageUrl =
+  activePost.originalImage && activePost.originalImage.trim() !== ''
+    ? activePost.originalImage
+    : `https://image.pollinations.ai/prompt/${encodedTitle}?width=1200&height=630&nologo=true&seed=${fallbackSeed}`;
 
 // Extract H2/H3 for Table of Contents
 const tocMatches = [...mainContent.matchAll(/<h([23])[^>]*>([^<]+)<\/h[23]>/gi)];

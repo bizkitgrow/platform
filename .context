@@ -36,7 +36,7 @@ BIZKITDEV/
     └── agc-pipeline-workflow.yml
 ```
 
-**Stack:** Astro v4 ISR · Next.js 14 App Router · Supabase · Vercel · Cloudflare · GitHub Actions
+**Stack:** Astro v4 ISR · Next.js 14 App Router · Supabase (PostgreSQL) · Upstash (Redis) · Vercel · Cloudflare · GitHub Actions
 
 ---
 
@@ -97,6 +97,7 @@ BIZKITDEV/
 
 | Skill | Trigger | Dokumen |
 |---|---|---|
+| `bizkit-brand-intelligence` | Sebelum SEMUA task UI/UX, copywriting, SEO, LCP, dan performa (Master Playbook) | `/.agents/skills/bizkit-brand-intelligence/SKILL.md` |
 | `modern-web-guidance` | Sebelum SEMUA HTML/CSS/JS task | `/skills/modern-web-guidance/SKILL.md` |
 | `chrome-devtools` | Debug, audit performa, test UI | `/skills/chrome-devtools/SKILL.md` |
 | `a11y-debugging` | Audit aksesibilitas komponen | `/skills/a11y-debugging/SKILL.md` |
@@ -231,12 +232,13 @@ BIZKITDEV/
 | shadcn/ui | latest | https://ui.shadcn.com | https://github.com/shadcn-ui/ui |
 | Biome.js | v1.8+ | https://biomejs.dev | https://github.com/biomejs/biome |
 
-### Database & ORM
+### Database, ORM, & Caching
 
 | Library | Docs | Repo |
 |---|---|---|
 | Drizzle ORM | https://orm.drizzle.team | https://github.com/drizzle-team/drizzle-orm |
 | Supabase JS | https://supabase.com/docs/reference/javascript | https://github.com/supabase/supabase-js |
+| Upstash Redis | https://upstash.com/docs/redis | https://github.com/upstash/upstash-redis |
 
 ### AI Providers
 

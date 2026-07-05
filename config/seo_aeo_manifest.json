@@ -2,13 +2,13 @@
   "geometrical_indexing_protocols": {
     "aeo_geo_density_ratio": {
       "factual_statements_to_length_ratio_threshold": "F / L >= 0.15",
-      "formatting": "Strictly utilize bullet points, tables, and short paragraphs to optimize ingestion speed by LLM web crawlers."
+      "formatting": "Use bullet points, tables, and concise paragraphs for easy reading."
     },
     "llms_txt_configuration": {
-      "generation_mechanism": "Dynamic mapping from system_architecture.json product catalog",
+      "generation_mechanism": "Generated dynamically from the product catalog.",
       "output_route": "/public/llms.txt",
-      "formatting": "Markdown core structural schemas",
-      "update_trigger": "After each GitHub Actions pipeline run"
+      "formatting": "Standard Markdown formatting.",
+      "update_trigger": "Runs after the build pipeline."
     }
   },
   "technical_metadata": {

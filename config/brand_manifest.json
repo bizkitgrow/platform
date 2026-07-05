@@ -1,7 +1,7 @@
 {
   "brand_architecture": {
     "name": "bizkitgrow",
-    "global_positioning": "The Sovereign Infrastructure Engine for Remote Agencies and Consultancies"
+    "global_positioning": "The All-in-One Growth Platform for Remote Agencies and Consultancies"
   },
   "audience_demand_matrix": {
     "target_geos": ["US", "UK", "CA", "AU", "DE"],
@@ -15,9 +15,9 @@
           "get us virtual business phone number remotely"
         ],
         "conversion_copy_tokens": {
-          "hero_headline": "Secure Your Digital Perimeter. Anywhere on Earth.",
-          "subheadline": "Unthrottled tier-1 cellular data, dedicated financial-grade encryption, and immediate US/UK corporate lines. Zero roaming friction, absolute operational uptime.",
-          "cta_label": "Deploy Remote Mobility Asset"
+          "hero_headline": "Reliable Global Connectivity for Digital Professionals.",
+          "subheadline": "Unthrottled cellular data and immediate corporate lines for remote teams. Stay connected globally with zero roaming friction.",
+          "cta_label": "Explore Data Plans"
         }
       },
       "pillar_2_growth": {
@@ -29,9 +29,9 @@
           "automated client review acquisition funnel"
         ],
         "conversion_copy_tokens": {
-          "hero_headline": "Own the Search Grid. Dominate High-Value Zip Codes.",
-          "subheadline": "Convert latent buyer intent into high-margin revenue. Scale your local organic footprint and automate Google review capture on autopilot without volatile ad spend.",
-          "cta_label": "Ingest Inbound Search Authority"
+          "hero_headline": "Dominate Local Search & Build Unstoppable Reputation.",
+          "subheadline": "Convert latent buyer intent into high-margin revenue. Automate your client reviews and scale your local organic footprint without volatile ad spend.",
+          "cta_label": "Grow Your Reputation"
         }
       },
       "pillar_3_operations": {
@@ -43,9 +43,9 @@
           "secure cryptographic contract signing tool for consultants"
         ],
         "conversion_copy_tokens": {
-          "hero_headline": "Zero Administrative Overhead. Maximum Profit Margin.",
-          "subheadline": "Consolidate your back-office architecture. Automate the friction out of client scheduling, AI billing collection, and smart document signing in one unified client portal.",
-          "cta_label": "Initialize Agency Automation"
+          "hero_headline": "Automate Your Operations & Maximize Margins.",
+          "subheadline": "Consolidate your back-office apps. Automate client scheduling, billing, and document signing in one unified platform.",
+          "cta_label": "Automate Your Agency"
         }
       }
     }

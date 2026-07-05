@@ -59,9 +59,11 @@ const pillarLabels: Record<string, string> = {
 
   <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
     {posts.map((post) => {
-      const heroImageUrl = post.originalImage
-        ? post.originalImage
-        : `https://image.pollinations.ai/prompt/${encodeURIComponent(`${post.title}, brutalist style tech card, corporate minimalism`)}?width=600&height=400&nologo=true`;
+      const encodedTitle = encodeURIComponent(post.title + ' ' + (post.pillar === 'esim_data_plans' ? 'global connectivity' : 'business technology'));
+      const fallbackSeed = post.title.length;
+      const heroImageUrl = post.originalImage && post.originalImage.trim() !== '' 
+        ? post.originalImage 
+        : `https://image.pollinations.ai/prompt/${encodedTitle}?width=600&height=375&nologo=true&seed=${fallbackSeed}`;
       
       const label = pillarLabels[post.pillar] || pillarLabels.general;
 
