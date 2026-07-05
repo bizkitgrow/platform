@@ -4,9 +4,9 @@ const { executeAgnosticAiRefinement } = require('./universal-ai-adapter');
 const { getProductAndRoute } = require('./agc-engine-classifier');
 const { JSDOM } = require('jsdom');
 const { Readability } = require('@mozilla/readability');
-const path = require('path');
+const path = require('node:path');
 const createDOMPurify = require('dompurify');
-const crypto = require('crypto');
+const crypto = require('node:crypto');
 
 const rssParser = new RSSParser();
 const supabase = createClient(
@@ -30,24 +30,36 @@ async function scrapeFullContent(url) {
     }
     const html = await res.text();
     const dom = new JSDOM(html, { url });
-    
+
     // Extract first image
     let originalImage = null;
     const imgElement = dom.window.document.querySelector('img');
-    if (imgElement && imgElement.src) {
+    if (imgElement?.src) {
       originalImage = imgElement.src;
     }
-    
+
     // Remove unwanted elements
-    const unwantedSelectors = ['.related-posts', '#related-posts', 'footer', '.widget', '.advertisement', 'aside', '.share-buttons', '.social-share'];
-    unwantedSelectors.forEach(selector => {
+    const unwantedSelectors = [
+      '.related-posts',
+      '#related-posts',
+      'footer',
+      '.widget',
+      '.advertisement',
+      'aside',
+      '.share-buttons',
+      '.social-share',
+    ];
+    for (const selector of unwantedSelectors) {
       const elements = dom.window.document.querySelectorAll(selector);
-      elements.forEach(el => el.remove());
-    });
-    
+      for (const el of elements) {
+        el.remove();
+      }
+    }
+
     // Remove ALL images from the content to avoid duplicates with the hero image
-    const allImages = dom.window.document.querySelectorAll('img');
-    allImages.forEach(img => img.remove());
+    for (const img of allImages) {
+      img.remove();
+    }
 
     const reader = new Readability(dom.window.document);
     const article = reader.parse();
@@ -68,7 +80,7 @@ async function scrapeFullContent(url) {
 
 function localParaphrase(text, lang = 'en') {
   try {
-    const child = require('child_process').spawnSync(
+    const child = require('node:child_process').spawnSync(
       'python3',
       [path.join(__dirname, 'paraphrase.py')],
       {
@@ -84,10 +96,9 @@ function localParaphrase(text, lang = 'en') {
     const res = JSON.parse(child.stdout);
     if (res.success) {
       return res.text;
-    } else {
-      console.warn('[Pipeline] Paraphrase script returned error:', res.error);
-      return text;
     }
+    console.warn('[Pipeline] Paraphrase script returned error:', res.error);
+    return text;
   } catch (err) {
     console.warn('[Pipeline] Failed to execute paraphrase script:', err.message);
     return text;
@@ -250,7 +261,7 @@ async function runPipeline() {
         let articleHtml = '';
         let articleTextForAi = '';
 
-        if (scraped && scraped.contentHtml) {
+        if (scraped?.contentHtml) {
           articleHtml = DOMPurify.sanitize(scraped.contentHtml, {
             ALLOWED_TAGS: [
               'p',
@@ -319,7 +330,7 @@ Format response STRICTLY as a raw JSON object (no markdown code fences or markdo
         }
 
         // Inject the internal link CTA at the end of the article HTML
-        const finalContentHtml = articleHtml + '\n\n' + (polished.internalLinkHTML || '');
+        const finalContentHtml = `${articleHtml}\n\n${polished.internalLinkHTML || ''}`;
 
         const aiSummary = {
           hook: polished.hook,
@@ -391,7 +402,7 @@ Format response STRICTLY as a raw JSON object (no markdown code fences or markdo
                 }).catch(() => null);
               }
             } catch (e) {
-              console.warn(`[Pipeline] N8N syndication trigger failed:`, e.message);
+              console.warn('[Pipeline] N8N syndication trigger failed:', e.message);
             }
           }
         }
@@ -453,7 +464,7 @@ Format response STRICTLY as a raw JSON object (no markdown code fences or markdo
 
           const aiSummary = {
             hook: trend.summary
-              ? trend.summary.split('.')[0] + '.'
+              ? `${trend.summary.split('.')[0]}.`
               : 'Factual trend update from Gemini CLI.',
             tags: [classified.key],
             metaDesc: trend.metaDescription || 'Gemini CLI Grounded search trend update.',

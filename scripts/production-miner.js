@@ -49,10 +49,9 @@ async function scrapeContent(url) {
     const originalHtml = item.contentEncoded || item.content || item.description || '';
     let originalImage = null;
     if (item.mediaContent && item.mediaContent.length > 0) {
-      originalImage = item.mediaContent[0]['$']?.url;
+      originalImage = item.mediaContent[0].$?.url;
     } else if (
-      item.enclosure &&
-      item.enclosure.url &&
+      item.enclosure?.url &&
       item.enclosure.type &&
       item.enclosure.type.startsWith('image/')
     ) {

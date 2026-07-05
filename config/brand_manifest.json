@@ -1,51 +1,67 @@
 {
   "brand_architecture": {
-    "name": "bizkitgrow",
-    "global_positioning": "The All-in-One Growth Platform for Remote Agencies and Consultancies"
+    "name": "BIZKITGROW",
+    "global_positioning": "All-in-One Digital Infrastructure & Market Intelligence for Growing Businesses.",
+    "tone_of_voice": "Authoritative, Pragmatic, Plain-English, Solution-Oriented.",
+    "point_of_difference": "Instant Contextual Allocation"
   },
   "audience_demand_matrix": {
     "target_geos": ["US", "UK", "CA", "AU", "DE"],
     "intent_clusters": {
-      "pillar_1_mobility": {
-        "user_persona": "High-net-worth digital nomads, cross-border consultants, US remote founders.",
-        "core_pain_point": "Drastic roaming charges, insecure public networks stalling financial wire transfers, lost business SMS verification codes.",
+      "connectivity": {
+        "user_persona": "Remote teams, business travelers, and security-conscious professionals.",
+        "core_pain_point": "Insecure public networks, complex global data roaming, and VPN restrictions.",
         "high_rpm_search_queries": [
-          "secure business esim for international travel",
-          "private dedicated vpn for financial operations",
-          "get us virtual business phone number remotely"
+          "secure business vpn for remote teams",
+          "global business esim data plans",
+          "encrypted corporate network setup"
         ],
         "conversion_copy_tokens": {
-          "hero_headline": "Reliable Global Connectivity for Digital Professionals.",
-          "subheadline": "Unthrottled cellular data and immediate corporate lines for remote teams. Stay connected globally with zero roaming friction.",
-          "cta_label": "Explore Data Plans"
+          "hero_headline": "Secure Global Connectivity.",
+          "subheadline": "Deploy enterprise-grade VPNs and global eSIMs instantly. Secure your remote workforce anywhere in the world.",
+          "cta_label": "Explore Connectivity"
         }
       },
-      "pillar_2_growth": {
-        "user_persona": "US local brick-and-mortar owners, multi-location agencies, hyper-scale service providers.",
-        "core_pain_point": "Crushing ad-spend customer acquisition costs (CAC), negative Google reviews tanking local inbound leads, invisible organic footprint in high-value zip codes.",
+      "reputation": {
+        "user_persona": "Local business owners, restaurateurs, and agency managers.",
+        "core_pain_point": "Negative online reviews, low local search visibility, and poor conversion rates.",
         "high_rpm_search_queries": [
-          "automated google business reputation management software",
-          "programmatic hyper local seo for multi location brands",
-          "automated client review acquisition funnel"
+          "automate google reviews for local business",
+          "reputation management software for agencies",
+          "local seo lead generation tools"
         ],
         "conversion_copy_tokens": {
-          "hero_headline": "Dominate Local Search & Build Unstoppable Reputation.",
-          "subheadline": "Convert latent buyer intent into high-margin revenue. Automate your client reviews and scale your local organic footprint without volatile ad spend.",
-          "cta_label": "Grow Your Reputation"
+          "hero_headline": "Own the Local Search Grid.",
+          "subheadline": "Automate 5-star Google reviews and capture local leads effortlessly without volatile ad spend.",
+          "cta_label": "Grow Reputation"
         }
       },
-      "pillar_3_operations": {
-        "user_persona": "Time-poor agency owners, independent consultants, service-based solopreneurs scaling past $10k/mo.",
-        "core_pain_point": "Extreme administrative bloat, chaotic context-switching between 7 fragmented apps, payment drop-offs due to unprofessional billing workflows.",
+      "intelligence": {
+        "user_persona": "Startup founders, business analysts, and digital marketers.",
+        "core_pain_point": "Lack of market data, slow competitor analysis, and poor strategic insights.",
         "high_rpm_search_queries": [
-          "automated invoice to scheduling workflow for agencies",
-          "white label client management operations software",
-          "secure cryptographic contract signing tool for consultants"
+          "competitor website traffic analysis tools",
+          "real-time market data feed for startups",
+          "automated competitor advertising research"
         ],
         "conversion_copy_tokens": {
-          "hero_headline": "Automate Your Operations & Maximize Margins.",
-          "subheadline": "Consolidate your back-office apps. Automate client scheduling, billing, and document signing in one unified platform.",
-          "cta_label": "Automate Your Agency"
+          "hero_headline": "Uncover Market Intelligence.",
+          "subheadline": "Track competitors, monitor market trends, and make data-driven decisions with our enterprise analytics dashboard.",
+          "cta_label": "Access Intelligence"
+        }
+      },
+      "solutions": {
+        "user_persona": "E-commerce operators, early-stage startups, and independent freelancers.",
+        "core_pain_point": "Fragmented business operations, slow hosting, and delayed invoicing.",
+        "high_rpm_search_queries": [
+          "high performance cpanel managed hosting",
+          "automated b2b invoicing software",
+          "secure enterprise cloud storage"
+        ],
+        "conversion_copy_tokens": {
+          "hero_headline": "Centralize Your Operations.",
+          "subheadline": "Manage your hosting, cloud storage, CRM, and automated invoicing from a single, high-performance platform.",
+          "cta_label": "Deploy Solutions"
         }
       }
     }

@@ -48,8 +48,9 @@ BIZKITDEV/
 3. Semua panggilan AI → melalui scripts/universal-ai-adapter.js
 4. Proses > 2.5 detik → pindah ke GitHub Actions, BUKAN Vercel
 5. WAJIB patuhi Vibe Coder Workflow: (Brainstorming → Planning → Architecture Review → Execution → Code Review) sebelum merge.
-6. WAJIB aktifkan skill `anti-ai-slop` SEBELUM menyentuh UI, copywriting, atau komponen visual apapun (terapkan state machine lengkap: idle, loading, success, error, empty).
-7. Setelah selesai → validasi DOD di docs/01_RULES_AND_AI_AGENT.md#3
+6. WAJIB aktifkan skill `anti-ai-slop` SEBELUM menyentuh UI, copywriting, atau komponen visual apapun.
+7. STRICTLY BLOCK "AI slop" expressions. Prioritize human-centric conversion (CRO) and high-density SEO semantic keywords.
+8. Setelah selesai → validasi DOD di docs/01_RULES_AND_AI_AGENT.md#3
 ```
 
 ---

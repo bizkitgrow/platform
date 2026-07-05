@@ -2,6 +2,7 @@
 import { desc } from 'drizzle-orm';
 import brandManifest from '../../config/brand_manifest.json';
 import systemArchitecture from '../../config/system_architecture.json';
+import targetSolutions from '../../config/target_solutions.json';
 import { db } from '../db/client';
 import { posts as postsTable } from '../db/schema';
 
@@ -16,7 +17,8 @@ import Stats from '../components/widgets/Stats.astro';
 import Steps from '../components/widgets/Steps.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-const brandName = systemArchitecture.tenant_settings.brand_name;
+const brandName =
+  brandManifest.brand_architecture.name || systemArchitecture.tenant_settings.brand_name;
 const currentUrl = Astro.site ? Astro.site.toString() : 'https://bizkitgrow.vercel.app/';
 
 const orgSchema = {
@@ -24,8 +26,7 @@ const orgSchema = {
   '@type': 'Organization',
   name: brandName,
   url: currentUrl,
-  description:
-    'Bizkitgrow helps remote businesses scale with global eSIM connectivity, local SEO tools, and automated invoicing.',
+  description: brandManifest.brand_architecture.global_positioning,
   sameAs: [Astro.site ? Astro.site.origin : 'https://bizkitgrow.vercel.app'],
   contactPoint: {
     '@type': 'ContactPoint',
@@ -48,14 +49,14 @@ const displayPosts =
     ? recentPosts.map((p) => ({
         title: p.title,
         slug: p.slug,
-        excerpt: p.metaDesc || 'Read the complete analysis from the Bizkitgrow intelligence feed.',
+        excerpt: p.metaDesc || 'Read our latest business insights.',
         publishDate: p.createdAt ? new Date(p.createdAt) : new Date(),
         image:
           p.originalImage ||
-          `https://image.pollinations.ai/prompt/${encodeURIComponent(`${p.title}, brutalist style tech card, corporate minimalism`)}?width=600&height=400&nologo=true`,
-        tags: [p.targetProductSku || 'ai_business_tools_suite'],
+          `https://image.pollinations.ai/prompt/${encodeURIComponent(`${p.title}, corporate minimalist`)}?width=600&height=400&nologo=true`,
+        tags: [p.targetProductSku || 'business_tools'],
         readingTime: `${Math.max(2, Math.ceil((p.content?.length || 1000) / 1500))} min read`,
-        pillar: p.targetProductSku || 'ai_business_tools_suite',
+        pillar: p.targetProductSku || 'business_tools',
         createdAt: p.createdAt
           ? new Date(p.createdAt).toLocaleDateString('en-US', {
               month: 'short',
@@ -65,110 +66,98 @@ const displayPosts =
           : 'Jul 4, 2026',
       }))
     : [];
+
+// Map top 4 solutions for Features section
+const topFeatures = targetSolutions.slice(0, 4).map((solution) => ({
+  title: solution.name,
+  description: solution.short_description,
+  icon:
+    solution.pillar === 'infrastructure'
+      ? 'tabler:server'
+      : solution.pillar === 'authority'
+        ? 'tabler:chart-arrows'
+        : 'tabler:bolt',
+  callToAction: {
+    text: 'Learn more →',
+    href: `/solutions/${solution.slug}`,
+  },
+}));
 ---
 
 <BaseLayout
-  title="Bizkitgrow | Remote Business & Local SEO Software"
-  description="Manage your global team's connectivity, dominate local search results, and handle invoicing from one dashboard."
+  title={`${brandName} | The Ultimate Toolkit for Agencies`}
+  description={brandManifest.brand_architecture.global_positioning}
   canonicalUrl={currentUrl}
 >
   <script type="application/ld+json" slot="schema" is:inline set:html={JSON.stringify(orgSchema)} />
 
   <Hero
     actions={[
-      { text: brandManifest.audience_demand_matrix.intent_clusters.pillar_1_mobility.conversion_copy_tokens.cta_label.toUpperCase(), href: '/solutions/crm-system', icon: 'tabler:arrow-right', variant: 'primary' },
+      { text: brandManifest.audience_demand_matrix.intent_clusters.solutions.conversion_copy_tokens.cta_label.toUpperCase(), href: '/solutions/crm-system', icon: 'tabler:arrow-right', variant: 'primary' },
       { text: 'READ GUIDES', href: '/blog' }
     ]}
   >
     <Fragment slot="title">
-      Scale Your Remote Agency. <br />
-      <span class="text-brand_cta dark:text-brand_cta highlight">Without the Administrative Friction.</span>
+      <span class="text-brand_cta dark:text-brand_cta highlight">{brandManifest.audience_demand_matrix.intent_clusters.solutions.conversion_copy_tokens.hero_headline}</span>
     </Fragment>
 
     <Fragment slot="subtitle">
-      Bizkitgrow helps remote agencies and cross-border consultants connect teams instantly with global eSIM data, auto-collect customer reviews, and streamline B2B invoicing from a single, unified client portal.
+      {brandManifest.brand_architecture.global_positioning}
     </Fragment>
   </Hero>
 
   <Stats
     stats={[
-      { title: 'Countries Supported', amount: '190+' },
-      { title: 'Setup Time', amount: '< 5 Mins' },
-      { title: 'Automated Tasks', amount: '100%' },
-      { title: 'Uptime', amount: '99.9%' },
+      { title: 'Global Reach', amount: '190+ Countries' },
+      { title: 'Deployment', amount: 'Instant' },
+      { title: 'Automated Workflows', amount: '100%' },
+      { title: 'Platform Uptime', amount: '99.9%' },
     ]}
   />
 
   <Features
     id="features"
-    tagline="FEATURES"
-    title="Everything you need to operate globally and rank locally."
-    subtitle="Built for digital nomads, agencies, and service businesses."
-    items={[
-      {
-        title: 'Global eSIM Connectivity',
-        description: 'Instant cellular data in 190+ countries — no SIM swaps, no roaming bills. Your team stays connected on the ground, in transit, or working from a beach.',
-        icon: 'tabler:wifi',
-      },
-      {
-        title: 'Local SEO & Reputation Engine',
-        description: 'Turn satisfied clients into visible proof. Auto-collect Google reviews, surface your business at the top of local results, and defend your reputation — hands-free.',
-        icon: 'tabler:seo',
-      },
-      {
-        title: 'CRM & Smart Invoicing',
-        description: 'Eliminate the late-payment cycle. Send professional invoices, accept online payments, and manage every client interaction in one clean, audit-ready portal.',
-        icon: 'tabler:bolt',
-      },
-      {
-        title: 'Live Market Intelligence',
-        description: 'Real-time crypto prices, global equity charts, and macro intelligence feeds — aggregated from CoinGecko, TradingView, and Finnhub. Decisions backed by data, not noise.',
-        icon: 'tabler:chart-bar',
-        callToAction: {
-          text: 'Open Market Terminal →',
-          href: '/blog#market',
-        },
-      },
-    ]}
+    tagline="SOLUTIONS"
+    title="Everything you need to operate and grow."
+    subtitle="Enterprise-grade tools simplified for remote teams and agencies."
+    items={topFeatures}
   />
 
   <GrowthVectors />
 
   <Steps
-    title="Accelerate Growth with Verified Intelligence."
+    title="Scale Your Business in Three Steps"
     items={[
       {
-        title: 'Phase 1: <span class="font-medium">Audit & Discovery</span>',
-        description: 'Connect your business profiles and let our Intelligence Feed identify gaps in your local SEO and operational workflows.',
-        icon: 'tabler:search',
-      },
-      {
-        title: 'Phase 2: <span class="font-medium">Infrastructure Deployment</span>',
-        description: 'Provision global eSIMs for remote teams and deploy automated CRM workflows to streamline invoicing and client communications.',
+        title: 'Step 1: <span class="font-medium">Setup Infrastructure</span>',
+        description: 'Deploy secure VPNs, cloud storage, and hosting for your remote team instantly.',
         icon: 'tabler:server-cog',
       },
       {
-        title: 'Phase 3: <span class="font-medium">Continuous Domination</span>',
-        description: 'Utilize our Market Terminal and automated reputation engine to make data-driven decisions while scaling your operations.',
+        title: 'Step 2: <span class="font-medium">Automate Operations</span>',
+        description: 'Connect your CRM, invoicing, and scheduling tools into one seamless workflow.',
+        icon: 'tabler:bolt',
+      },
+      {
+        title: 'Step 3: <span class="font-medium">Build Authority</span>',
+        description: 'Dominate search rankings and automate social media to attract high-intent clients.',
         icon: 'tabler:chart-arrows-vertical',
       },
       {
-        title: 'Infrastructure fully operational.',
+        title: 'Ready to launch.',
         icon: 'tabler:check',
       },
     ]}
   />
 
-  <!-- Blog Highlighted Posts (activated dynamically using database posts) -->
   {displayPosts.length > 0 && (
     <BlogHighlightedPosts
-      title="Latest B2B Insights"
-      information="Expert insights on global connectivity, local SEO dominance, and agency automation."
+      title="Latest Strategies"
+      information="Actionable advice on scaling agencies, improving SEO, and managing remote teams."
       posts={displayPosts}
     />
   )}
 
-  <!-- Resell Portal Widget (hidden behind feature flag preview parameter since it is pending) -->
   {showPendingWidgets && (
     <div class="max-w-screen-xl px-4 py-8 mx-auto border-b-4 border-black">
       <div class="border-4 border-black p-6 bg-white shadow-brutal">
@@ -181,27 +170,27 @@ const displayPosts =
     actions={[
       {
         variant: 'primary',
-        text: 'GET STARTED FOR FREE',
-        href: '/solutions/crm-system',
+        text: 'GET STARTED TODAY',
+        href: '/solutions',
         icon: 'tabler:arrow-right',
       },
     ]}
   >
     <Fragment slot="title">
-      Ready to get more customers?
+      Ready to streamline your business?
     </Fragment>
 
     <Fragment slot="subtitle">
-      Join business owners who are saving hours every week with automated tools and global connectivity.
+      Join thousands of professionals using our tools to save time and increase revenue.
     </Fragment>
   </CallToAction>
 
   <div class="max-w-screen-xl px-4 py-12 mx-auto">
     <LeadCaptureWidget
-      title="JOIN THE WAITING LIST"
-      subtitle="Sign up today to reserve your spot and receive early-bird pricing when we launch our full suite."
-      serviceKey="waiting_list"
-      ctaText="SECURE MY SPOT"
+      title="STAY UPDATED"
+      subtitle="Join our newsletter for the latest platform updates and business growth strategies."
+      serviceKey="newsletter"
+      ctaText="SUBSCRIBE NOW"
     />
   </div>
 </BaseLayout>

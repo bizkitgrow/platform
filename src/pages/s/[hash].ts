@@ -1,6 +1,6 @@
+import { Redis } from '@upstash/redis';
 import type { APIRoute } from 'astro';
 import { eq } from 'drizzle-orm';
-import { Redis } from '@upstash/redis';
 import { db } from '../../db/client';
 import { shortUrls } from '../../db/schema';
 

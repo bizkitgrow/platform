@@ -46,8 +46,7 @@ const { src, alt, width, height, widths, format, layout = 'constrained', ...rest
 // --- Accessibility ---------------------------------------------------------
 if (alt === undefined || alt === null) {
   throw new Error(
-    `Image: missing required \`alt\` prop (src=${String(src)}). ` +
-      `Pass alt=""explicitly for decorative images.`,
+    `Image: missing required \`alt\` prop (src=${String(src)}). Pass alt=""explicitly for decorative images.`,
   );
 }
 

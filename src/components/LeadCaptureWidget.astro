@@ -16,7 +16,7 @@ const {
 
 <div class="lead-capture-container my-12 border-4 border-black bg-white p-8 text-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] max-w-2xl mx-auto font-sans">
  <div class="mb-6 border-b-2 border-black pb-4">
- <div class="font-mono text-xs uppercase tracking-widest font-black text-brand_cta mb-1">// FUNNEL_INGESTION</div>
+ <div class="font-mono text-xs uppercase tracking-widest font-black text-brand_cta mb-1">REQUEST ACCESS</div>
  <h3 class="text-2xl font-black uppercase tracking-tight font-heading">{title}</h3>
  <p class="text-sm mt-1 text-gray-700 font-medium">{subtitle}</p>
  </div>
@@ -78,7 +78,7 @@ const {
  // UI state transition to loading
  submitBtn.disabled = true;
  const originalCta = submitBtn.textContent;
- submitBtn.textContent = 'CONNECTING TELEMETRY...';
+ submitBtn.textContent = 'CONNECTING...';
  feedback.className = 'hidden';
 
  try {
@@ -94,17 +94,17 @@ const {
 
  if (response.ok) {
  // Success
- feedback.textContent = '// SUCCESS: TELEMETRY CONNECTED.';
+ feedback.textContent = 'SUCCESS: DATA RECEIVED.';
  feedback.className = 'block bg-green-100 text-green-800 border-green-800 p-3 border-2 font-mono text-xs uppercase tracking-wider';
  form.reset();
  } else {
  // Server error
- feedback.textContent = `// ERROR: ${result.error || 'SUBMISSION_FAILED'}`;
+ feedback.textContent = `ERROR: ${result.error || 'SUBMISSION_FAILED'}`;
  feedback.className = 'block bg-red-100 text-red-800 border-red-800 p-3 border-2 font-mono text-xs uppercase tracking-wider';
  }
  } catch (err) {
  // Network error
- feedback.textContent = '// ERROR: NETWORK_UNAVAILABLE';
+ feedback.textContent = 'ERROR: NETWORK_UNAVAILABLE';
  feedback.className = 'block bg-red-100 text-red-800 border-red-800 p-3 border-2 font-mono text-xs uppercase tracking-wider';
  } finally {
  submitBtn.disabled = false;

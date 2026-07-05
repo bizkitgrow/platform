@@ -21,7 +21,7 @@ export const POST: APIRoute = async ({ request }) => {
         body: JSON.stringify({ event: 'manual_syndicate', ...payload }),
         signal: AbortSignal.timeout(5000),
       }).catch(() => null);
-      if (res && res.ok) success = true;
+      if (res?.ok) success = true;
     }
 
     // Fallback to Cloud
@@ -32,7 +32,7 @@ export const POST: APIRoute = async ({ request }) => {
         body: JSON.stringify({ event: 'manual_syndicate', ...payload }),
         signal: AbortSignal.timeout(5000),
       }).catch(() => null);
-      if (res && res.ok) success = true;
+      if (res?.ok) success = true;
     }
 
     if (success) {
@@ -43,11 +43,10 @@ export const POST: APIRoute = async ({ request }) => {
         }),
         { status: 200 },
       );
-    } else {
-      return new Response(JSON.stringify({ success: false, error: 'N8N nodes unreachable' }), {
-        status: 502,
-      });
     }
+    return new Response(JSON.stringify({ success: false, error: 'N8N nodes unreachable' }), {
+      status: 502,
+    });
   } catch (err: any) {
     return new Response(JSON.stringify({ error: err.message }), { status: 400 });
   }

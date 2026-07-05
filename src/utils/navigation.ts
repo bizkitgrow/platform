@@ -19,7 +19,7 @@ export const footerLinks = {
     { href: '/blog', label: 'Intelligence Feed' },
   ],
   company: [
-    { href: '/privacy', label: 'Privacy Perimeter' },
-    { href: '/terms', label: 'Terms of Authority' },
+    { href: '/privacy', label: 'Privacy Policy' },
+    { href: '/terms', label: 'Terms of Service' },
   ],
 };

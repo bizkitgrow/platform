@@ -55,6 +55,9 @@ export const POST: APIRoute = async ({ request }) => {
             tags: {
               lead_source: 'omnichannel_ingest',
               targeted_service: targetedService,
+              digest_preference: 'weekly',
+              market_feed: 'active',
+              signup_timestamp: Math.floor(Date.now() / 1000).toString(),
             },
           }),
         });

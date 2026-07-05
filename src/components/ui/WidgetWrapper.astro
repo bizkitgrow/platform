@@ -5,7 +5,7 @@ import type { Widget } from '~/types';
 
 export interface Props extends Widget {
   containerClass?: string;
-  ['as']?: HTMLTag;
+  as?: HTMLTag;
 }
 
 const { id, isDark = false, containerClass = '', bg, as = 'section' } = Astro.props;

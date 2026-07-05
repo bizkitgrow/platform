@@ -34,12 +34,12 @@ export const errorHandlerMiddleware = defineMiddleware(async (context, next) => 
 
 export const authMiddleware = defineMiddleware(async (context, next) => {
   const url = new URL(context.request.url);
-  
+
   if (url.pathname.startsWith('/admin')) {
     const basicAuth = context.request.headers.get('authorization');
-    
-    // We cannot use import.meta.env reliably in all Astro middleware edge cases without the Env mapping, 
-    // but process.env is usually injected by Vercel for Node/Edge endpoints if properly configured. 
+
+    // We cannot use import.meta.env reliably in all Astro middleware edge cases without the Env mapping,
+    // but process.env is usually injected by Vercel for Node/Edge endpoints if properly configured.
     // Fallback securely.
     const adminUser = process.env.ADMIN_USERNAME || import.meta.env.ADMIN_USERNAME;
     const adminPass = process.env.ADMIN_PASSWORD || import.meta.env.ADMIN_PASSWORD;

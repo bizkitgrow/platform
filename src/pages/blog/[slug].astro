@@ -8,15 +8,15 @@ import ResellPortalWidget from '../../components/ResellPortalWidget.astro';
 import { db } from '../../db/client';
 import { posts as postsTable, shortUrls } from '../../db/schema';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { PRODUCTS_CATALOG, getProductBySku } from '../../utils/products';
 
 // Set public edge cache
 Astro.response.headers.set('Cache-Control', 'public, max-age=0, s-maxage=3600');
 
 export const prerender = false;
 
-// Redis integration for short URLs was removed to simplify the architecture 
+// Redis integration for short URLs was removed to simplify the architecture
 // and prevent SSR errors on Vercel Edge when crypto/upstash fails.
-
 
 const { slug } = Astro.params;
 
@@ -80,35 +80,22 @@ const mainContent = mainContentRaw.replace(
 const wordCount = mainContent.replace(/<[^>]*>/g, '').split(/\s+/).length;
 const readingTime = Math.max(2, Math.ceil(wordCount / 200));
 
-// Dynamic CTA per pillar
-const CTA_MAP: Record<string, { headline: string; body: string; cta: string; href: string }> = {
-  esim_data_plans: {
-    headline: 'Deploy Sovereign Connectivity',
-    body: 'Instant global eSIM provisioning across 190+ countries with enterprise-grade encryption. Sub-420ms activation, zero contracts.',
-    cta: 'CONFIGURE YOUR ESIM',
-    href: '/esim/united-states',
-  },
-  reputation_management: {
-    headline: 'Own the Local Search Grid',
-    body: 'Automate Google Business Profile optimization and review capture sequences. Dominate high-value zip codes without volatile ad spend.',
-    cta: 'ACTIVATE REPUTATION ENGINE',
-    href: '/reputation/new-york',
-  },
-  ai_business_tools_suite: {
-    headline: 'Initialize Agency Automation',
-    body: 'Consolidate invoicing, AI scheduling, and client communications under a single white-label portal. Zero administrative overhead.',
-    cta: 'ACCESS THE SUITE',
-    href: '/solutions/crm-system',
-  },
-};
+// Dynamic CTA per product SKU
+const defaultProduct = PRODUCTS_CATALOG.invoice_ai;
+const activeProduct = getProductBySku(activePost.targetProductSku) || defaultProduct;
 
-const cta = CTA_MAP[activePost.targetProductSku] || CTA_MAP.ai_business_tools_suite;
+const cta = {
+  headline: activeProduct.title,
+  body: activeProduct.subtitle,
+  cta: activeProduct.actionLabel,
+  href: activeProduct.href,
+};
 const encodedTitle = encodeURIComponent(
-  activePost.title +
-    ' ' +
-    (activePost.targetProductSku === 'esim_data_plans'
+  `${activePost.title} ${
+    activePost.targetProductSku === 'esim_data_plans'
       ? 'global connectivity'
-      : 'business technology'),
+      : 'business technology'
+  }`,
 );
 const fallbackSeed = activePost.title.length;
 const heroImageUrl =
@@ -125,10 +112,12 @@ const toc = tocMatches.map((m, i) => ({
 }));
 
 const pillarLabels: Record<string, string> = {
-  esim_data_plans: 'CONNECTIVITY',
-  reputation_management: 'SEARCH AUTHORITY',
-  ai_business_tools_suite: 'AI TOOLS',
+  connectivity: 'CONNECTIVITY',
+  reputation: 'REPUTATION',
+  intelligence: 'INTELLIGENCE',
+  solutions: 'SOLUTIONS',
 };
+const activePillarName = activeProduct.pillar;
 
 const metaDesc = aiMeta.metaDesc || activePost.metaDesc || activePost.title;
 
@@ -175,11 +164,9 @@ const articleSchema = {
   url: Astro.url.href,
   datePublished: activePost.createdAt,
   dateModified: activePost.createdAt,
-  keywords: [
-    ...(aiMeta.tags || []),
-    pillarLabels[activePost.targetProductSku] || 'B2B',
-    'Bizkitgrow',
-  ].join(', '),
+  keywords: [...(aiMeta.tags || []), pillarLabels[activePillarName] || 'B2B', 'Bizkitgrow'].join(
+    ', ',
+  ),
   author: {
     '@type': 'Organization',
     name: 'Bizkitgrow',
@@ -245,7 +232,7 @@ const articleSchema = {
           <div class="flex flex-wrap items-center gap-3 mb-5 font-mono text-xs uppercase tracking-widest text-text_secondary font-bold">
             <a href="/blog" class="hover:text-brand_cta transition-colors">RESOURCES</a>
             <span class="text-borders_subtle">/</span>
-            <span class="text-brand_cta">{pillarLabels[activePost.targetProductSku] || 'RESOURCE'}</span>
+            <span class="text-brand_cta">{pillarLabels[activePillarName] || 'RESOURCE'}</span>
           </div>
 
           <h1 id="post-title" itemprop="headline" class="aeo-speakable-title font-heading text-4xl sm:text-5xl md:text-6xl font-extrabold text-text_primary uppercase tracking-tight leading-[0.9] mb-6">
@@ -485,7 +472,7 @@ const articleSchema = {
               {relatedPosts.map((rPost) => (
                 <article class="p-6 bg-canvas_accent border border-borders_subtle hover:border-brand_cta transition-colors rounded-sm group relative">
                   <div class="font-mono text-[10px] text-text_secondary uppercase tracking-widest mb-3 font-bold">
-                    {pillarLabels[rPost.targetProductSku] || 'INTELLIGENCE'}
+                    {getProductBySku(rPost.targetProductSku) ? pillarLabels[getProductBySku(rPost.targetProductSku)!.pillar] : 'RESOURCE'}
                   </div>
                   <h4 class="font-heading text-lg font-black text-text_primary uppercase tracking-tight leading-snug mb-3 group-hover:text-brand_cta transition-colors">
                     <a href={`/blog/${rPost.slug}`} class="stretched-link line-clamp-2">{rPost.title}</a>

@@ -22,14 +22,18 @@ export const GET: APIRoute = async () => {
     let cgSuccess = false;
 
     const fetchCG = async (useKey: boolean) => {
-      const headers = useKey && cgApiKey ? { 'x-cg-demo-api-key': cgApiKey, Accept: 'application/json' } : { Accept: 'application/json' };
+      const headers =
+        useKey && cgApiKey
+          ? { 'x-cg-demo-api-key': cgApiKey, Accept: 'application/json' }
+          : { Accept: 'application/json' };
       const [marketsRes, trendingRes, moversRes] = await Promise.allSettled([
         fetch(
           'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=12&page=1&sparkline=true&price_change_percentage=1h,24h,7d',
           { headers, signal: AbortSignal.timeout(6000) },
         ),
         fetch('https://api.coingecko.com/api/v3/search/trending', {
-          headers, signal: AbortSignal.timeout(5000),
+          headers,
+          signal: AbortSignal.timeout(5000),
         }),
         fetch(
           'https://api.coingecko.com/api/v3/coins/top_gainers_losers?vs_currency=usd&duration=24h&top_coins=300',

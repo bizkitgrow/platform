@@ -3,90 +3,81 @@
     "slug": "global-vpn-infrastructure",
     "name": "Global VPN Infrastructure",
     "sku": "vpn",
-    "pillar": "infrastructure",
+    "pillar": "connectivity",
     "short_description": "Enterprise-grade secure remote access across distributed global teams.",
     "educational_insight": "Remote workforce security requires cryptographic tunneling at the edge. A dedicated B2B VPN ensures data integrity and bypasses regional restrictions without compromising speed.",
     "key_benefits": ["Cryptographic Encryption", "Global IP Rotation", "Zero-Log Policy"]
   },
   {
+    "slug": "global-esim-data",
+    "name": "Global eSIM Data Plans",
+    "sku": "esim_data_plans",
+    "pillar": "connectivity",
+    "short_description": "Instant international data connectivity for business travelers and remote teams.",
+    "educational_insight": "Eliminate roaming charges and physical SIM logistics. Instant activation across 190+ countries ensures your team stays connected securely.",
+    "key_benefits": ["190+ Countries", "Instant Activation", "No Roaming Fees"]
+  },
+  {
+    "slug": "ai-review-responder",
+    "name": "AI Review Responder",
+    "sku": "reputation_management",
+    "pillar": "reputation",
+    "short_description": "Automate 5-star Google review generation and filter negative feedback.",
+    "educational_insight": "Reputation gating intercepts negative experiences before they go public, giving you a chance to resolve issues internally while boosting local SEO rankings with authentic positive reviews.",
+    "key_benefits": ["Review Gating", "Automated Responses", "Local SEO Boost"]
+  },
+  {
+    "slug": "local-leads-discovery",
+    "name": "Local Leads Discovery Engine",
+    "sku": "local_leads",
+    "pillar": "reputation",
+    "short_description": "Identify and capture high-intent local prospects automatically.",
+    "educational_insight": "Finding leads is time-consuming. Our discovery engine parses local business data to find companies needing your services, generating a constant pipeline of fresh prospects.",
+    "key_benefits": ["Automated Scraping", "Contact Enrichment", "Pipeline Injection"]
+  },
+  {
+    "slug": "competitor-website-spy",
+    "name": "AI Website Competitor Spy",
+    "sku": "competitor_spy",
+    "pillar": "intelligence",
+    "short_description": "Deconstruct your competitors' traffic, keywords, and advertising strategies.",
+    "educational_insight": "Stop guessing what works. Analyze exactly where your competitors get their traffic and reverse-engineer their most profitable acquisition channels.",
+    "key_benefits": ["Traffic Analysis", "Keyword Discovery", "Ad Intelligence"]
+  },
+  {
+    "slug": "market-metrics-dashboard",
+    "name": "Enterprise Market Metrics",
+    "sku": "market_metrics",
+    "pillar": "intelligence",
+    "short_description": "Real-time market data feed for crypto, stocks, and macro events.",
+    "educational_insight": "Strategic decisions require real-time data. Access institutional-grade market metrics to time your business expansion and investments accurately.",
+    "key_benefits": ["Real-time Data", "Macro Events", "Custom Dashboards"]
+  },
+  {
     "slug": "cpanel-managed-hosting",
-    "name": "cPanel Managed Hosting",
+    "name": "Managed Cloud Core Hosting",
     "sku": "web_hosting",
-    "pillar": "infrastructure",
+    "pillar": "solutions",
     "short_description": "High-performance SSD hosting optimized for WordPress and enterprise scale.",
     "educational_insight": "Speed is an SEO ranking factor. Consolidating your digital assets onto ultra-fast NVMe SSD infrastructure prevents bounce rates and improves core web vitals.",
     "key_benefits": ["NVMe SSD Storage", "Automated Backups", "DDoS Protection"]
   },
   {
     "slug": "secure-cloud-storage",
-    "name": "Secure Cloud Storage",
+    "name": "Cloud Storage Cells",
     "sku": "cloud_storage",
-    "pillar": "infrastructure",
+    "pillar": "solutions",
     "short_description": "Encrypted file sharing and automated daily backups for your digital assets.",
     "educational_insight": "Data redundancy isn't just an IT requirement; it's operational survival. Decentralized, encrypted cloud storage prevents critical data loss and ensures rapid disaster recovery.",
     "key_benefits": ["End-to-End Encryption", "Automated Sync", "Granular Access Controls"]
   },
   {
-    "slug": "search-engine-optimization",
-    "name": "B2B SEO Execution",
-    "sku": "seo",
-    "pillar": "authority",
-    "short_description": "Data-driven, algorithm-proof search authority scaling.",
-    "educational_insight": "B2B purchasing starts with search. Ranking for high-intent queries establishes market dominance, driving organic inbound leads that convert at 10x the rate of outbound sales.",
-    "key_benefits": ["Technical SEO Audits", "Keyword Domination", "High-Authority Link Building"]
-  },
-  {
-    "slug": "ai-web-builder",
-    "name": "AI Website Builder",
-    "sku": "website_builder",
-    "pillar": "authority",
-    "short_description": "Drag-and-drop intelligent web creation optimized for conversions.",
-    "educational_insight": "Your digital storefront must load instantly and adapt continuously. AI-driven web architectures optimize user flow and split-test designs autonomously for maximum conversion.",
-    "key_benefits": ["Responsive Design", "AI Copywriting Assistance", "Conversion Tracking"]
-  },
-  {
-    "slug": "social-automation",
-    "name": "AI Social Automation",
-    "sku": "social_media_automation",
-    "pillar": "authority",
-    "short_description": "Autonomous social scheduling and brand monitoring.",
-    "educational_insight": "Omnipresence requires scale. Delegating social distribution to autonomous AI agents ensures consistent market touchpoints without draining human capital.",
-    "key_benefits": ["Multi-Platform Sync", "AI Content Generation", "Sentiment Analysis"]
-  },
-  {
-    "slug": "crm-system",
-    "name": "CRM System Integration",
-    "sku": "crm",
-    "pillar": "operations",
-    "short_description": "Centralized customer relationship architecture.",
-    "educational_insight": "A fragmented client database leaks revenue. A centralized CRM unites sales, marketing, and support into a single source of truth, automating pipeline velocity.",
-    "key_benefits": ["Pipeline Automation", "Client Telemetry", "Revenue Forecasting"]
-  },
-  {
     "slug": "invoicing-with-ai",
     "name": "AI Invoicing Automation",
     "sku": "invoice_ai",
-    "pillar": "operations",
+    "pillar": "solutions",
     "short_description": "Autonomous invoice generation and follow-up sequences.",
     "educational_insight": "Administrative friction delays cash flow. Automating ledger generation and payment reminders mathematically decreases Days Sales Outstanding (DSO) for healthier margins.",
     "key_benefits": ["Smart Follow-ups", "Stripe/PayPal Integration", "Tax Calculation"]
-  },
-  {
-    "slug": "appointment-booking",
-    "name": "Smart Scheduling Engine",
-    "sku": "appointments",
-    "pillar": "operations",
-    "short_description": "Timezone-aware autonomous appointment booking.",
-    "educational_insight": "The back-and-forth of scheduling kills momentum. An autonomous calendar engine locks in high-intent prospects immediately, reducing friction in the sales cycle.",
-    "key_benefits": ["Timezone Sync", "Automated Reminders", "Buffer Management"]
-  },
-  {
-    "slug": "email-marketing",
-    "name": "Campaign Manager Suite",
-    "sku": "email_marketing",
-    "pillar": "operations",
-    "short_description": "High-deliverability newsletters and automated sequences.",
-    "educational_insight": "Owned audience channels yield the highest ROI. Algorithmic drip campaigns nurture cold leads into operational partners through consistent, value-driven education.",
-    "key_benefits": ["High Deliverability", "A/B Testing", "Behavioral Triggers"]
   }
 ]

@@ -31,7 +31,7 @@ async function run() {
   }
 
   try {
-    await pool.query(`DROP INDEX IF EXISTS idx_short_urls_hash;`);
+    await pool.query('DROP INDEX IF EXISTS idx_short_urls_hash;');
     console.log('Dropped duplicate index idx_short_urls_hash');
   } catch (e) {}
 

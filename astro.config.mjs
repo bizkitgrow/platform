@@ -13,9 +13,7 @@ export default defineConfig({
     },
   }),
   image: {
-    remotePatterns: [
-      { protocol: 'https' }
-    ],
+    remotePatterns: [{ protocol: 'https' }],
   },
   output: 'static', // Enables static generation for pages but keeps dynamic endpoints alive
   integrations: [

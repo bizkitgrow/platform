@@ -52,7 +52,7 @@ export const GET: APIRoute = async ({ request }) => {
       if (res.ok) {
         const json = await res.json();
         const quote = json['Global Quote'];
-        if (quote && quote['01. symbol']) {
+        if (quote?.['01. symbol']) {
           results.push({
             id: quote['01. symbol'],
             price: Number.parseFloat(quote['05. price']),

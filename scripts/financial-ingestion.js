@@ -1,5 +1,5 @@
 require('dotenv').config();
-const crypto = require('crypto');
+const crypto = require('node:crypto');
 const { Pool } = require('pg');
 
 const pool = new Pool({ connectionString: process.env.DATABASE_URL });
@@ -127,7 +127,7 @@ async function runFinancialIngestion() {
         console.log(`[FINANCIAL ENGINE] Inserted post ID ${result.rows[0].id}`);
         ingested++;
       } catch (dbErr) {
-        console.error(`[FINANCIAL ENGINE] DB insert failed:`, dbErr.message);
+        console.error('[FINANCIAL ENGINE] DB insert failed:', dbErr.message);
       }
     }
 

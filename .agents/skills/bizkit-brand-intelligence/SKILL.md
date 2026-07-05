@@ -30,7 +30,7 @@ This skill acts as the master playbook for Bizkitgrow's frontend and behavioral 
 - **Orchestration:** If the task requires deep multi-step logic, structure it using Google Antigravity SDK agent patterns (Agent, Conversation, Connection) to keep boundaries clean.
 
 ### 2. Copywriting & Anti-AI Slop Verification
-- **Eliminate Slop:** Remove terms like "Seamless," "Unlock the power," "Synergy," "Revolutionary."
+- **Eliminate Slop:** STRICTLY BLOCK terms like "Seamless," "Unlock the power," "Synergy," "Revolutionary." Prioritize human audiences, practical problem-solving copy, and high semantic value for SEO EEAT.
 - **Tone:** Use decisive, authoritative, and human-centric language (e.g., "The All-in-One Growth Platform for Remote Agencies", "Expert insights").
 - **State Machine UI:** Every interactive component must handle Idle, Loading, Success, Error, and Empty states gracefully. Do not use generic alerts like "Error 500".
 

@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 
-const readline = require('readline');
+const readline = require('node:readline');
 const { createClient } = require('@supabase/supabase-js');
 const { JSDOM } = require('jsdom');
 const { Readability } = require('@mozilla/readability');
 const createDOMPurify = require('dompurify');
-const crypto = require('crypto');
+const crypto = require('node:crypto');
 const { executeAgnosticAiRefinement } = require('./universal-ai-adapter');
 const { getProductAndRoute } = require('./agc-engine-classifier');
-const path = require('path');
+const path = require('node:path');
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 
 const supabase = createClient(
@@ -36,24 +36,36 @@ async function scrapeFullContent(url) {
     if (!res.ok) return null;
     const html = await res.text();
     const dom = new JSDOM(html, { url });
-    
+
     // Extract first image
     let originalImage = null;
     const imgElement = dom.window.document.querySelector('img');
-    if (imgElement && imgElement.src) {
+    if (imgElement?.src) {
       originalImage = imgElement.src;
     }
-    
+
     // Remove unwanted elements
-    const unwantedSelectors = ['.related-posts', '#related-posts', 'footer', '.widget', '.advertisement', 'aside', '.share-buttons', '.social-share'];
-    unwantedSelectors.forEach(selector => {
+    const unwantedSelectors = [
+      '.related-posts',
+      '#related-posts',
+      'footer',
+      '.widget',
+      '.advertisement',
+      'aside',
+      '.share-buttons',
+      '.social-share',
+    ];
+    for (const selector of unwantedSelectors) {
       const elements = dom.window.document.querySelectorAll(selector);
-      elements.forEach(el => el.remove());
-    });
-    
+      for (const el of elements) {
+        el.remove();
+      }
+    }
+
     // Remove ALL images from the content to avoid duplicates with the hero image
-    const allImages = dom.window.document.querySelectorAll('img');
-    allImages.forEach(img => img.remove());
+    for (const img of allImages) {
+      img.remove();
+    }
 
     const reader = new Readability(dom.window.document);
     const article = reader.parse();
@@ -79,19 +91,36 @@ async function forceIngestUrl() {
 
   console.log(`\n[+] Scraping ${url}...`);
   const scraped = await scrapeFullContent(url);
-  
+
   if (!scraped) {
-    console.log('[-] Failed to scrape the URL. It might be protected by Cloudflare/Bot management.');
+    console.log(
+      '[-] Failed to scrape the URL. It might be protected by Cloudflare/Bot management.',
+    );
     return;
   }
 
   console.log(`[+] Title extracted: ${scraped.title}`);
-  
+
   const window = new JSDOM('').window;
   const DOMPurify = createDOMPurify(window);
-  
+
   const articleHtml = DOMPurify.sanitize(scraped.contentHtml, {
-    ALLOWED_TAGS: ['p', 'b', 'i', 'em', 'strong', 'a', 'h2', 'h3', 'ul', 'ol', 'li', 'blockquote', 'img', 'br'],
+    ALLOWED_TAGS: [
+      'p',
+      'b',
+      'i',
+      'em',
+      'strong',
+      'a',
+      'h2',
+      'h3',
+      'ul',
+      'ol',
+      'li',
+      'blockquote',
+      'img',
+      'br',
+    ],
   });
 
   const classified = getProductAndRoute(scraped.title, scraped.textContent);
@@ -119,17 +148,24 @@ Format response STRICTLY as a raw JSON object (no markdown code fences or markdo
   "internalLinkHTML": "<div class=\\\"my-6 border-4 border-black p-6 bg-canvas_accent shadow-brutal font-mono text-xs uppercase\\\"><p class=\\\"font-bold mb-2\\\">Educational Insight:</p><p class=\\\"mb-4\\\">[Insert a 2-sentence educational insight on why ${sku} infrastructure is critical for modern B2B growth based on the article's theme.]</p><a href=\\\"/solutions/${sku === 'ai_business_tools_suite' ? 'crm-system' : sku}\\\" class=\\\"inline-block bg-brand_cta text-white font-bold px-4 py-2 hover:bg-brand_cta_hover\\\">ACCESS SOLUTION &rarr;</a></div>"
 }`;
     polished = await executeAgnosticAiRefinement(prompt);
-  } catch(err) {
+  } catch (err) {
     console.error('[-] AI Polish failed:', err.message);
     return;
   }
 
-  const finalContentHtml = articleHtml + '\n\n' + (polished.internalLinkHTML || '');
-  const slug = (polished.polishedTitle || scraped.title).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  const finalContentHtml = `${articleHtml}\n\n${polished.internalLinkHTML || ''}`;
+  const slug = (polished.polishedTitle || scraped.title)
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
   const hash = crypto.createHash('sha256').update(slug).digest('hex');
 
   // Fetch category
-  const { data: dbCategories } = await supabase.from('categories').select('*').eq('slug', classified.category_slug).single();
+  const { data: dbCategories } = await supabase
+    .from('categories')
+    .select('*')
+    .eq('slug', classified.category_slug)
+    .single();
 
   const aiSummary = {
     hook: polished.hook,
@@ -139,18 +175,20 @@ Format response STRICTLY as a raw JSON object (no markdown code fences or markdo
   };
 
   console.log('[+] Inserting into database...');
-  const { error } = await supabase.from('posts').insert([{
-    title: polished.polishedTitle || scraped.title,
-    slug: slug,
-    content: finalContentHtml,
-    meta_desc: polished.metaDescription || scraped.textContent.slice(0, 160),
-    category_id: dbCategories ? dbCategories.id : null,
-    target_product_sku: sku,
-    source_url: url,
-    ai_summary: aiSummary,
-    hash: hash,
-    original_image: scraped.originalImage,
-  }]);
+  const { error } = await supabase.from('posts').insert([
+    {
+      title: polished.polishedTitle || scraped.title,
+      slug: slug,
+      content: finalContentHtml,
+      meta_desc: polished.metaDescription || scraped.textContent.slice(0, 160),
+      category_id: dbCategories ? dbCategories.id : null,
+      target_product_sku: sku,
+      source_url: url,
+      ai_summary: aiSummary,
+      hash: hash,
+      original_image: scraped.originalImage,
+    },
+  ]);
 
   if (error) {
     console.error('[-] Database Error:', error.message);
@@ -165,15 +203,15 @@ async function ingestRssFeedUrl() {
   if (!feedUrl) return console.log('Operation cancelled.');
 
   let maxItems = await question('Max items to ingest (default: 3): ');
-  maxItems = parseInt(maxItems, 10);
-  if (isNaN(maxItems) || maxItems <= 0) maxItems = 3;
+  maxItems = Number.parseInt(maxItems, 10);
+  if (Number.isNaN(maxItems) || maxItems <= 0) maxItems = 3;
 
-  let sku = await question('Target Product SKU (leave blank for auto-detect per item): ');
+  const sku = await question('Target Product SKU (leave blank for auto-detect per item): ');
 
   console.log(`\n[+] Fetching RSS feed from ${feedUrl}...`);
   const RSSParser = require('rss-parser');
   const parser = new RSSParser();
-  
+
   let feed;
   try {
     feed = await parser.parseURL(feedUrl);
@@ -192,7 +230,7 @@ async function ingestRssFeedUrl() {
     console.log(`\n--- Processing item ${i + 1}/${targetItems.length} ---`);
     console.log(`[+] Title: ${item.title}`);
     console.log(`[+] URL: ${url}`);
-    
+
     if (!url) {
       console.log('[-] Item has no link, skipping.');
       continue;
@@ -200,17 +238,34 @@ async function ingestRssFeedUrl() {
 
     console.log(`[+] Scraping ${url}...`);
     const scraped = await scrapeFullContent(url);
-    
+
     if (!scraped) {
-      console.log('[-] Failed to scrape the URL. It might be protected by Cloudflare/Bot management.');
+      console.log(
+        '[-] Failed to scrape the URL. It might be protected by Cloudflare/Bot management.',
+      );
       continue;
     }
-    
+
     const window = new JSDOM('').window;
     const DOMPurify = createDOMPurify(window);
-    
+
     const articleHtml = DOMPurify.sanitize(scraped.contentHtml, {
-      ALLOWED_TAGS: ['p', 'b', 'i', 'em', 'strong', 'a', 'h2', 'h3', 'ul', 'ol', 'li', 'blockquote', 'img', 'br'],
+      ALLOWED_TAGS: [
+        'p',
+        'b',
+        'i',
+        'em',
+        'strong',
+        'a',
+        'h2',
+        'h3',
+        'ul',
+        'ol',
+        'li',
+        'blockquote',
+        'img',
+        'br',
+      ],
     });
 
     const classified = getProductAndRoute(scraped.title, scraped.textContent);
@@ -238,17 +293,24 @@ Format response STRICTLY as a raw JSON object (no markdown code fences or markdo
   "internalLinkHTML": "<div class=\\\"my-6 border-4 border-black p-6 bg-canvas_accent shadow-brutal font-mono text-xs uppercase\\\"><p class=\\\"font-bold mb-2\\\">Educational Insight:</p><p class=\\\"mb-4\\\">[Insert a 2-sentence educational insight on why ${itemSku} infrastructure is critical for modern B2B growth based on the article's theme.]</p><a href=\\\"/solutions/${itemSku === 'ai_business_tools_suite' ? 'crm-system' : itemSku}\\\" class=\\\"inline-block bg-brand_cta text-white font-bold px-4 py-2 hover:bg-brand_cta_hover\\\">ACCESS SOLUTION &rarr;</a></div>"
 }`;
       polished = await executeAgnosticAiRefinement(prompt);
-    } catch(err) {
+    } catch (err) {
       console.error('[-] AI Polish failed:', err.message);
       continue;
     }
 
-    const finalContentHtml = articleHtml + '\n\n' + (polished.internalLinkHTML || '');
-    const slug = (polished.polishedTitle || scraped.title).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    const finalContentHtml = `${articleHtml}\n\n${polished.internalLinkHTML || ''}`;
+    const slug = (polished.polishedTitle || scraped.title)
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '');
     const hash = crypto.createHash('sha256').update(slug).digest('hex');
 
     // Fetch category
-    const { data: dbCategories } = await supabase.from('categories').select('*').eq('slug', classified.category_slug).single();
+    const { data: dbCategories } = await supabase
+      .from('categories')
+      .select('*')
+      .eq('slug', classified.category_slug)
+      .single();
 
     const aiSummary = {
       hook: polished.hook,
@@ -258,18 +320,20 @@ Format response STRICTLY as a raw JSON object (no markdown code fences or markdo
     };
 
     console.log('[+] Inserting into database...');
-    const { error } = await supabase.from('posts').insert([{
-      title: polished.polishedTitle || scraped.title,
-      slug: slug,
-      content: finalContentHtml,
-      meta_desc: polished.metaDescription || scraped.textContent.slice(0, 160),
-      category_id: dbCategories ? dbCategories.id : null,
-      target_product_sku: itemSku,
-      source_url: url,
-      ai_summary: aiSummary,
-      hash: hash,
-      original_image: originalImage,
-    }]);
+    const { error } = await supabase.from('posts').insert([
+      {
+        title: polished.polishedTitle || scraped.title,
+        slug: slug,
+        content: finalContentHtml,
+        meta_desc: polished.metaDescription || scraped.textContent.slice(0, 160),
+        category_id: dbCategories ? dbCategories.id : null,
+        target_product_sku: itemSku,
+        source_url: url,
+        ai_summary: aiSummary,
+        hash: hash,
+        original_image: originalImage,
+      },
+    ]);
 
     if (error) {
       console.error('[-] Database Error:', error.message);
@@ -277,7 +341,7 @@ Format response STRICTLY as a raw JSON object (no markdown code fences or markdo
       console.log(`[+] SUCCESS! Article inserted with slug: /blog/${slug}`);
     }
   }
-  
+
   console.log('\n--- RSS INGESTION COMPLETE ---');
 }
 
@@ -306,10 +370,10 @@ async function showMenu() {
   console.log('2. Ingest from RSS Feed URL (Multiple Articles)');
   console.log('3. Trigger Main Pipeline (Default Google News / APIs)');
   console.log('0. Exit');
-  
+
   const choice = await question('\nSelect an option: ');
-  
-  switch(choice) {
+
+  switch (choice) {
     case '1':
       await forceIngestUrl();
       await triggerRevalidation();
@@ -320,7 +384,7 @@ async function showMenu() {
       break;
     case '3':
       console.log('Triggering main-pipeline.js...');
-      require('child_process').execSync('node main-pipeline.js', { stdio: 'inherit' });
+      require('node:child_process').execSync('node main-pipeline.js', { stdio: 'inherit' });
       break;
     case '0':
       console.log('Exiting...');
@@ -329,7 +393,7 @@ async function showMenu() {
     default:
       console.log('Invalid option.');
   }
-  
+
   await showMenu();
 }
 
