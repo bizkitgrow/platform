@@ -4,6 +4,7 @@ import { count } from 'drizzle-orm';
 import { db } from '../../db/client';
 import { posts as postsTable } from '../../db/schema';
 import AdminLayout from '../../layouts/AdminLayout.astro';
+import TiptapEditor from '../../components/admin/TiptapEditor';
 
 let postsCount = 0;
 const logsCount = 0;
@@ -60,8 +61,9 @@ try {
         <textarea id="metaDesc" rows="2" class="w-full border-2 border-black p-3 bg-canvas_accent font-mono text-sm focus:outline-none focus:border-brand_cta"></textarea>
       </div>
       <div>
-        <label class="block font-mono text-xs font-bold uppercase mb-2">Content (HTML allowed)</label>
-        <textarea id="contentHtml" required rows="10" class="w-full border-2 border-black p-3 bg-canvas_accent font-mono text-sm focus:outline-none focus:border-brand_cta"></textarea>
+        <label class="block font-mono text-xs font-bold uppercase mb-2">Content</label>
+        <TiptapEditor client:load inputId="contentHtml" />
+        <input type="hidden" id="contentHtml" />
       </div>
       <button type="submit" class="bg-brand_cta text-white border-2 border-black font-mono font-bold uppercase px-8 py-4 hover:bg-black transition-colors w-full md:w-auto">
         PUBLISH BRIEFING
@@ -72,13 +74,20 @@ try {
   <script is:inline>
     document.getElementById('cms-form')?.addEventListener('submit', async (e) => {
       e.preventDefault();
+      
+      const contentHtml = document.getElementById('contentHtml').value;
+      if (!contentHtml || contentHtml.trim() === '' || contentHtml.trim() === '<p></p>') {
+        if (window.GlobalUI) window.GlobalUI.showToast('Briefing content is required.', 'error');
+        return;
+      }
+
       if(window.GlobalUI) window.GlobalUI.showLoading();
       
       const payload = {
         action: 'manual_create',
         title: document.getElementById('title').value,
         slug: document.getElementById('slug').value,
-        contentHtml: document.getElementById('contentHtml').value,
+        contentHtml: contentHtml,
         metaDesc: document.getElementById('metaDesc').value,
         productSku: document.getElementById('productSku').value,
       };
