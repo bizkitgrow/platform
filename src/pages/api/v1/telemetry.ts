@@ -20,82 +20,85 @@ export const GET: APIRoute = async () => {
 
     // ─── 1. CoinGecko: Primary Crypto Source (sparklines, market data) ────────
     let cgSuccess = false;
-    if (cgApiKey) {
-      try {
-        const [marketsRes, trendingRes, moversRes] = await Promise.allSettled([
-          fetch(
-            'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=12&page=1&sparkline=true&price_change_percentage=1h,24h,7d',
-            {
-              headers: { 'x-cg-demo-api-key': cgApiKey, Accept: 'application/json' },
-              signal: AbortSignal.timeout(6000),
-            },
-          ),
-          fetch('https://api.coingecko.com/api/v3/search/trending', {
-            headers: { 'x-cg-demo-api-key': cgApiKey, Accept: 'application/json' },
-            signal: AbortSignal.timeout(5000),
-          }),
-          fetch(
-            'https://api.coingecko.com/api/v3/coins/top_gainers_losers?vs_currency=usd&duration=24h&top_coins=300',
-            {
-              headers: { 'x-cg-demo-api-key': cgApiKey, Accept: 'application/json' },
-              signal: AbortSignal.timeout(5000),
-            },
-          ),
-        ]);
 
-        // Markets
-        if (marketsRes.status === 'fulfilled' && marketsRes.value.ok) {
-          const coins: any[] = await marketsRes.value.json();
-          cryptoData = coins.map((c) => ({
-            name: c.name,
-            symbol: c.symbol.toUpperCase(),
-            price: c.current_price?.toFixed(2) ?? 'N/A',
-            change24h: c.price_change_percentage_24h?.toFixed(2) ?? '0.00',
-            change1h: c.price_change_percentage_1h_in_currency?.toFixed(2) ?? '0.00',
-            change7d: c.price_change_percentage_7d_in_currency?.toFixed(2) ?? '0.00',
-            volume24h: c.total_volume?.toFixed(0) ?? '0',
-            marketCap: c.market_cap?.toFixed(0) ?? '0',
-            rank: c.market_cap_rank ?? 0,
-            image: c.image ?? '',
-            sparkline: c.sparkline_in_7d?.price ?? [],
-          }));
-          cgSuccess = true;
-        }
+    const fetchCG = async (useKey: boolean) => {
+      const headers = useKey && cgApiKey ? { 'x-cg-demo-api-key': cgApiKey, Accept: 'application/json' } : { Accept: 'application/json' };
+      const [marketsRes, trendingRes, moversRes] = await Promise.allSettled([
+        fetch(
+          'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=12&page=1&sparkline=true&price_change_percentage=1h,24h,7d',
+          { headers, signal: AbortSignal.timeout(6000) },
+        ),
+        fetch('https://api.coingecko.com/api/v3/search/trending', {
+          headers, signal: AbortSignal.timeout(5000),
+        }),
+        fetch(
+          'https://api.coingecko.com/api/v3/coins/top_gainers_losers?vs_currency=usd&duration=24h&top_coins=300',
+          { headers, signal: AbortSignal.timeout(5000) },
+        ),
+      ]);
 
-        // Trending
-        if (trendingRes.status === 'fulfilled' && trendingRes.value.ok) {
-          const trendJson = await trendingRes.value.json();
-          trendingCoins = (trendJson.coins ?? []).slice(0, 7).map((item: any) => ({
-            name: item.item.name,
-            symbol: item.item.symbol,
-            rank: item.item.market_cap_rank,
-            price_btc: item.item.price_btc,
-            score: item.item.score,
-            thumb: item.item.thumb,
-          }));
-        }
-
-        // Top Movers
-        if (moversRes.status === 'fulfilled' && moversRes.value.ok) {
-          const moversJson = await moversRes.value.json();
-          topMovers.gainers = (moversJson.top_gainers ?? []).slice(0, 5).map((c: any) => ({
-            symbol: c.symbol?.toUpperCase(),
-            name: c.name,
-            price: c.usd?.toFixed(4) ?? 'N/A',
-            change: c.usd_24h_change?.toFixed(2) ?? '0.00',
-            image: c.image,
-          }));
-          topMovers.losers = (moversJson.top_losers ?? []).slice(0, 5).map((c: any) => ({
-            symbol: c.symbol?.toUpperCase(),
-            name: c.name,
-            price: c.usd?.toFixed(4) ?? 'N/A',
-            change: c.usd_24h_change?.toFixed(2) ?? '0.00',
-            image: c.image,
-          }));
-        }
-      } catch (err: any) {
-        console.error('[TELEMETRY_API] CoinGecko error:', err.message);
+      // Markets
+      if (marketsRes.status === 'fulfilled' && marketsRes.value.ok) {
+        const coins: any[] = await marketsRes.value.json();
+        cryptoData = coins.map((c) => ({
+          name: c.name,
+          symbol: c.symbol.toUpperCase(),
+          price: c.current_price?.toFixed(2) ?? 'N/A',
+          change24h: c.price_change_percentage_24h?.toFixed(2) ?? '0.00',
+          change1h: c.price_change_percentage_1h_in_currency?.toFixed(2) ?? '0.00',
+          change7d: c.price_change_percentage_7d_in_currency?.toFixed(2) ?? '0.00',
+          volume24h: c.total_volume?.toFixed(0) ?? '0',
+          marketCap: c.market_cap?.toFixed(0) ?? '0',
+          rank: c.market_cap_rank ?? 0,
+          image: c.image ?? '',
+          sparkline: c.sparkline_in_7d?.price ?? [],
+        }));
+        cgSuccess = true;
       }
+
+      // Trending
+      if (trendingRes.status === 'fulfilled' && trendingRes.value.ok) {
+        const trendJson = await trendingRes.value.json();
+        trendingCoins = (trendJson.coins ?? []).slice(0, 7).map((item: any) => ({
+          name: item.item.name,
+          symbol: item.item.symbol,
+          rank: item.item.market_cap_rank,
+          price_btc: item.item.price_btc,
+          score: item.item.score,
+          thumb: item.item.thumb,
+        }));
+      }
+
+      // Top Movers
+      if (moversRes.status === 'fulfilled' && moversRes.value.ok) {
+        const moversJson = await moversRes.value.json();
+        topMovers.gainers = (moversJson.top_gainers ?? []).slice(0, 5).map((c: any) => ({
+          symbol: c.symbol?.toUpperCase(),
+          name: c.name,
+          price: c.usd?.toFixed(4) ?? 'N/A',
+          change: c.usd_24h_change?.toFixed(2) ?? '0.00',
+          image: c.image,
+        }));
+        topMovers.losers = (moversJson.top_losers ?? []).slice(0, 5).map((c: any) => ({
+          symbol: c.symbol?.toUpperCase(),
+          name: c.name,
+          price: c.usd?.toFixed(4) ?? 'N/A',
+          change: c.usd_24h_change?.toFixed(2) ?? '0.00',
+          image: c.image,
+        }));
+      }
+    };
+
+    try {
+      if (cgApiKey) {
+        await fetchCG(true);
+      }
+      if (!cgSuccess) {
+        console.warn('[TELEMETRY_API] CoinGecko Pro failed or no key, trying public API...');
+        await fetchCG(false);
+      }
+    } catch (err: any) {
+      console.error('[TELEMETRY_API] CoinGecko error:', err.message);
     }
 
     // ─── 2. CMC Fallback (if CoinGecko failed) ────────────────────────────────

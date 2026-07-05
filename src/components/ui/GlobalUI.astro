@@ -1,0 +1,81 @@
+---
+---
+
+<!-- Global Loading Overlay -->
+<div id="global-loading-overlay" class="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur-sm transition-opacity duration-300 opacity-0 pointer-events-none">
+  <div class="flex flex-col items-center">
+    <div class="w-16 h-16 border-4 border-black border-t-brand_cta rounded-full animate-spin"></div>
+    <div class="mt-4 font-mono text-sm font-black uppercase tracking-widest text-black">PROCESSING...</div>
+  </div>
+</div>
+
+<!-- Global Toast Container -->
+<div id="toast-container" class="fixed bottom-4 right-4 z-[60] flex flex-col gap-2 pointer-events-none"></div>
+
+<script is:inline>
+  window.GlobalUI = {
+    showLoading: function() {
+      const overlay = document.getElementById('global-loading-overlay');
+      if (overlay) {
+        overlay.classList.remove('opacity-0', 'pointer-events-none');
+        overlay.classList.add('opacity-100', 'pointer-events-auto');
+      }
+    },
+    hideLoading: function() {
+      const overlay = document.getElementById('global-loading-overlay');
+      if (overlay) {
+        overlay.classList.add('opacity-0', 'pointer-events-none');
+        overlay.classList.remove('opacity-100', 'pointer-events-auto');
+      }
+    },
+    showToast: function(message, type = 'info', duration = 3000) {
+      const container = document.getElementById('toast-container');
+      if (!container) return;
+
+      const toast = document.createElement('div');
+      
+      let bgClass = 'bg-black text-white';
+      if (type === 'success') bgClass = 'bg-brand_cta text-white';
+      if (type === 'error') bgClass = 'bg-red-600 text-white';
+      if (type === 'warning') bgClass = 'bg-yellow-400 text-black';
+
+      toast.className = `p-4 shadow-brutal border-2 border-black font-mono text-xs uppercase font-bold transform transition-all duration-300 translate-y-full opacity-0 pointer-events-auto ${bgClass}`;
+      toast.innerHTML = message;
+
+      container.appendChild(toast);
+      
+      // Animate in
+      requestAnimationFrame(() => {
+        toast.classList.remove('translate-y-full', 'opacity-0');
+      });
+
+      // Remove after duration
+      setTimeout(() => {
+        toast.classList.add('translate-y-full', 'opacity-0');
+        setTimeout(() => toast.remove(), 300);
+      }, duration);
+    }
+  };
+
+  // Intercept all anchor clicks that navigate away (not hash links)
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('a');
+    if (link && link.href && !link.href.startsWith('javascript:') && !link.href.includes('#') && link.target !== '_blank') {
+      try {
+        const url = new URL(link.href);
+        if (url.origin === window.location.origin) {
+          window.GlobalUI.showLoading();
+          // Safety timeout in case page doesn't load/navigate
+          setTimeout(() => window.GlobalUI.hideLoading(), 5000);
+        }
+      } catch(err) {
+        // Not a valid URL, ignore
+      }
+    }
+  });
+
+  // Hide loader on page show (handles browser back/forward cache)
+  window.addEventListener('pageshow', (e) => {
+    window.GlobalUI.hideLoading();
+  });
+</script>

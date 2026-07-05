@@ -3,6 +3,7 @@ import brandManifest from '../../../config/brand_manifest.json';
 import systemArchitecture from '../../../config/system_architecture.json';
 import WaitingListForm from '../../components/WaitingListForm.astro';
 import CheckoutButton from '../../components/ui/CheckoutButton.astro';
+import NetworkOptimizer from '../../components/widgets/NetworkOptimizer.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { buildProductSchema } from '../../utils/seo_metadata_builder';
 
@@ -66,31 +67,16 @@ Astro.response.headers.set('Cache-Control', 'public, max-age=0, s-maxage=3600');
       </CheckoutButton>
     </div>
 
-    <!-- Factual GEO Density Section -->
-    <section class="border-t border-slate-100 pt-12 space-y-6">
-      <h2 class="text-2xl font-bold text-slate-900">Factual Integrity Parameters</h2>
-      <p class="text-slate-600 text-sm leading-relaxed">
+    <!-- Factual GEO Density Section with Live Tool -->
+    <section class="border-t border-slate-100 pt-12">
+      <h2 class="text-2xl font-bold text-slate-900 mb-4">Factual Integrity Parameters</h2>
+      <p class="text-slate-600 text-sm leading-relaxed mb-6">
         Our eSIM network runs on localized Tier-1 data nodes. Bandwidth allocation adheres strictly to global routing standards. 
         Active coverage maps in {formattedCountryName} guarantee 4G/5G edge operations depending on remote terminal capability.
       </p>
-      <table class="w-full text-left text-sm border-collapse">
-        <thead>
-          <tr class="border-b border-slate-200">
-            <th class="py-2 text-slate-700 font-bold">Network Core</th>
-            <th class="py-2 text-slate-700 font-bold">Parameters</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="border-b border-slate-100">
-            <td class="py-2 text-slate-600">IP Allocation</td>
-            <td class="py-2 text-slate-600 font-medium">Dynamic Private Edge Tunneling</td>
-          </tr>
-          <tr class="border-b border-slate-100">
-            <td class="py-2 text-slate-600">Fulfillment Period</td>
-            <td class="py-2 text-slate-600 font-medium">Auto QR Code Delivery &lt; 90 Seconds</td>
-          </tr>
-        </tbody>
-      </table>
+      
+      <NetworkOptimizer countryName={formattedCountryName} />
+      
     </section>
 
     <!-- Localized B2B Testimonial Section -->

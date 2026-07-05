@@ -2,6 +2,7 @@
 import { SEO } from 'astro-seo';
 import systemArchitecture from '../../config/system_architecture.json';
 import RichSnippet from '../components/RichSnippet.astro';
+import GlobalUI from '../components/ui/GlobalUI.astro';
 import { footerLinks, navigationLinks } from '../utils/navigation';
 import '../styles/global.css';
 
@@ -206,6 +207,7 @@ const websiteSchema = {
   </style>
 </head>
 <body class="bg-canvas dark:bg-canvas text-text_primary antialiased">
+  <GlobalUI />
   <a href="#content" class="skip-link visually-hidden">Skip to content</a>
   <nav class="bg-white border-b border-borders_subtle w-full z-50 top-0 start-0">
     <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-between gap-4 py-4">

@@ -44,9 +44,17 @@ async function getOrCreateShortUrl(url: string, origin: string) {
       .insert(shortUrls)
       .values({ hash, originalUrl: url })
       .onConflictDoNothing({ target: shortUrls.hash });
-    // Cache the resolved URL in Redis
+  } catch (e) {
+    console.warn('DB insert failed for shortUrl:', e);
+  }
+
+  try {
+    // Cache the resolved URL in Redis mapping both ways
     await redis.set(`shorturl:${url}`, shorted);
-  } catch (e) {}
+    await redis.set(`shorturl-hash:${hash}`, url);
+  } catch (e) {
+    console.warn('Redis set failed for shortUrl:', e);
+  }
 
   return shorted;
 }

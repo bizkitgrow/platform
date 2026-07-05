@@ -1,0 +1,125 @@
+---
+interface Props {
+  countryName: string;
+}
+
+const { countryName } = Astro.props;
+---
+
+<div class="border-4 border-black p-6 bg-canvas shadow-brutal my-12" id="network-optimizer-widget">
+  <div class="flex justify-between items-center border-b-4 border-black pb-4 mb-6">
+    <h3 class="text-xl font-black uppercase font-heading">Live Network Simulator: {countryName}</h3>
+    <span class="bg-brand_cta text-white font-mono text-xs px-2 py-1 font-bold">STATUS: ONLINE</span>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div>
+      <p class="font-mono text-xs mb-4">Select operations payload type to simulate latency and throughput requirements in {countryName}:</p>
+      
+      <div class="space-y-4 font-mono text-sm">
+        <label class="flex items-center space-x-3 cursor-pointer">
+          <input type="radio" name="payload_type" value="voip" class="w-4 h-4 text-brand_cta focus:ring-brand_cta border-2 border-black" checked>
+          <span>VoIP / Video Conferencing</span>
+        </label>
+        <label class="flex items-center space-x-3 cursor-pointer">
+          <input type="radio" name="payload_type" value="cloud" class="w-4 h-4 text-brand_cta focus:ring-brand_cta border-2 border-black">
+          <span>Cloud Sync & Code Commits</span>
+        </label>
+        <label class="flex items-center space-x-3 cursor-pointer">
+          <input type="radio" name="payload_type" value="iot" class="w-4 h-4 text-brand_cta focus:ring-brand_cta border-2 border-black">
+          <span>Lightweight M2M / IoT</span>
+        </label>
+      </div>
+
+      <button id="run-simulation" class="mt-8 bg-black text-white font-bold font-mono px-6 py-3 uppercase w-full hover:bg-brand_cta transition-colors">
+        Run Simulation
+      </button>
+    </div>
+
+    <div class="bg-canvas_accent border-2 border-black p-4 relative overflow-hidden h-48 md:h-auto flex flex-col justify-center items-center">
+      <div id="sim-idle" class="text-center">
+        <svg class="w-12 h-12 mx-auto mb-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+        <p class="font-mono text-xs text-gray-500 uppercase">Awaiting Simulation Trigger</p>
+      </div>
+      
+      <div id="sim-running" class="hidden text-center w-full">
+        <p class="font-mono text-xs mb-2 uppercase animate-pulse text-brand_cta">Establishing Secure Tunnel...</p>
+        <div class="w-full bg-gray-200 border-2 border-black h-4 mb-4">
+          <div class="bg-brand_cta h-full w-1/2 animate-[progress_1s_ease-in-out_infinite]"></div>
+        </div>
+      </div>
+
+      <div id="sim-results" class="hidden w-full text-left font-mono text-xs space-y-2">
+        <div class="flex justify-between border-b border-gray-300 pb-1">
+          <span>Target Node:</span>
+          <span class="font-bold">{countryName} Edge-1</span>
+        </div>
+        <div class="flex justify-between border-b border-gray-300 pb-1">
+          <span>Simulated Latency:</span>
+          <span class="font-bold text-green-600" id="res-latency">42ms</span>
+        </div>
+        <div class="flex justify-between border-b border-gray-300 pb-1">
+          <span>Throughput:</span>
+          <span class="font-bold text-green-600" id="res-throughput">125 Mbps</span>
+        </div>
+        <div class="flex justify-between border-b border-gray-300 pb-1">
+          <span>Jitter:</span>
+          <span class="font-bold" id="res-jitter">2ms</span>
+        </div>
+        <div class="mt-4 p-2 bg-green-100 text-green-800 border-l-4 border-green-500 font-bold">
+          PASSED: Network exceeds corporate requirements.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  @keyframes progress {
+    0% { width: 0%; }
+    100% { width: 100%; }
+  }
+</style>
+
+<script>
+  const btn = document.getElementById('run-simulation');
+  const idle = document.getElementById('sim-idle');
+  const running = document.getElementById('sim-running');
+  const results = document.getElementById('sim-results');
+  
+  const latency = document.getElementById('res-latency');
+  const throughput = document.getElementById('res-throughput');
+  const jitter = document.getElementById('res-jitter');
+
+  btn?.addEventListener('click', () => {
+    const payload = (document.querySelector('input[name="payload_type"]:checked') as HTMLInputElement).value;
+    
+    idle?.classList.add('hidden');
+    results?.classList.add('hidden');
+    running?.classList.remove('hidden');
+    btn.setAttribute('disabled', 'true');
+    btn.textContent = 'SIMULATING...';
+
+    setTimeout(() => {
+      running?.classList.add('hidden');
+      results?.classList.remove('hidden');
+      btn.removeAttribute('disabled');
+      btn.textContent = 'RUN SIMULATION';
+
+      if (payload === 'voip') {
+        if(latency) latency.textContent = Math.floor(Math.random() * 20 + 30) + 'ms';
+        if(throughput) throughput.textContent = Math.floor(Math.random() * 50 + 100) + ' Mbps';
+        if(jitter) jitter.textContent = '1-2ms';
+      } else if (payload === 'cloud') {
+        if(latency) latency.textContent = Math.floor(Math.random() * 30 + 50) + 'ms';
+        if(throughput) throughput.textContent = Math.floor(Math.random() * 150 + 200) + ' Mbps';
+        if(jitter) jitter.textContent = '4-5ms';
+      } else {
+        if(latency) latency.textContent = Math.floor(Math.random() * 50 + 80) + 'ms';
+        if(throughput) throughput.textContent = Math.floor(Math.random() * 10 + 20) + ' Mbps';
+        if(jitter) jitter.textContent = '5-10ms';
+      }
+
+    }, 1500);
+  });
+</script>

@@ -1,6 +1,6 @@
 import { getImage } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
-import type { MetaDataOpenGraph } from '~/types';
+import type { MetaDataOpenGraph } from '../types';
 
 // Lazy-loaded glob of local images. The glob runs once and is cached.
 let _localImages: Record<string, () => Promise<unknown>> | undefined;

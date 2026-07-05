@@ -12,6 +12,11 @@ export default defineConfig({
       bypassToken: process.env.VERCEL_ISR_BYPASS_TOKEN, // Protects on-demand webhook execution
     },
   }),
+  image: {
+    remotePatterns: [
+      { protocol: 'https' }
+    ],
+  },
   output: 'static', // Enables static generation for pages but keeps dynamic endpoints alive
   integrations: [
     tailwind({

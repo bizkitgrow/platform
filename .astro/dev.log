@@ -4360,3 +4360,177 @@ Redis shortUrl read failed: TypeError: Failed to parse URL from /pipeline
 [Upstash Redis] Redis client was initialized without url or token. Failed to execute command.
 {"message":"[200] /blog/want-to-work-remotely-in-spain-the-digital-nomad-visa-has-you-covered-the-times-of-india 27233ms","label":null,"level":"info"}
 {"message":"[console.warn] [OneSignal] Initialization bypassed: Error: Can only be used on: https://bizkitgrow.vercel.app\n    at https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:18361\n    at https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:18423\n    at async t.zr (https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:135403)\n    at async t.init (https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:136036)\n    at async http://localhost:4321/blog/want-to-work-remotely-in-spain-the-digital-nomad-visa-has-you-covered-the-times-of-india:5:9\n    at async https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:140457","label":"vite","level":"warn"}
+Local icons changed, reloading
+{"message":"src/pages/blog/[slug].astro","label":"watch","level":"info"}
+[Upstash Redis] Unable to find environment variable: `UPSTASH_REDIS_REST_URL`
+[Upstash Redis] Unable to find environment variable: `UPSTASH_REDIS_REST_TOKEN`
+[Upstash Redis] The 'url' property is missing or undefined in your Redis config.
+[Upstash Redis] The 'token' property is missing or undefined in your Redis config.
+[Upstash Redis] Redis client was initialized without url or token. Failed to execute command.
+Redis shortUrl read failed: TypeError: Failed to parse URL from /pipeline
+    at node:internal/deps/undici/undici:15845:13
+    at async HttpClient.request (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:170:15)
+    at async Pipeline.exec (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:3057:17)
+    ... 2 lines matching cause stack trace ...
+    at async eval (/Users/mac/Downloads/PROYEK/BIZKITDEV/src/pages/blog/[slug].astro:177:1)
+    at async callComponentAsTemplateResultOrResponse (/Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/astro/dist/runtime/server/render/astro/render.js:203:25)
+    at async renderToAsyncIterable (/Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/astro/dist/runtime/server/render/astro/render.js:235:26)
+    at async renderPage (/Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/astro/dist/runtime/server/render/page.js:43:24)
+    at async PagesHandler.handle (/Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/astro/dist/core/pages/handler.js:37:22) {
+  [cause]: TypeError: Invalid URL
+      at new URL (node:internal/url:828:25)
+      at new Request (node:internal/deps/undici/undici:10413:25)
+      at fetch (node:internal/deps/undici/undici:11325:25)
+      at fetch (node:internal/deps/undici/undici:15843:10)
+      at fetch (node:internal/bootstrap/web/exposed-window-or-worker:83:12)
+      at HttpClient.request (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:170:21)
+      at async Pipeline.exec (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:3057:17)
+      at async AutoPipelineExecutor.withAutoPipeline (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:4116:21)
+      at async getOrCreateShortUrl (/Users/mac/Downloads/PROYEK/BIZKITDEV/src/pages/blog/[slug].astro:25:1)
+      at async eval (/Users/mac/Downloads/PROYEK/BIZKITDEV/src/pages/blog/[slug].astro:177:1) {
+    code: 'ERR_INVALID_URL',
+    input: '/pipeline'
+  }
+}
+[Upstash Redis] Redis client was initialized without url or token. Failed to execute command.
+Redis set failed for shortUrl: TypeError: Failed to parse URL from /pipeline
+    at node:internal/deps/undici/undici:15845:13
+    at async HttpClient.request (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:170:15)
+    at async Pipeline.exec (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:3057:17)
+    ... 2 lines matching cause stack trace ...
+    at async eval (/Users/mac/Downloads/PROYEK/BIZKITDEV/src/pages/blog/[slug].astro:177:1)
+    at async callComponentAsTemplateResultOrResponse (/Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/astro/dist/runtime/server/render/astro/render.js:203:25)
+    at async renderToAsyncIterable (/Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/astro/dist/runtime/server/render/astro/render.js:235:26)
+    at async renderPage (/Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/astro/dist/runtime/server/render/page.js:43:24)
+    at async PagesHandler.handle (/Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/astro/dist/core/pages/handler.js:37:22) {
+  [cause]: TypeError: Invalid URL
+      at new URL (node:internal/url:828:25)
+      at new Request (node:internal/deps/undici/undici:10413:25)
+      at fetch (node:internal/deps/undici/undici:11325:25)
+      at fetch (node:internal/deps/undici/undici:15843:10)
+      at fetch (node:internal/bootstrap/web/exposed-window-or-worker:83:12)
+      at HttpClient.request (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:170:21)
+      at async Pipeline.exec (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:3057:17)
+      at async AutoPipelineExecutor.withAutoPipeline (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:4116:21)
+      at async getOrCreateShortUrl (/Users/mac/Downloads/PROYEK/BIZKITDEV/src/pages/blog/[slug].astro:53:1)
+      at async eval (/Users/mac/Downloads/PROYEK/BIZKITDEV/src/pages/blog/[slug].astro:177:1) {
+    code: 'ERR_INVALID_URL',
+    input: '/pipeline'
+  }
+}
+[Upstash Redis] Redis client was initialized without url or token. Failed to execute command.
+Redis shortUrl read failed: TypeError: Failed to parse URL from /pipeline
+    at node:internal/deps/undici/undici:15845:13
+    at async HttpClient.request (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:170:15)
+    at async Pipeline.exec (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:3057:17)
+    ... 2 lines matching cause stack trace ...
+    at async eval (/Users/mac/Downloads/PROYEK/BIZKITDEV/src/pages/blog/[slug].astro:179:1)
+    at async callComponentAsTemplateResultOrResponse (/Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/astro/dist/runtime/server/render/astro/render.js:203:25)
+    at async renderToAsyncIterable (/Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/astro/dist/runtime/server/render/astro/render.js:235:26)
+    at async renderPage (/Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/astro/dist/runtime/server/render/page.js:43:24)
+    at async PagesHandler.handle (/Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/astro/dist/core/pages/handler.js:37:22) {
+  [cause]: TypeError: Invalid URL
+      at new URL (node:internal/url:828:25)
+      at new Request (node:internal/deps/undici/undici:10413:25)
+      at fetch (node:internal/deps/undici/undici:11325:25)
+      at fetch (node:internal/deps/undici/undici:15843:10)
+      at fetch (node:internal/bootstrap/web/exposed-window-or-worker:83:12)
+      at HttpClient.request (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:170:21)
+      at async Pipeline.exec (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:3057:17)
+      at async AutoPipelineExecutor.withAutoPipeline (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:4116:21)
+      at async getOrCreateShortUrl (/Users/mac/Downloads/PROYEK/BIZKITDEV/src/pages/blog/[slug].astro:25:1)
+      at async eval (/Users/mac/Downloads/PROYEK/BIZKITDEV/src/pages/blog/[slug].astro:179:1) {
+    code: 'ERR_INVALID_URL',
+    input: '/pipeline'
+  }
+}
+[Upstash Redis] Redis client was initialized without url or token. Failed to execute command.
+{"message":"/node_modules/@astrojs/tailwind/base.css, /src/styles/global.css","label":"watch","level":"info"}
+Redis set failed for shortUrl: TypeError: Failed to parse URL from /pipeline
+    at node:internal/deps/undici/undici:15845:13
+    at async HttpClient.request (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:170:15)
+    at async Pipeline.exec (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:3057:17)
+    ... 2 lines matching cause stack trace ...
+    at async eval (/Users/mac/Downloads/PROYEK/BIZKITDEV/src/pages/blog/[slug].astro:179:1)
+    at async callComponentAsTemplateResultOrResponse (/Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/astro/dist/runtime/server/render/astro/render.js:203:25)
+    at async renderToAsyncIterable (/Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/astro/dist/runtime/server/render/astro/render.js:235:26)
+    at async renderPage (/Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/astro/dist/runtime/server/render/page.js:43:24)
+    at async PagesHandler.handle (/Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/astro/dist/core/pages/handler.js:37:22) {
+  [cause]: TypeError: Invalid URL
+      at new URL (node:internal/url:828:25)
+      at new Request (node:internal/deps/undici/undici:10413:25)
+      at fetch (node:internal/deps/undici/undici:11325:25)
+      at fetch (node:internal/deps/undici/undici:15843:10)
+      at fetch (node:internal/bootstrap/web/exposed-window-or-worker:83:12)
+      at HttpClient.request (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:170:21)
+      at async Pipeline.exec (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:3057:17)
+      at async AutoPipelineExecutor.withAutoPipeline (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:4116:21)
+      at async getOrCreateShortUrl (/Users/mac/Downloads/PROYEK/BIZKITDEV/src/pages/blog/[slug].astro:53:1)
+      at async eval (/Users/mac/Downloads/PROYEK/BIZKITDEV/src/pages/blog/[slug].astro:179:1) {
+    code: 'ERR_INVALID_URL',
+    input: '/pipeline'
+  }
+}
+[Upstash Redis] Redis client was initialized without url or token. Failed to execute command.
+Redis shortUrl read failed: TypeError: Failed to parse URL from /pipeline
+    at node:internal/deps/undici/undici:15845:13
+    at async HttpClient.request (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:170:15)
+    at async Pipeline.exec (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:3057:17)
+    ... 2 lines matching cause stack trace ...
+    at async eval (/Users/mac/Downloads/PROYEK/BIZKITDEV/src/pages/blog/[slug].astro:181:1)
+    at async callComponentAsTemplateResultOrResponse (/Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/astro/dist/runtime/server/render/astro/render.js:203:25)
+    at async renderToAsyncIterable (/Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/astro/dist/runtime/server/render/astro/render.js:235:26)
+    at async renderPage (/Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/astro/dist/runtime/server/render/page.js:43:24)
+    at async PagesHandler.handle (/Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/astro/dist/core/pages/handler.js:37:22) {
+  [cause]: TypeError: Invalid URL
+      at new URL (node:internal/url:828:25)
+      at new Request (node:internal/deps/undici/undici:10413:25)
+      at fetch (node:internal/deps/undici/undici:11325:25)
+      at fetch (node:internal/deps/undici/undici:15843:10)
+      at fetch (node:internal/bootstrap/web/exposed-window-or-worker:83:12)
+      at HttpClient.request (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:170:21)
+      at async Pipeline.exec (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:3057:17)
+      at async AutoPipelineExecutor.withAutoPipeline (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:4116:21)
+      at async getOrCreateShortUrl (/Users/mac/Downloads/PROYEK/BIZKITDEV/src/pages/blog/[slug].astro:25:1)
+      at async eval (/Users/mac/Downloads/PROYEK/BIZKITDEV/src/pages/blog/[slug].astro:181:1) {
+    code: 'ERR_INVALID_URL',
+    input: '/pipeline'
+  }
+}
+[Upstash Redis] Redis client was initialized without url or token. Failed to execute command.
+Redis set failed for shortUrl: TypeError: Failed to parse URL from /pipeline
+    at node:internal/deps/undici/undici:15845:13
+    at async HttpClient.request (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:170:15)
+    at async Pipeline.exec (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:3057:17)
+    ... 2 lines matching cause stack trace ...
+    at async eval (/Users/mac/Downloads/PROYEK/BIZKITDEV/src/pages/blog/[slug].astro:181:1)
+    at async callComponentAsTemplateResultOrResponse (/Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/astro/dist/runtime/server/render/astro/render.js:203:25)
+    at async renderToAsyncIterable (/Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/astro/dist/runtime/server/render/astro/render.js:235:26)
+    at async renderPage (/Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/astro/dist/runtime/server/render/page.js:43:24)
+    at async PagesHandler.handle (/Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/astro/dist/core/pages/handler.js:37:22) {
+  [cause]: TypeError: Invalid URL
+      at new URL (node:internal/url:828:25)
+      at new Request (node:internal/deps/undici/undici:10413:25)
+      at fetch (node:internal/deps/undici/undici:11325:25)
+      at fetch (node:internal/deps/undici/undici:15843:10)
+      at fetch (node:internal/bootstrap/web/exposed-window-or-worker:83:12)
+      at HttpClient.request (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:170:21)
+      at async Pipeline.exec (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:3057:17)
+      at async AutoPipelineExecutor.withAutoPipeline (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:4116:21)
+      at async getOrCreateShortUrl (/Users/mac/Downloads/PROYEK/BIZKITDEV/src/pages/blog/[slug].astro:53:1)
+      at async eval (/Users/mac/Downloads/PROYEK/BIZKITDEV/src/pages/blog/[slug].astro:181:1) {
+    code: 'ERR_INVALID_URL',
+    input: '/pipeline'
+  }
+}
+{"message":"[200] /blog/want-to-work-remotely-in-spain-the-digital-nomad-visa-has-you-covered-the-times-of-india 26510ms","label":null,"level":"info"}
+{"message":"[console.warn] [OneSignal] Initialization bypassed: Error: Can only be used on: https://bizkitgrow.vercel.app\n    at https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:18361\n    at https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:18423\n    at async t.zr (https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:135403)\n    at async t.init (https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:136036)\n    at async http://localhost:4321/blog/want-to-work-remotely-in-spain-the-digital-nomad-visa-has-you-covered-the-times-of-india:5:9\n    at async https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:140457","label":"vite","level":"warn"}
+{"message":"/node_modules/@astrojs/tailwind/base.css, /src/styles/global.css","label":"watch","level":"info"}
+{"message":"/node_modules/@astrojs/tailwind/base.css, /src/styles/global.css","label":"watch","level":"info"}
+{"message":"src/layouts/BaseLayout.astro","label":"watch","level":"info"}
+{"message":"src/layouts/BaseLayout.astro","label":"watch","level":"info"}
+{"message":"/node_modules/@astrojs/tailwind/base.css, /src/styles/global.css","label":"watch","level":"info"}
+{"message":"/node_modules/@astrojs/tailwind/base.css, /src/styles/global.css","label":"watch","level":"info"}
+{"message":"/node_modules/@astrojs/tailwind/base.css, /src/styles/global.css","label":"watch","level":"info"}
+{"message":"/node_modules/@astrojs/tailwind/base.css, /src/styles/global.css","label":"watch","level":"info"}
+{"message":"/node_modules/@astrojs/tailwind/base.css, /src/styles/global.css","label":"watch","level":"info"}
