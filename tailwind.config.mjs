@@ -12,8 +12,8 @@ export default {
       colors: {
         canvas: '#FFFFFF',
         canvas_accent: '#F8FAFC',
-        brand_cta: '#0d9488', // teal-600
-        brand_cta_hover: '#0f766e', // teal-700
+        brand_cta: '#0f766e', // teal-700
+        brand_cta_hover: '#115e59', // teal-800
         text_primary: '#0F172A', // slate-900
         text_secondary: '#475569', // slate-600
         borders_subtle: '#E2E8F0', // slate-200

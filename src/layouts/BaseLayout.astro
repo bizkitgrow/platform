@@ -173,10 +173,27 @@ const websiteSchema = {
       pointer-events: none;
       z-index: -1;
     }
+
+    /* Accessibility */
+    .visually-hidden:where(:not(:focus-within, :active)) {
+      position: absolute !important;
+      clip-path: inset(50%) !important;
+      overflow: hidden !important;
+      width: 1px !important;
+      height: 1px !important;
+      margin: -1px !important;
+      padding: 0 !important;
+      border: 0 !important;
+      white-space: nowrap !important;
+    }
+    :where(a:any-link, button, input, select, textarea):focus-visible {
+      outline: 2px solid var(--accent-green);
+      outline-offset: 2px;
+    }
   </style>
 </head>
 <body class="bg-canvas dark:bg-canvas text-text_primary antialiased">
-  
+  <a href="#content" class="skip-link visually-hidden">Skip to content</a>
   <nav class="bg-white border-b border-borders_subtle w-full z-50 top-0 start-0">
     <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
     <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
@@ -203,7 +220,7 @@ const websiteSchema = {
     </div>
   </nav>
 
-  <main class="flex-grow pt-8">
+  <main id="content" class="flex-grow pt-8" tabindex="-1">
     <slot />
   </main>
 

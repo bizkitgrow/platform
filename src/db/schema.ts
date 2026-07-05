@@ -68,3 +68,11 @@ export const inboundWebhooks = pgTable('inbound_webhooks', {
   payloadType: varchar('payload_type', { length: 100 }).notNull(),
   processedAt: timestamp('processed_at', { withTimezone: true }).defaultNow(),
 });
+
+export const leads = pgTable('leads', {
+  id: bigserial('id', { mode: 'number' }).primaryKey(),
+  email: varchar('email', { length: 255 }).notNull(),
+  businessName: varchar('business_name', { length: 255 }),
+  targetedService: varchar('targeted_service', { length: 100 }),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
+});
