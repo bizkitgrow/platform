@@ -6,7 +6,7 @@ import { db } from '../../db/client';
 import { posts as postsTable } from '../../db/schema';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
-const currentUrl = 'https://bizkitgrow.vercel.app/blog';
+const currentUrl = Astro.site ? new URL('/blog', Astro.site).toString() : 'https://bizkitgrow.vercel.app/blog';
 
 let dbPosts: any[] = [];
 try {
@@ -86,7 +86,7 @@ const blogListSchema = {
   blogPost: posts.slice(0, 5).map((p) => ({
     '@type': 'BlogPosting',
     headline: p.title,
-    url: `https://bizkitgrow.vercel.app/blog/${p.slug}`,
+    url: Astro.site ? new URL(`/blog/${p.slug}`, Astro.site).toString() : `https://bizkitgrow.vercel.app/blog/${p.slug}`,
     datePublished: p.createdAt,
   })),
 };

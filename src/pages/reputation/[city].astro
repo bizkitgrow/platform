@@ -17,7 +17,7 @@ export async function getStaticPaths() {
 const { city } = Astro.params;
 const { cityName, sku, testimonialCompany } = Astro.props;
 
-const canonicalUrl = `https://bizkitgrow.vercel.app/reputation/${city}`;
+const canonicalUrl = Astro.site ? new URL(`/reputation/${city}`, Astro.site).toString() : `https://bizkitgrow.vercel.app/reputation/${city}`;
 const brandName = systemArchitecture.tenant_settings.brand_name;
 
 const pageTitle = `Reputation Management Software in ${cityName}`;

@@ -17,7 +17,7 @@ export async function getStaticPaths() {
 const { service_slug } = Astro.params;
 const { serviceName, sku } = Astro.props;
 
-const canonicalUrl = `https://bizkitgrow.vercel.app/solutions/${service_slug}`;
+const canonicalUrl = Astro.site ? new URL(`/solutions/${service_slug}`, Astro.site).toString() : `https://bizkitgrow.vercel.app/solutions/${service_slug}`;
 const brandName = systemArchitecture.tenant_settings.brand_name;
 
 const pageTitle = `Secure ${serviceName} | ${brandName}`;

@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro';
+import { siteConfig } from '~/config/site';
 
 export const prerender = false;
 
@@ -31,7 +32,7 @@ export const POST: APIRoute = async ({ request }) => {
     });
   }
 
-  const notificationUrl = `https://bizkitgrow.vercel.app/blog/${slug}`;
+  const notificationUrl = new URL(`/blog/${slug}`, siteConfig.url).toString();
 
   try {
     const res = await fetch('https://onesignal.com/api/v1/notifications', {
@@ -47,7 +48,7 @@ export const POST: APIRoute = async ({ request }) => {
         contents: { en: title.slice(0, 90) },
         url: notificationUrl,
         web_url: notificationUrl,
-        chrome_web_icon: 'https://bizkitgrow.vercel.app/favicon.png',
+        chrome_web_icon: new URL('/favicon.png', siteConfig.url).toString(),
       }),
     });
 

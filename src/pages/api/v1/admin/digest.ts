@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import pg from 'pg';
+import { siteConfig } from '~/config/site';
 
 export const prerender = false;
 
@@ -49,7 +50,7 @@ export const POST: APIRoute = async (context) => {
 
     // Format Digest Briefing
     const digestText = posts
-      .map((p) => `- ${p.title} (https://bizkitgrow.com/blog/${p.slug})`)
+      .map((p) => `- ${p.title} (${new URL(`/blog/${p.slug}`, siteConfig.url).toString()})`)
       .join('\n');
     const digestPayload = {
       title: `Daily Digest Briefing - ${new Date().toLocaleDateString('en-US')}`,

@@ -1,0 +1,49 @@
+---
+export interface Props {
+  regions?: { name: string; latency: number; status: 'operational' | 'degraded' | 'down' }[];
+}
+
+const defaultRegions = [
+  { name: 'US-EAST (Virginia)', latency: 12, status: 'operational' },
+  { name: 'EU-WEST (Frankfurt)', latency: 8, status: 'operational' },
+  { name: 'AP-SOUTHEAST (Singapore)', latency: 18, status: 'operational' },
+  { name: 'SA-EAST (São Paulo)', latency: 24, status: 'operational' },
+];
+
+const { regions = defaultRegions } = Astro.props;
+---
+
+<div class="status-page-widget border-4 border-black p-6 bg-white text-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] max-w-xl mx-auto font-mono">
+  <div class="flex items-center justify-between border-b-2 border-black pb-4 mb-4">
+    <div class="flex items-center gap-2">
+      <span class="relative flex h-3 w-3">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+      </span>
+      <h4 class="font-black text-sm uppercase tracking-wider">ALL REGIONS OPERATIONAL</h4>
+    </div>
+    <span class="text-xs font-bold bg-black text-white px-2 py-0.5">Uptime: 99.98%</span>
+  </div>
+
+  <div class="space-y-3">
+    {regions.map((r) => (
+      <div class="flex items-center justify-between border border-black p-3 bg-gray-50 hover:bg-yellow-50 transition-colors duration-100">
+        <div class="flex flex-col">
+          <span class="text-xs font-bold uppercase tracking-tight">{r.name}</span>
+          <span class="text-[10px] text-gray-500 font-medium">Edge Telemetry Active</span>
+        </div>
+        
+        <div class="flex items-center gap-4">
+          <span class="text-xs font-black">{r.latency}ms</span>
+          <span class={`h-3 w-3 rounded-full border border-black ${
+            r.status === 'operational' ? 'bg-green-400' : r.status === 'degraded' ? 'bg-yellow-400' : 'bg-red-500'
+          }`}></span>
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <div class="mt-4 text-[10px] text-gray-500 text-center uppercase tracking-widest font-bold">
+    Real-time eSIM Routing Engine Status
+  </div>
+</div>

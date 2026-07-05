@@ -57,7 +57,7 @@ if (schemaType === 'Article' && articleMeta) {
     publisher: {
       '@type': 'Organization',
       name: brandName,
-      url: 'https://bizkitgrow.vercel.app',
+      url: Astro.site ? Astro.site.origin : 'https://bizkitgrow.vercel.app',
     },
   });
 }
@@ -66,10 +66,10 @@ const websiteSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
   name: brandName,
-  url: 'https://bizkitgrow.vercel.app',
+  url: Astro.site ? Astro.site.origin : 'https://bizkitgrow.vercel.app',
   potentialAction: {
     '@type': 'SearchAction',
-    target: 'https://bizkitgrow.vercel.app/blog?q={search_term_string}',
+    target: `${Astro.site ? Astro.site.origin : 'https://bizkitgrow.vercel.app'}/blog?q={search_term_string}`,
     'query-input': 'required name=search_term_string',
   },
 };
@@ -216,7 +216,7 @@ const websiteSchema = {
       <ul class="flex flex-col p-4 md:p-0 mt-4 font-mono font-bold tracking-widest text-xs border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white">
         {navigationLinks.map((link) => (
           <li>
-            <a href={link.href} class={`block py-2 px-3 rounded md:bg-transparent ${Astro.url.pathname === link.href ? 'text-brand_cta' : 'text-text_secondary'} md:hover:text-brand_cta md:p-0`} aria-current="page">{link.label}</a>
+            <a href={link.href} class={`block py-2 px-3 rounded md:bg-transparent ${Astro.url.pathname === link.href || (link.href !== '/' && Astro.url.pathname.startsWith(link.href)) ? 'text-brand_cta' : 'text-text_secondary'} md:hover:text-brand_cta md:p-0`} aria-current={Astro.url.pathname === link.href ? 'page' : undefined}>{link.label}</a>
           </li>
         ))}
       </ul>

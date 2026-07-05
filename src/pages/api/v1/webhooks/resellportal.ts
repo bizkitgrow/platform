@@ -1,15 +1,32 @@
 import { createHmac } from 'node:crypto';
 import type { APIRoute } from 'astro';
+import { Ratelimit } from '@upstash/ratelimit';
+import { Redis } from '@upstash/redis';
 import { eq } from 'drizzle-orm';
 import { db } from '../../../../db/client';
 import { inboundWebhooks, posts } from '../../../../db/schema';
 
 const WEBHOOK_SECRET = process.env.RESELLPORTAL_WEBHOOK_SECRET;
 
-export const POST: APIRoute = async ({ request }) => {
+// Rate limit: 30 webhook events per minute to prevent replay/abuse
+const webhookRatelimit = new Ratelimit({
+  redis: Redis.fromEnv(),
+  limiter: Ratelimit.slidingWindow(30, '1m'),
+  prefix: 'webhook_resellportal',
+});
+
+export const POST: APIRoute = async ({ request, clientAddress }) => {
   try {
     const signature = request.headers.get('x-resellportal-signature') || '';
     const rawBody = await request.text(); // Raw body needed for HMAC
+
+    // Rate-limit check — prevent webhook replay & abuse
+    const ip = clientAddress || 'global';
+    const { success: rateOk } = await webhookRatelimit.limit(`webhook_${ip}`);
+    if (!rateOk) {
+      console.warn('[WEBHOOK] Rate limit exceeded for IP:', ip);
+      return new Response('Too Many Requests', { status: 429 });
+    }
 
     if (!WEBHOOK_SECRET) {
       console.error('[WEBHOOK] Missing RESELLPORTAL_WEBHOOK_SECRET');

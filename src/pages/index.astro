@@ -13,9 +13,10 @@ import Steps from '../components/widgets/Steps.astro';
 import CallToAction from '../components/widgets/CallToAction.astro';
 import BlogHighlightedPosts from '../components/widgets/BlogHighlightedPosts.astro';
 import ResellPortalWidget from '../components/ResellPortalWidget.astro';
+import LeadCaptureWidget from '../components/LeadCaptureWidget.astro';
 
 const brandName = systemArchitecture.tenant_settings.brand_name;
-const currentUrl = 'https://bizkitgrow.vercel.app/';
+const currentUrl = Astro.site ? Astro.site.toString() : 'https://bizkitgrow.vercel.app/';
 
 const orgSchema = {
   '@context': 'https://schema.org',
@@ -23,7 +24,7 @@ const orgSchema = {
   name: brandName,
   url: currentUrl,
   description: 'Autonomous B2B infrastructure for global remote operators: sovereign connectivity, reputation gating, and back-office automation.',
-  sameAs: ['https://bizkitgrow.vercel.app'],
+  sameAs: [Astro.site ? Astro.site.origin : 'https://bizkitgrow.vercel.app'],
   contactPoint: {
     '@type': 'ContactPoint',
     contactType: 'customer service',
@@ -158,4 +159,13 @@ const displayPosts =
       Early operators receive 30% off first 3 months, dedicated onboarding, and direct access to the operational intelligence feed.
     </Fragment>
   </CallToAction>
+
+  <div class="max-w-screen-xl px-4 py-12 mx-auto">
+    <LeadCaptureWidget
+      title="JOIN THE OPERATIONAL WAITING LIST"
+      subtitle="Register your corporate perimeter to reserve your placement and get early pricing."
+      serviceKey="waiting_list"
+      ctaText="JOIN WAITING LIST"
+    />
+  </div>
 </BaseLayout>

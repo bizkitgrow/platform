@@ -6,7 +6,7 @@ import robotsTxt from 'astro-ai-robots-txt';
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-  site: 'https://bizkitgrow.vercel.app',
+  site: process.env.PUBLIC_SITE_URL || 'https://bizkitgrow.vercel.app',
   adapter: vercel({
     isr: {
       bypassToken: process.env.VERCEL_ISR_BYPASS_TOKEN, // Protects on-demand webhook execution

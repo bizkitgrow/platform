@@ -3,8 +3,10 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Hero from '../../components/widgets/Hero.astro';
 import Pricing from '../../components/widgets/Pricing.astro';
 import ResellPortalWidget from '../../components/ResellPortalWidget.astro';
+import LeadCaptureWidget from '../../components/LeadCaptureWidget.astro';
+import AstroStatusPage from '../../components/widgets/AstroStatusPage.astro';
 
-const currentUrl = 'https://bizkitgrow.vercel.app/esim';
+const currentUrl = Astro.site ? new URL('/esim', Astro.site).toString() : 'https://bizkitgrow.vercel.app/esim';
 ---
 
 <BaseLayout
@@ -21,8 +23,9 @@ const currentUrl = 'https://bizkitgrow.vercel.app/esim';
     ]}
   />
 
-  <div class="max-w-screen-xl px-4 py-8 mx-auto border-b border-borders_subtle">
+  <div class="max-w-screen-xl px-4 py-8 mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 border-b border-borders_subtle">
     <ResellPortalWidget productSku="esim-global-pass" resellportalStatus="active" theme="dark" />
+    <AstroStatusPage />
   </div>
 
   <Pricing
@@ -58,4 +61,13 @@ const currentUrl = 'https://bizkitgrow.vercel.app/esim';
       },
     ]}
   />
+
+  <div class="max-w-screen-xl px-4 py-12 mx-auto">
+    <LeadCaptureWidget
+      title="REQUEST ESIM DEPLOYMENT"
+      subtitle="Register your corporate perimeter to schedule an automated network test."
+      serviceKey="esim_connectivity"
+      ctaText="REQUEST DEPLOYMENT"
+    />
+  </div>
 </BaseLayout>

@@ -135,13 +135,13 @@ const breadcrumbSchema = {
       '@type': 'ListItem',
       position: 1,
       name: 'Home',
-      item: 'https://bizkitgrow.vercel.app/'
+      item: Astro.site ? Astro.site.origin : 'https://bizkitgrow.vercel.app/'
     },
     {
       '@type': 'ListItem',
       position: 2,
       name: 'Intelligence Feed',
-      item: 'https://bizkitgrow.vercel.app/blog'
+      item: Astro.site ? new URL('/blog', Astro.site).toString() : 'https://bizkitgrow.vercel.app/blog'
     },
     {
       '@type': 'ListItem',
@@ -165,7 +165,7 @@ const articleSchema = {
   publisher: {
     '@type': 'Organization',
     name: 'Bizkitgrow',
-    url: 'https://bizkitgrow.vercel.app',
+    url: Astro.site ? Astro.site.origin : 'https://bizkitgrow.vercel.app',
   },
   speakable: {
     '@type': 'SpeakableSpecification',

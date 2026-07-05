@@ -18,7 +18,7 @@ export async function getStaticPaths() {
 const { country } = Astro.params;
 const { iso, capital, sku } = Astro.props;
 
-const canonicalUrl = `https://bizkitgrow.vercel.app/esim/${country}`;
+const canonicalUrl = Astro.site ? new URL(`/esim/${country}`, Astro.site).toString() : `https://bizkitgrow.vercel.app/esim/${country}`;
 const formattedCountryName = country.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
 const brandName = systemArchitecture.tenant_settings.brand_name;
 

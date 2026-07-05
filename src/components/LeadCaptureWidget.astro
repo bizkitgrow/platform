@@ -1,0 +1,115 @@
+---
+export interface Props {
+  title?: string;
+  subtitle?: string;
+  serviceKey?: string;
+  ctaText?: string;
+}
+
+const {
+  title = "INITIALIZE COOPERATION",
+  subtitle = "Register your enterprise domain to request early infrastructure access.",
+  serviceKey = "general",
+  ctaText = "REQUEST ACCESS",
+} = Astro.props;
+---
+
+<div class="lead-capture-container my-12 border-4 border-black bg-white p-8 text-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] max-w-2xl mx-auto font-sans">
+  <div class="mb-6 border-b-2 border-black pb-4">
+    <div class="font-mono text-xs uppercase tracking-widest font-black text-brand_cta mb-1">// FUNNEL_INGESTION</div>
+    <h3 class="text-2xl font-black uppercase tracking-tight font-heading">{title}</h3>
+    <p class="text-sm mt-1 text-gray-700 font-medium">{subtitle}</p>
+  </div>
+
+  <form id="lead-capture-form" class="space-y-4">
+    <input type="hidden" name="targetedService" value={serviceKey} />
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="flex flex-col">
+        <label for="email" class="font-mono text-xs font-bold uppercase tracking-wider mb-1">Corporate Email *</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          required
+          placeholder="operator@enterprise.com"
+          class="border-2 border-black p-3 font-mono text-sm focus:outline-none focus:bg-yellow-50 focus:ring-0 placeholder-gray-400"
+        />
+      </div>
+      
+      <div class="flex flex-col">
+        <label for="businessName" class="font-mono text-xs font-bold uppercase tracking-wider mb-1">Business Identity (Optional)</label>
+        <input
+          type="text"
+          id="businessName"
+          name="businessName"
+          placeholder="Enterprise Inc."
+          class="border-2 border-black p-3 font-mono text-sm focus:outline-none focus:bg-yellow-50 focus:ring-0 placeholder-gray-400"
+        />
+      </div>
+    </div>
+
+    <button
+      type="submit"
+      id="submit-btn"
+      class="w-full bg-black text-white hover:bg-yellow-400 hover:text-black border-2 border-black p-4 font-mono font-bold uppercase tracking-widest transition-colors duration-150 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px]"
+    >
+      {ctaText}
+    </button>
+
+    <div id="form-feedback" class="hidden font-mono text-xs p-3 border-2 border-black uppercase tracking-wider"></div>
+  </form>
+</div>
+
+<script>
+  const form = document.getElementById('lead-capture-form') as HTMLFormElement;
+  const feedback = document.getElementById('form-feedback');
+  const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
+
+  if (form && feedback && submitBtn) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const formData = new FormData(form);
+      const email = formData.get('email');
+      const businessName = formData.get('businessName');
+      const targetedService = formData.get('targetedService');
+
+      // UI state transition to loading
+      submitBtn.disabled = true;
+      const originalCta = submitBtn.textContent;
+      submitBtn.textContent = 'CONNECTING TELEMETRY...';
+      feedback.className = 'hidden';
+
+      try {
+        const response = await fetch('/api/v1/leads', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, businessName, targetedService }),
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          // Success
+          feedback.textContent = '// SUCCESS: TELEMETRY CONNECTED.';
+          feedback.className = 'block bg-green-100 text-green-800 border-green-800 p-3 border-2 font-mono text-xs uppercase tracking-wider';
+          form.reset();
+        } else {
+          // Server error
+          feedback.textContent = `// ERROR: ${result.error || 'SUBMISSION_FAILED'}`;
+          feedback.className = 'block bg-red-100 text-red-800 border-red-800 p-3 border-2 font-mono text-xs uppercase tracking-wider';
+        }
+      } catch (err) {
+        // Network error
+        feedback.textContent = '// ERROR: NETWORK_UNAVAILABLE';
+        feedback.className = 'block bg-red-100 text-red-800 border-red-800 p-3 border-2 font-mono text-xs uppercase tracking-wider';
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalCta;
+      }
+    });
+  }
+</script>

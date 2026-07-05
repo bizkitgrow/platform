@@ -1,10 +1,11 @@
 import type { APIRoute } from 'astro';
+import { siteConfig } from '~/config/site';
 
 export const prerender = true;
 
 export const GET: APIRoute = async () => {
   const robotsTxt = `# Bizkitgrow Robots Directive
-# Authority: https://bizkitgrow.vercel.app
+# Authority: ${siteConfig.url}
 
 User-agent: *
 Allow: /
@@ -43,7 +44,7 @@ Disallow: /
 User-agent: SemrushBot
 Disallow: /
 
-Sitemap: https://bizkitgrow.vercel.app/sitemap.xml
+Sitemap: ${new URL('/sitemap-index.xml', siteConfig.url).toString()}
 `.trim();
 
   return new Response(robotsTxt, {

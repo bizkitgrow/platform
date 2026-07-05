@@ -12,15 +12,15 @@ const graph = [
     '@type': 'Organization',
     '@id': '#organization',
     name: 'Bizkitgrow',
-    url: 'https://bizkitgrow.vercel.app',
-    logo: 'https://bizkitgrow.vercel.app/logo.png',
+    url: Astro.site ? Astro.site.origin : 'https://bizkitgrow.vercel.app',
+    logo: `${Astro.site ? Astro.site.origin : 'https://bizkitgrow.vercel.app'}/logo.png`,
   },
   {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     '@id': '#website',
     name: 'Bizkitgrow',
-    url: 'https://bizkitgrow.vercel.app',
+    url: Astro.site ? Astro.site.origin : 'https://bizkitgrow.vercel.app',
     description: 'Zero-latency B2B distribution systems.',
   },
   {

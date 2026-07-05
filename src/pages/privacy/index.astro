@@ -2,7 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Hero from '../../components/widgets/Hero.astro';
 
-const currentUrl = 'https://bizkitgrow.vercel.app/privacy';
+const currentUrl = Astro.site ? new URL('/privacy', Astro.site).toString() : 'https://bizkitgrow.vercel.app/privacy';
 ---
 
 <BaseLayout
