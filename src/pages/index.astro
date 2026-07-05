@@ -1,19 +1,20 @@
 ---
 import { desc } from 'drizzle-orm';
+import brandManifest from '../../config/brand_manifest.json';
+import systemArchitecture from '../../config/system_architecture.json';
 import { db } from '../db/client';
 import { posts as postsTable } from '../db/schema';
-import systemArchitecture from '../../system_architecture.json';
-import brandManifest from '../../config/brand_manifest.json';
 
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Hero from '../components/widgets/Hero.astro';
+import LeadCaptureWidget from '../components/LeadCaptureWidget.astro';
+import ResellPortalWidget from '../components/ResellPortalWidget.astro';
+import BlogHighlightedPosts from '../components/widgets/BlogHighlightedPosts.astro';
+import CallToAction from '../components/widgets/CallToAction.astro';
 import Features from '../components/widgets/Features.astro';
+import GrowthVectors from '../components/widgets/GrowthVectors.astro';
+import Hero from '../components/widgets/Hero.astro';
 import Stats from '../components/widgets/Stats.astro';
 import Steps from '../components/widgets/Steps.astro';
-import CallToAction from '../components/widgets/CallToAction.astro';
-import BlogHighlightedPosts from '../components/widgets/BlogHighlightedPosts.astro';
-import ResellPortalWidget from '../components/ResellPortalWidget.astro';
-import LeadCaptureWidget from '../components/LeadCaptureWidget.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
 
 const brandName = systemArchitecture.tenant_settings.brand_name;
 const currentUrl = Astro.site ? Astro.site.toString() : 'https://bizkitgrow.vercel.app/';
@@ -23,7 +24,8 @@ const orgSchema = {
   '@type': 'Organization',
   name: brandName,
   url: currentUrl,
-  description: 'Autonomous B2B infrastructure for global remote operators: sovereign connectivity, reputation gating, and back-office automation.',
+  description:
+    'Bizkitgrow helps remote businesses scale with global eSIM connectivity, local SEO tools, and automated invoicing.',
   sameAs: [Astro.site ? Astro.site.origin : 'https://bizkitgrow.vercel.app'],
   contactPoint: {
     '@type': 'ContactPoint',
@@ -39,6 +41,8 @@ try {
   console.error('Database query failed for index:', err.message);
 }
 
+const showPendingWidgets = Astro.url.searchParams.get('preview') === 'true' || false;
+
 const displayPosts =
   recentPosts.length > 0
     ? recentPosts.map((p) => ({
@@ -46,128 +50,162 @@ const displayPosts =
         slug: p.slug,
         excerpt: p.metaDesc || 'Read the complete analysis from the Bizkitgrow intelligence feed.',
         publishDate: p.createdAt ? new Date(p.createdAt) : new Date(),
-        image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80',
+        image:
+          p.originalImage ||
+          `https://image.pollinations.ai/prompt/${encodeURIComponent(`${p.title}, brutalist style tech card, corporate minimalism`)}?width=600&height=400&nologo=true`,
         tags: [p.targetProductSku || 'ai_business_tools_suite'],
+        readingTime: `${Math.max(2, Math.ceil((p.content?.length || 1000) / 1500))} min read`,
+        pillar: p.targetProductSku || 'ai_business_tools_suite',
+        createdAt: p.createdAt
+          ? new Date(p.createdAt).toLocaleDateString('en-US', {
+              month: 'short',
+              day: 'numeric',
+              year: 'numeric',
+            })
+          : 'Jul 4, 2026',
       }))
     : [];
 ---
 
 <BaseLayout
-  title="Sovereign B2B Digital Infrastructure"
-  description="Consolidate global eSIM connectivity, automated local search authority, and back-office pipelines under a single secure perimeter."
+  title="Bizkitgrow | Remote Business & Local SEO Software"
+  description="Manage your global team's connectivity, dominate local search results, and handle invoicing from one dashboard."
   canonicalUrl={currentUrl}
 >
   <script type="application/ld+json" slot="schema" is:inline set:html={JSON.stringify(orgSchema)} />
 
   <Hero
     actions={[
-      { text: 'ACCESS PLATFORM', href: '/solutions/crm-system', icon: 'tabler:arrow-right', variant: 'primary' },
-      { text: 'VIEW INTELLIGENCE FEED', href: '/blog' }
+      { text: brandManifest.audience_demand_matrix.intent_clusters.pillar_1_mobility.conversion_copy_tokens.cta_label.toUpperCase(), href: '/solutions/crm-system', icon: 'tabler:arrow-right', variant: 'primary' },
+      { text: 'READ GUIDES', href: '/blog' }
     ]}
   >
     <Fragment slot="title">
-      Sovereign B2B <br />
-      <span class="text-brand_cta dark:text-brand_cta highlight">Digital Logistics.</span>
+      The Sovereign Infrastructure Engine <br />
+      <span class="text-brand_cta dark:text-brand_cta highlight">For Remote Agencies & Consultancies</span>
     </Fragment>
 
     <Fragment slot="subtitle">
-      Scale global B2B connectivity, automate local brand authority, and streamline customer flows from a single unified portal. Built for international enterprises and remote teams who demand speed, security, and zero operational friction.
+      Deploy private network assets, ingest search authority local coordinates, and automate your back-office billing — all unified under a single sovereign operating interface.
     </Fragment>
   </Hero>
 
   <Stats
     stats={[
-      { title: 'Countries Covered', amount: '190+' },
-      { title: 'Core Pillars', amount: '3' },
-      { title: 'Automated', amount: '100%' },
-      { title: 'Edge Latency', amount: '<420ms' },
+      { title: 'Countries Supported', amount: '190+' },
+      { title: 'Setup Time', amount: '< 5 Mins' },
+      { title: 'Automated Tasks', amount: '100%' },
+      { title: 'Uptime', amount: '99.9%' },
     ]}
   />
 
   <Features
     id="features"
-    tagline="PILLARS"
-    title="Select Your Operational Perimeter."
-    subtitle="Growth Vectors"
+    tagline="FEATURES"
+    title="Everything you need to operate globally and rank locally."
+    subtitle="Built for digital nomads, agencies, and service businesses."
     items={[
       {
-        title: 'Global eSIM Infrastructure',
-        description: 'Instant cellular routing across 190+ sovereign networks. Enterprise-grade eSIM provisioning with dedicated financial-grade encryption — no roaming friction, full uptime guarantee.',
+        title: 'Global eSIM Connectivity',
+        description: 'Instant cellular data in 190+ countries — no SIM swaps, no roaming bills. Your team stays connected on the ground, in transit, or working from a beach.',
         icon: 'tabler:wifi',
       },
       {
-        title: 'Reputation Gating Engine',
-        description: 'Automated Google Business Profile optimization, review capture sequences, and local semantic indexation. Own the search grid in high-value zip codes without volatile ad spend.',
+        title: 'Local SEO & Reputation Engine',
+        description: 'Turn satisfied clients into visible proof. Auto-collect Google reviews, surface your business at the top of local results, and defend your reputation — hands-free.',
         icon: 'tabler:seo',
       },
       {
-        title: 'Operational CRM Suite',
-        description: 'Consolidate invoicing, AI-powered scheduling, and secure e-signature workflows into a single client portal. Cut administrative overhead and recover lost revenue from billing friction.',
+        title: 'CRM & Smart Invoicing',
+        description: 'Eliminate the late-payment cycle. Send professional invoices, accept online payments, and manage every client interaction in one clean, audit-ready portal.',
         icon: 'tabler:bolt',
+      },
+      {
+        title: 'Live Market Intelligence',
+        description: 'Real-time crypto prices, global equity charts, and macro intelligence feeds — aggregated from CoinGecko, TradingView, and Finnhub. Decisions backed by data, not noise.',
+        icon: 'tabler:chart-bar',
+        callToAction: {
+          text: 'Open Market Terminal →',
+          href: '/blog#market',
+        },
       },
     ]}
   />
 
+  <GrowthVectors />
+
   <Steps
-    title="Get your infrastructure running in minutes."
+    title="Start growing your business in minutes."
     items={[
       {
-        title: 'Step 1: <span class="font-medium">Sign up</span>',
-        description: 'Create your operator account securely. No credit card required for initial setup.',
+        title: 'Step 1: <span class="font-medium">Create Your Account</span>',
+        description: 'Sign up for free and tell us what you need: connectivity, local SEO, or billing.',
         icon: 'tabler:user-plus',
       },
       {
-        title: 'Step 2: <span class="font-medium">Configure routing</span>',
-        description: 'Set your preferred target regions and active product SKUs.',
+        title: 'Step 2: <span class="font-medium">Connect Your Tools</span>',
+        description: 'Link your Google Business Profile or download your first eSIM instantly.',
         icon: 'tabler:settings',
       },
       {
-        title: 'Step 3: <span class="font-medium">Deploy connectivity</span>',
-        description: 'Your digital presence goes live. AI agents begin crawling for search authority immediately.',
+        title: 'Step 3: <span class="font-medium">Automate Your Work</span>',
+        description: 'Let Bizkitgrow automatically gather reviews and send invoice reminders while you focus on your clients.',
         icon: 'tabler:rocket',
       },
       {
-        title: 'Ready!',
+        title: 'Ready to launch!',
         icon: 'tabler:check',
       },
     ]}
     image={{
-      src: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80',
-      alt: 'Dashboard abstract',
+      src: '/assets/steps-diagram.png',
+      alt: 'Bizkitgrow Dashboard Overview',
     }}
   />
 
-  <div class="max-w-screen-xl px-4 py-8 mx-auto border-b-4 border-black">
-    <div class="border-4 border-black p-6 bg-white shadow-brutal">
-      <ResellPortalWidget productSku="ai-blog-generator" resellportalStatus="pending" theme="light" />
+  <!-- Blog Highlighted Posts (activated dynamically using database posts) -->
+  {displayPosts.length > 0 && (
+    <BlogHighlightedPosts
+      title="Latest B2B Briefings"
+      information="Autonomous briefings on connectivity protocols, search engine authority updates, and digital business operations."
+      posts={displayPosts}
+    />
+  )}
+
+  <!-- Resell Portal Widget (hidden behind feature flag preview parameter since it is pending) -->
+  {showPendingWidgets && (
+    <div class="max-w-screen-xl px-4 py-8 mx-auto border-b-4 border-black">
+      <div class="border-4 border-black p-6 bg-white shadow-brutal">
+        <ResellPortalWidget productSku="ai-blog-generator" resellportalStatus="pending" theme="light" />
+      </div>
     </div>
-  </div>
+  )}
 
   <CallToAction
     actions={[
       {
         variant: 'primary',
-        text: 'INITIALIZE ONBOARDING QUEUE',
+        text: 'GET STARTED FOR FREE',
         href: '/solutions/crm-system',
-        icon: 'tabler:download',
+        icon: 'tabler:arrow-right',
       },
     ]}
   >
     <Fragment slot="title">
-      Secure Your Position in the Queue.
+      Ready to get more customers?
     </Fragment>
 
     <Fragment slot="subtitle">
-      Early operators receive 30% off first 3 months, dedicated onboarding, and direct access to the operational intelligence feed.
+      Join business owners who are saving hours every week with automated tools and global connectivity.
     </Fragment>
   </CallToAction>
 
   <div class="max-w-screen-xl px-4 py-12 mx-auto">
     <LeadCaptureWidget
-      title="JOIN THE OPERATIONAL WAITING LIST"
-      subtitle="Register your corporate perimeter to reserve your placement and get early pricing."
+      title="JOIN THE WAITING LIST"
+      subtitle="Sign up today to reserve your spot and receive early-bird pricing when we launch our full suite."
       serviceKey="waiting_list"
-      ctaText="JOIN WAITING LIST"
+      ctaText="SECURE MY SPOT"
     />
   </div>
 </BaseLayout>

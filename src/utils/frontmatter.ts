@@ -1,9 +1,9 @@
-import getReadingTime from 'reading-time';
-import { toString } from 'mdast-util-to-string';
 import type { RehypePlugin, RemarkPlugin } from '@astrojs/markdown-remark';
+import { toString } from 'mdast-util-to-string';
+import getReadingTime from 'reading-time';
 
 export const readingTimeRemarkPlugin: RemarkPlugin = () => {
-  return function (tree, file) {
+  return (tree, file) => {
     const textOnPage = toString(tree);
     const readingTime = Math.ceil(getReadingTime(textOnPage).minutes);
 
@@ -14,7 +14,7 @@ export const readingTimeRemarkPlugin: RemarkPlugin = () => {
 };
 
 export const responsiveTablesRehypePlugin: RehypePlugin = () => {
-  return function (tree) {
+  return (tree) => {
     if (!tree.children) return;
 
     for (let i = 0; i < tree.children.length; i++) {

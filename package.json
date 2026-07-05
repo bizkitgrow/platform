@@ -23,6 +23,7 @@
     "@astrouxds/tokens": "^1.14.0",
     "@iconify-json/tabler": "^1.2.35",
     "@jdevalk/astro-seo-graph": "^2.0.0",
+    "@mozilla/readability": "^0.6.0",
     "@supabase/supabase-js": "^2.43.0",
     "@tailwindcss/typography": "^0.5.20",
     "@unpic/astro": "^1.0.2",

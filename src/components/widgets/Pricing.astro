@@ -6,15 +6,15 @@ import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
 import type { Pricing as Props } from '~/types';
 
 const {
- title = '',
- subtitle = '',
- tagline = '',
- prices = [],
+  title = '',
+  subtitle = '',
+  tagline = '',
+  prices = [],
 
- id,
- isDark = false,
- classes = {},
- bg = await Astro.slots.render('bg'),
+  id,
+  isDark = false,
+  classes = {},
+  bg = await Astro.slots.render('bg'),
 } = Astro.props;
 ---
 

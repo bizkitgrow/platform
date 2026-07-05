@@ -1,0 +1,76 @@
+---
+import targetSolutions from '../../../config/target_solutions.json';
+
+const infrastructure = targetSolutions.filter((s) => s.pillar === 'infrastructure');
+const authority = targetSolutions.filter((s) => s.pillar === 'authority');
+const operations = targetSolutions.filter((s) => s.pillar === 'operations');
+
+const pillars = [
+  {
+    id: '01',
+    name: 'Secure Infrastructure',
+    description: 'Foundational systems for sovereign data control and performance.',
+    items: infrastructure,
+  },
+  {
+    id: '02',
+    name: 'Market Authority',
+    description: 'Data-driven visibility and omnipresent market positioning.',
+    items: authority,
+  },
+  {
+    id: '03',
+    name: 'Operational AI',
+    description: 'Autonomous workflows that eliminate administrative friction.',
+    items: operations,
+  },
+];
+---
+
+<section class="py-20 border-b-4 border-black bg-white" id="growth-vectors">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="mb-16">
+      <h2 class="font-heading text-4xl md:text-6xl font-black text-black uppercase tracking-tight mb-4">
+        Growth Vectors.
+      </h2>
+      <p class="text-xl text-gray-700 font-medium max-w-2xl">
+        Deploy specialized B2B infrastructure to accelerate your digital transition.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      {pillars.map((pillar) => (
+        <div class="border-4 border-black bg-canvas_accent p-8 shadow-brutal flex flex-col h-full hover:-translate-y-1 transition-transform">
+          <div class="font-mono text-sm font-black text-brand_cta mb-2 tracking-widest uppercase">
+            [ PILLAR {pillar.id} ]
+          </div>
+          <h3 class="font-heading text-2xl font-black text-black uppercase tracking-tight mb-4">
+            {pillar.name}
+          </h3>
+          <p class="text-sm font-medium text-gray-800 mb-8 pb-6 border-b-2 border-black">
+            {pillar.description}
+          </p>
+          
+          <div class="flex-grow space-y-6">
+            {pillar.items.map((item) => (
+              <div class="group relative">
+                <a href={`/solutions/${item.slug}`} class="block border-l-4 border-black pl-4 py-1 hover:border-brand_cta transition-colors">
+                  <h4 class="font-bold text-lg text-black uppercase mb-1 group-hover:text-brand_cta transition-colors flex justify-between items-center">
+                    {item.name}
+                    <span class="text-brand_cta opacity-0 group-hover:opacity-100 transition-opacity font-black">&rarr;</span>
+                  </h4>
+                  <p class="text-xs text-gray-600 font-medium leading-relaxed mb-2">
+                    {item.short_description}
+                  </p>
+                  <p class="text-[10px] font-mono text-gray-500 hidden group-hover:block transition-all">
+                    {item.educational_insight}
+                  </p>
+                </a>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

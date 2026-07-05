@@ -9,7 +9,7 @@ const loadLocalImages = () => {
   if (_localImages) return _localImages;
   try {
     _localImages = import.meta.glob(
-      '~/assets/images/**/*.{jpeg,jpg,png,tiff,webp,gif,svg,JPEG,JPG,PNG,TIFF,WEBP,GIF,SVG}'
+      '~/assets/images/**/*.{jpeg,jpg,png,tiff,webp,gif,svg,JPEG,JPG,PNG,TIFF,WEBP,GIF,SVG}',
     );
   } catch {
     _localImages = {};
@@ -26,10 +26,14 @@ const loadLocalImages = () => {
  *   - `"~/assets/images/…"`        → resolved to its ImageMetadata via the glob
  */
 export const findImage = async (
-  imagePath?: string | ImageMetadata | null
+  imagePath?: string | ImageMetadata | null,
 ): Promise<string | ImageMetadata | undefined | null> => {
   if (typeof imagePath !== 'string') return imagePath;
-  if (imagePath.startsWith('http://') || imagePath.startsWith('https://') || imagePath.startsWith('/'))
+  if (
+    imagePath.startsWith('http://') ||
+    imagePath.startsWith('https://') ||
+    imagePath.startsWith('/')
+  )
     return imagePath;
   if (!imagePath.startsWith('~/assets/images')) return imagePath;
 
@@ -50,7 +54,7 @@ const OG_HEIGHT = 626;
  */
 export const adaptOpenGraphImages = async (
   openGraph: MetaDataOpenGraph = {},
-  astroSite: URL | undefined = new URL('')
+  astroSite: URL | undefined = new URL(''),
 ): Promise<MetaDataOpenGraph> => {
   if (!openGraph?.images?.length) return openGraph;
 
@@ -74,7 +78,7 @@ export const adaptOpenGraphImages = async (
         width: Number(optimized.attributes.width) || OG_WIDTH,
         height: Number(optimized.attributes.height) || OG_HEIGHT,
       };
-    })
+    }),
   );
 
   return { ...openGraph, images: adaptedImages };

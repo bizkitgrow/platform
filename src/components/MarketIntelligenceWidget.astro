@@ -1,0 +1,598 @@
+---
+// Market Intelligence Widget — TradingView + CoinGecko + Finnhub + Alpha Vantage
+// SEO: structured as market data dashboard component, loaded lazily in blog Market tab
+---
+
+<section
+  id="market-intelligence-widget"
+  aria-label="Live Market Intelligence Dashboard"
+  class="bg-white border-4 border-black"
+>
+  <!-- ── HEADER ──────────────────────────────────────────────────── -->
+  <div class="p-5 md:p-6 border-b-4 border-black flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+    <div>
+      <div class="font-mono text-[9px] text-brand_cta uppercase tracking-widest font-black mb-1">
+        LIVE MARKET INTELLIGENCE
+      </div>
+      <h2 class="font-heading text-2xl sm:text-3xl font-extrabold text-black uppercase tracking-tight leading-none">
+        MARKET TERMINAL
+      </h2>
+    </div>
+    <div class="flex flex-col items-start sm:items-end gap-1.5">
+      <div class="flex items-center gap-2">
+        <span class="inline-block w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+        <span id="mkt-last-ping" class="font-mono text-[9px] text-gray-500 uppercase tracking-widest">LOADING...</span>
+      </div>
+      <div class="font-mono text-[8px] text-gray-400 uppercase tracking-widest sm:text-right">
+        Powered by CoinGecko · Finnhub · Alpha Vantage · TradingView
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SUB-TAB NAV ─────────────────────────────────────────────── -->
+  <div class="border-b-4 border-black flex overflow-x-auto scrollbar-hide" role="tablist" aria-label="Market sections">
+    <button
+      role="tab"
+      aria-selected="true"
+      aria-controls="mkt-panel-crypto"
+      id="mkt-tab-crypto"
+      class="mkt-tab active shrink-0 px-5 py-3 font-mono text-[10px] font-black uppercase tracking-widest border-r-2 border-black bg-black text-white transition-colors"
+      data-target="mkt-panel-crypto"
+    >CRYPTO</button>
+    <button
+      role="tab"
+      aria-selected="false"
+      aria-controls="mkt-panel-charts"
+      id="mkt-tab-charts"
+      class="mkt-tab shrink-0 px-5 py-3 font-mono text-[10px] font-black uppercase tracking-widest border-r-2 border-black bg-white text-black transition-colors hover:bg-gray-100"
+      data-target="mkt-panel-charts"
+    >CHARTS</button>
+    <button
+      role="tab"
+      aria-selected="false"
+      aria-controls="mkt-panel-intel"
+      id="mkt-tab-intel"
+      class="mkt-tab shrink-0 px-5 py-3 font-mono text-[10px] font-black uppercase tracking-widest bg-white text-black transition-colors hover:bg-gray-100"
+      data-target="mkt-panel-intel"
+    >INTEL FEED</button>
+  </div>
+
+  <!-- ── LOADING STATE ───────────────────────────────────────────── -->
+  <div id="mkt-loading" class="flex flex-col items-center justify-center py-16 gap-3">
+    <div class="w-8 h-8 border-4 border-black border-t-brand_cta rounded-full animate-spin"></div>
+    <div class="font-mono text-[10px] text-gray-500 uppercase tracking-widest">SYNCING MARKET ORACLES...</div>
+  </div>
+
+  <!-- ── ERROR STATE ────────────────────────────────────────────── -->
+  <div id="mkt-error" class="hidden p-6 border-4 border-red-500 m-4 bg-red-50 text-red-700 font-mono text-xs font-bold uppercase">
+    FAILED TO SYNC MARKET DATA. API PROTECTION ACTIVE. RETRY IN 60 SECONDS.
+  </div>
+
+  <!-- ── PANEL: CRYPTO ──────────────────────────────────────────── -->
+  <div
+    id="mkt-panel-crypto"
+    role="tabpanel"
+    aria-labelledby="mkt-tab-crypto"
+    class="mkt-panel hidden"
+  >
+    <!-- Crypto Table -->
+    <div class="bg-[#0d0f1a] text-gray-300 font-mono overflow-hidden">
+      <div class="p-3 border-b border-gray-800 flex items-center justify-between">
+        <span class="text-[10px] text-[#00ff00] uppercase tracking-widest font-black">◉ CLI MARKET FEED</span>
+        <span class="text-[9px] text-gray-600 uppercase tracking-widest">Source: CoinGecko API</span>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-[11px] whitespace-nowrap" aria-label="Live cryptocurrency prices">
+          <thead class="text-gray-600 border-b border-gray-800 text-[9px] uppercase tracking-widest">
+            <tr>
+              <th scope="col" class="py-2 pl-3 pr-2 font-normal text-left w-8">#</th>
+              <th scope="col" class="py-2 pr-3 font-normal text-left">SYMBOL</th>
+              <th scope="col" class="py-2 pr-3 font-normal text-right">PRICE USD</th>
+              <th scope="col" class="py-2 pr-3 font-normal text-right">1H%</th>
+              <th scope="col" class="py-2 pr-3 font-normal text-right">24H%</th>
+              <th scope="col" class="py-2 pr-3 font-normal text-right">7D%</th>
+              <th scope="col" class="py-2 pr-3 font-normal text-right hidden sm:table-cell">VOLUME 24H</th>
+              <th scope="col" class="py-2 pr-3 font-normal text-right hidden md:table-cell">SPARKLINE 7D</th>
+            </tr>
+          </thead>
+          <tbody id="mkt-crypto-body" class="divide-y divide-gray-800/40">
+            <!-- Dynamically populated -->
+          </tbody>
+        </table>
+      </div>
+      <div class="p-3 flex justify-between items-center border-t border-gray-800">
+        <div class="text-[8px] text-gray-700 uppercase tracking-widest">
+          BIZKITGROW.COM — DATA BY <a href="https://www.coingecko.com" target="_blank" rel="noopener" class="text-gray-500 hover:text-[#00ff00] transition-colors">COINGECKO</a> & <a href="https://coinmarketcap.com" target="_blank" rel="noopener" class="text-gray-500 hover:text-[#00ff00] transition-colors">CMC</a>
+        </div>
+        <div id="mkt-last-ping-cli" class="text-[8px] text-gray-700 uppercase tracking-widest"></div>
+      </div>
+    </div>
+
+    <!-- Trending + Movers Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 border-t-4 border-black">
+      <!-- Trending Coins -->
+      <div class="md:col-span-1 p-4 border-b-4 md:border-b-0 md:border-r-4 border-black">
+        <div class="font-mono text-[9px] text-brand_cta uppercase tracking-widest font-black mb-3">TRENDING 24H</div>
+        <ul id="mkt-trending-list" class="space-y-2 text-[11px]" aria-label="Trending cryptocurrencies">
+          <!-- Dynamically populated -->
+        </ul>
+      </div>
+      <!-- Top Gainers -->
+      <div class="md:col-span-1 p-4 border-b-4 md:border-b-0 md:border-r-4 border-black">
+        <div class="font-mono text-[9px] text-green-600 uppercase tracking-widest font-black mb-3">▲ TOP GAINERS</div>
+        <ul id="mkt-gainers-list" class="space-y-2 text-[11px]" aria-label="Top gaining cryptocurrencies">
+          <!-- Dynamically populated -->
+        </ul>
+      </div>
+      <!-- Top Losers -->
+      <div class="md:col-span-1 p-4">
+        <div class="font-mono text-[9px] text-red-600 uppercase tracking-widest font-black mb-3">▼ TOP LOSERS</div>
+        <ul id="mkt-losers-list" class="space-y-2 text-[11px]" aria-label="Top losing cryptocurrencies">
+          <!-- Dynamically populated -->
+        </ul>
+      </div>
+    </div>
+
+    <!-- Finnhub: ETF Holdings -->
+    <div class="border-t-4 border-black">
+      <div class="p-4 border-b-2 border-black flex justify-between items-center">
+        <div class="font-mono text-[10px] font-black uppercase tracking-widest">ETF HOLDINGS</div>
+        <span class="font-mono text-[9px] text-brand_cta font-bold">ARKK</span>
+      </div>
+      <div style="height:300px; width:100%">
+        <iframe
+          width="100%"
+          height="100%"
+          frameBorder="0"
+          loading="lazy"
+          src="https://widget.finnhub.io/widgets/etf-holdings?symbol=ARKK&theme=light"
+          title="ARKK ETF Holdings — Finnhub"
+          class="w-full h-full"
+        ></iframe>
+      </div>
+      <div class="text-right px-4 py-2 font-mono text-[8px] uppercase tracking-widest text-gray-400 border-t border-gray-200">
+        ETF data by <a href="https://finnhub.io/" target="_blank" rel="noopener nofollow" class="text-brand_cta hover:underline">Finnhub Stock API</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PANEL: CHARTS ──────────────────────────────────────────── -->
+  <div
+    id="mkt-panel-charts"
+    role="tabpanel"
+    aria-labelledby="mkt-tab-charts"
+    class="mkt-panel hidden"
+  >
+    <!-- TradingView: tv-market-overview -->
+    <div class="border-b-4 border-black p-4 pb-0">
+      <div class="font-mono text-[9px] text-brand_cta uppercase tracking-widest font-black mb-3">
+        MARKET OVERVIEW — INDICES · STOCKS · CRYPTO
+      </div>
+    </div>
+    <div class="w-full min-h-[400px] sm:min-h-[460px]" id="tv-market-overview-wrap">
+      <script type="module" src="https://widgets.tradingview-widget.com/w/en/tv-market-overview.js" is:inline></script>
+      <tv-market-overview
+        color-theme="light"
+        symbol-sectors='[{"sectionName":"Indices","symbols":["FOREXCOM:SPXUSD","FOREXCOM:NSXUSD","FOREXCOM:DJI","FOREXCOM:UKXGBP","FX:EURUSD","TVC:GOLD"]},{"sectionName":"Tech Stocks","symbols":["NASDAQ:AAPL","NASDAQ:NVDA","NASDAQ:ADBE","NASDAQ:TSLA","NASDAQ:MSFT","NASDAQ:META"]},{"sectionName":"Crypto","symbols":["BITSTAMP:BTCUSD","BITSTAMP:ETHUSD","BINANCE:SOLUSDT","BINANCE:BNBUSDT","BINANCE:XRPUSDT","BINANCE:ADAUSDT"]}]'
+      ></tv-market-overview>
+    </div>
+
+    <!-- TradingView: Advanced Chart (correct embed method) -->
+    <div class="border-t-4 border-black">
+      <div class="p-4 border-b-2 border-black flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+        <div class="font-mono text-[10px] font-black uppercase tracking-widest">ADVANCED CHART</div>
+        <div class="flex items-center gap-3">
+          <span class="font-mono text-[9px] text-gray-500 uppercase tracking-widest">Click symbol · 30+ indicators</span>
+          <a href="https://www.tradingview.com/?aff_id=168388" target="_blank" rel="noopener nofollow"
+             class="font-mono text-[8px] font-black text-brand_cta border border-brand_cta px-2 py-0.5 hover:bg-brand_cta hover:text-white transition-colors uppercase tracking-widest">
+            TRY PRO →
+          </a>
+        </div>
+      </div>
+      <!-- Widget container (height needs to be explicit for the embed to size itself) -->
+      <div class="tradingview-widget-container" style="height:500px;width:100%">
+        <div id="tv-advanced-chart-widget" style="height:100%;width:100%"></div>
+        <div class="tradingview-widget-copyright text-right px-4 py-1 font-mono text-[8px] uppercase tracking-widest text-gray-400 border-t border-gray-100">
+          <a href="https://www.tradingview.com/?aff_id=168388" rel="noopener nofollow" target="_blank" class="text-brand_cta hover:underline">Advanced Charts by TradingView</a>
+        </div>
+      </div>
+      <script is:inline>
+        (function () {
+          // Use the official TradingView widget constructor (not external-embedding script)
+          // This method is reliable and does not conflict with Astro's compiler
+          function initTVChart() {
+            if (typeof TradingView !== 'undefined') {
+              new TradingView.widget({
+                container_id: 'tv-advanced-chart-widget',
+                width: '100%',
+                height: 468,
+                symbol: 'NASDAQ:AAPL',
+                interval: 'D',
+                timezone: 'Etc/UTC',
+                theme: 'light',
+                style: '1',
+                locale: 'en',
+                toolbar_bg: '#f1f3f6',
+                enable_publishing: false,
+                allow_symbol_change: true,
+                save_image: true,
+                hide_side_toolbar: false,
+                withdateranges: true,
+                details: true,
+                hotlist: true,
+                calendar: true,
+                studies: ['STD;RSI', 'STD;MACD'],
+                watchlist: ['NASDAQ:NVDA', 'NASDAQ:TSLA', 'BINANCE:BTCUSDT', 'BINANCE:ETHUSDT', 'FOREXCOM:SPXUSD', 'TVC:GOLD', 'FX:EURUSD']
+              });
+            }
+          }
+          // Load the TV charting library, then init
+          var tvScript = document.createElement('script');
+          tvScript.src = 'https://s3.tradingview.com/tv.js';
+          tvScript.async = true;
+          tvScript.onload = initTVChart;
+          document.head.appendChild(tvScript);
+        })();
+      </script>
+    </div>
+
+    <!-- Finnhub: Performance Chart -->
+    <div class="border-t-4 border-black">
+      <div class="p-4 border-b-2 border-black flex justify-between items-center">
+        <div class="font-mono text-[10px] font-black uppercase tracking-widest">PERFORMANCE COMPARISON</div>
+        <span class="font-mono text-[9px] text-brand_cta font-bold">IVV · AVUV · VTI · GLD</span>
+      </div>
+      <div style="height:340px; width:100%">
+        <iframe
+          width="100%"
+          height="100%"
+          frameBorder="0"
+          loading="lazy"
+          src="https://widget.finnhub.io/widgets/performance-chart?symbols=IVV,AVUV,VTI,GLD&initialInvestment=10000&monthlyInvestment=0&reinvestDividends=true&dividendTax=15&period=5Y&theme=light"
+          title="IVV AVUV VTI GLD 5-Year Performance Comparison — Data by Finnhub Stock API"
+          class="w-full h-full"
+        ></iframe>
+      </div>
+      <div class="text-right px-4 py-2 font-mono text-[8px] uppercase tracking-widest text-gray-400 border-t border-gray-200">
+        Performance data by <a href="https://finnhub.io/" target="_blank" rel="noopener nofollow" class="text-brand_cta hover:underline">Finnhub</a>
+      </div>
+    </div>
+
+    <!-- TradingView Economic Calendar -->
+    <div class="border-t-4 border-black">
+      <div class="p-4 border-b-2 border-black flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+        <div class="font-mono text-[10px] font-black uppercase tracking-widest">ECONOMIC CALENDAR</div>
+        <span class="font-mono text-[9px] text-gray-500 uppercase tracking-widest">All Currencies · Macro Events</span>
+      </div>
+      <div id="tv-econ-cal-container" style="min-height:400px;width:100%"></div>
+      <script is:inline>
+        (function () {
+          var cfg = {
+            colorTheme: 'light',
+            isTransparent: false,
+            width: '100%',
+            height: 400,
+            locale: 'en',
+            importanceFilter: '-1,0,1',
+            countryFilter: 'ar,au,br,ca,cn,de,eu,fr,gb,in,id,it,jp,kr,mx,ru,sa,tr,us,za'
+          };
+          var s = document.createElement('script');
+          s.src = 'https://s3.tradingview.com/external-embedding/embed-widget-economic-calendar.js';
+          s.async = true;
+          s.textContent = JSON.stringify(cfg);
+          var container = document.getElementById('tv-econ-cal-container');
+          if (container) container.appendChild(s);
+        })();
+      </script>
+      <div class="text-right px-4 py-2 font-mono text-[8px] uppercase tracking-widest text-gray-400 border-t border-gray-100">
+        Economic Calendar by <a href="https://www.tradingview.com/?aff_id=168388" target="_blank" rel="noopener nofollow" class="text-brand_cta hover:underline">TradingView</a>
+      </div>
+    </div>
+
+    <!-- ── Affiliate CTA Block ── -->
+    <div class="border-t-4 border-black bg-black text-white">
+      <div class="p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div>
+          <div class="font-mono text-[9px] text-[#00ff00] uppercase tracking-widest font-black mb-1">UPGRADE YOUR CHARTS</div>
+          <p class="font-heading text-base font-bold text-white leading-snug">Get pro-grade analysis tools, real-time alerts, and unlimited chart saves.</p>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-2 shrink-0">
+          <a
+            href="https://www.tradingview.com/pricing/?share_your_love=bizkitgrow"
+            target="_blank"
+            rel="noopener nofollow"
+            class="font-mono text-[10px] font-black uppercase tracking-widest px-4 py-2.5 bg-brand_cta text-white hover:bg-white hover:text-black transition-colors border-2 border-brand_cta text-center"
+          >REFER & GET 30 DAYS FREE</a>
+          <a
+            href="https://www.tradingview.com/?aff_id=168388"
+            target="_blank"
+            rel="noopener nofollow"
+            class="font-mono text-[10px] font-black uppercase tracking-widest px-4 py-2.5 bg-white text-black hover:bg-gray-100 transition-colors border-2 border-white text-center"
+          >TRY TRADINGVIEW →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PANEL: INTEL FEED ──────────────────────────────────────── -->
+  <div
+    id="mkt-panel-intel"
+    role="tabpanel"
+    aria-labelledby="mkt-tab-intel"
+    class="mkt-panel hidden"
+  >
+    <div class="p-4 border-b-2 border-black flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+      <div class="font-mono text-[10px] font-black uppercase tracking-widest">INTELLIGENCE FEED</div>
+      <div class="font-mono text-[8px] text-gray-500 uppercase tracking-widest">Sources: Finnhub · Alpha Vantage · Real-time</div>
+    </div>
+    <!-- Paginated news list: shows 5 at a time -->
+    <ul id="mkt-intel-list" class="divide-y-2 divide-gray-100" aria-label="Market intelligence news feed" aria-live="polite"></ul>
+    <div id="mkt-intel-load-more-wrap" class="hidden border-t-2 border-black p-4 text-center">
+      <button
+        id="mkt-intel-load-more"
+        class="font-mono text-[10px] font-black uppercase tracking-widest px-6 py-2.5 border-2 border-black bg-white text-black hover:bg-black hover:text-white transition-colors"
+        aria-label="Load more intelligence articles"
+      >LOAD MORE ↓</button>
+    </div>
+    <!-- Marquee live feed -->
+    <div class="border-t-4 border-black bg-black text-white overflow-hidden p-3" aria-hidden="true">
+      <div class="flex items-center gap-4 font-mono text-[9px] uppercase font-bold">
+        <span class="bg-[#00ff00] text-black px-2 py-0.5 shrink-0 text-[8px]">LIVE</span>
+        <div class="relative flex overflow-x-hidden flex-grow">
+          <div class="animate-marquee whitespace-nowrap flex gap-8 items-center" id="mkt-marquee-content">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .animate-marquee {
+    animation: marquee 40s linear infinite;
+  }
+  .animate-marquee:hover {
+    animation-play-state: paused;
+  }
+  @keyframes marquee {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-200%); }
+  }
+</style>
+
+<script is:inline>
+(function () {
+  // ── Utility ──────────────────────────────────────────────────
+  function formatNum(n) {
+    if (!n || n === 'N/A') return 'N/A';
+    const num = parseFloat(n);
+    if (isNaN(num)) return n;
+    if (num >= 1e9) return '$' + (num / 1e9).toFixed(2) + 'B';
+    if (num >= 1e6) return '$' + (num / 1e6).toFixed(1) + 'M';
+    if (num >= 1e3) return '$' + (num / 1e3).toFixed(1) + 'K';
+    return '$' + num.toFixed(2);
+  }
+
+  function changeColor(val) {
+    const n = parseFloat(val);
+    if (isNaN(n) || n === 0) return 'text-gray-400';
+    return n > 0 ? 'text-[#00c853]' : 'text-[#ff1744]';
+  }
+
+  function changeArrow(val) {
+    const n = parseFloat(val);
+    if (isNaN(n) || n === 0) return '';
+    return n > 0 ? '▲' : '▼';
+  }
+
+  // SVG mini sparkline from CoinGecko price array
+  function buildSparkSVG(prices) {
+    if (!prices || prices.length < 2) return '<span class="text-gray-700 text-[9px]">—</span>';
+    const min = Math.min(...prices);
+    const max = Math.max(...prices);
+    const range = max - min || 1;
+    const w = 72, h = 24;
+    const pts = prices.map((p, i) => {
+      const x = (i / (prices.length - 1)) * w;
+      const y = h - ((p - min) / range) * h;
+      return x.toFixed(1) + ',' + y.toFixed(1);
+    }).join(' ');
+    const isUp = prices[prices.length - 1] >= prices[0];
+    const color = isUp ? '#00c853' : '#ff1744';
+    return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" aria-hidden="true"><polyline points="${pts}" fill="none" stroke="${color}" stroke-width="1.5" stroke-linejoin="round"/></svg>`;
+  }
+
+  // ── Data Population ─────────────────────────────────────────
+  function populateCrypto(data) {
+    const body = document.getElementById('mkt-crypto-body');
+    if (!body || !data.crypto) return;
+    body.innerHTML = data.crypto.map((c, i) => {
+      const price = c.price === 'N/A' ? 'N/A' : ('$' + parseFloat(c.price).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 4 }));
+      const c24 = changeColor(c.change24h);
+      const c1h = changeColor(c.change1h);
+      const c7d = changeColor(c.change7d);
+      return `
+        <tr class="hover:bg-gray-900/30 transition-colors cursor-default">
+          <td class="py-2 pl-3 pr-2 text-gray-700 text-[9px]">${c.rank || i + 1}</td>
+          <td class="py-2 pr-3 font-bold text-white text-[11px]">${c.symbol}<span class="text-gray-600 font-normal ml-1 hidden sm:inline">${c.name}</span></td>
+          <td class="py-2 pr-3 text-right text-white">${price}</td>
+          <td class="py-2 pr-3 text-right ${c1h} text-[10px]">${changeArrow(c.change1h)} ${Math.abs(parseFloat(c.change1h) || 0).toFixed(2)}%</td>
+          <td class="py-2 pr-3 text-right ${c24} text-[10px]">${changeArrow(c.change24h)} ${Math.abs(parseFloat(c.change24h) || 0).toFixed(2)}%</td>
+          <td class="py-2 pr-3 text-right ${c7d} text-[10px]">${changeArrow(c.change7d)} ${Math.abs(parseFloat(c.change7d) || 0).toFixed(2)}%</td>
+          <td class="py-2 pr-3 text-right text-gray-400 text-[10px] hidden sm:table-cell">${formatNum(c.volume24h)}</td>
+          <td class="py-2 pr-3 text-right hidden md:table-cell">${buildSparkSVG(c.sparkline)}</td>
+        </tr>`;
+    }).join('');
+  }
+
+  function populateTrending(data) {
+    const el = document.getElementById('mkt-trending-list');
+    if (!el || !data.trending || data.trending.length === 0) {
+      if (el) el.innerHTML = '<li class="text-gray-500 text-[10px] font-mono">—</li>';
+      return;
+    }
+    el.innerHTML = data.trending.map((c, i) => `
+      <li class="flex items-center justify-between gap-2 py-1 border-b border-gray-100 last:border-0">
+        <span class="font-mono text-[9px] text-gray-400 w-4">${i + 1}</span>
+        <span class="font-bold text-[11px] flex-grow">${c.symbol}</span>
+        <span class="font-mono text-[9px] text-gray-500 truncate hidden sm:inline">${c.name}</span>
+        ${c.rank ? `<span class="font-mono text-[8px] text-brand_cta">#${c.rank}</span>` : ''}
+      </li>`).join('');
+  }
+
+  function populateMovers(data) {
+    const gEl = document.getElementById('mkt-gainers-list');
+    const lEl = document.getElementById('mkt-losers-list');
+    const render = (el, items, isGain) => {
+      if (!el) return;
+      if (!items || items.length === 0) { el.innerHTML = '<li class="text-gray-500 text-[10px] font-mono">—</li>'; return; }
+      el.innerHTML = items.map(c => {
+        const color = isGain ? 'text-green-600' : 'text-red-500';
+        const arrow = isGain ? '▲' : '▼';
+        return `
+          <li class="flex items-center justify-between gap-2 py-1 border-b border-gray-100 last:border-0">
+            <span class="font-bold text-[11px] flex-grow">${c.symbol}</span>
+            <span class="font-mono text-[9px] text-gray-600">$${parseFloat(c.price).toFixed(4)}</span>
+            <span class="font-mono text-[9px] font-black ${color}">${arrow} ${Math.abs(parseFloat(c.change)).toFixed(1)}%</span>
+          </li>`;
+      }).join('');
+    };
+    render(gEl, data.movers?.gainers, true);
+    render(lEl, data.movers?.losers, false);
+  }
+
+  var _intelItems = [];
+  var _intelPage = 0;
+  var _intelPerPage = 5;
+
+  function renderIntelPage() {
+    var listEl = document.getElementById('mkt-intel-list');
+    var loadMoreWrap = document.getElementById('mkt-intel-load-more-wrap');
+    if (!listEl) return;
+    var catColor = { MACRO: 'bg-blue-100 text-blue-700', CRYPTO: 'bg-yellow-100 text-yellow-700', STATUS: 'bg-gray-100 text-gray-600' };
+    var slice = _intelItems.slice(0, (_intelPage + 1) * _intelPerPage);
+    listEl.innerHTML = slice.map(function(item) {
+      var t = new Date(item.time * 1000).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+      var badge = catColor[item.category] || catColor.STATUS;
+      return '<li class="p-4 hover:bg-gray-50 transition-colors">' +
+        '<div class="flex flex-wrap items-center gap-2 mb-1.5">' +
+          '<span class="font-mono text-[8px] uppercase px-1.5 py-0.5 font-bold rounded ' + badge + '">' + item.category + '</span>' +
+          '<span class="font-mono text-[8px] text-gray-400 uppercase">' + t + '</span>' +
+          '<span class="font-mono text-[8px] text-gray-400 uppercase">\u00b7 ' + item.source + '</span>' +
+        '</div>' +
+        '<a href="' + item.url + '" target="_blank" rel="noopener noreferrer"' +
+           ' class="font-semibold text-sm text-black hover:text-brand_cta transition-colors leading-snug line-clamp-2">' +
+          item.headline +
+        '</a>' +
+      '</li>';
+    }).join('');
+    // Show/hide Load More
+    if (loadMoreWrap) {
+      var hasMore = (_intelPage + 1) * _intelPerPage < _intelItems.length;
+      loadMoreWrap.classList.toggle('hidden', !hasMore);
+    }
+  }
+
+  function populateIntelFeed(data) {
+    var listEl = document.getElementById('mkt-intel-list');
+    var marqueeEl = document.getElementById('mkt-marquee-content');
+    var loadMoreBtn = document.getElementById('mkt-intel-load-more');
+    if (!listEl || !data.intelligence) return;
+
+    _intelItems = data.intelligence;
+    _intelPage = 0;
+    renderIntelPage();
+
+    // Load More button
+    if (loadMoreBtn) {
+      loadMoreBtn.onclick = function () {
+        _intelPage++;
+        renderIntelPage();
+        // Announce to screenreaders
+        listEl.setAttribute('aria-live', 'polite');
+      };
+    }
+
+    // Populate marquee
+    if (marqueeEl && data.intelligence.length > 0) {
+      marqueeEl.innerHTML = data.intelligence.map(function(item) {
+        return '<a href="' + item.url + '" target="_blank" rel="noopener noreferrer" class="hover:text-[#00ff00] transition-colors flex items-center gap-2">' +
+          '<span class="text-gray-500">[' + item.category + ']</span>' +
+          '<span>' + item.headline + '</span>' +
+          '<span class="text-gray-600 border border-gray-700 px-1 text-[7px]">' + item.source + '</span>' +
+          '</a>';
+      }).join('<span class="text-gray-700 font-bold mx-4">///</span>');
+    }
+  }
+
+
+  // ── Tab Logic ────────────────────────────────────────────────
+  const tabs = document.querySelectorAll('.mkt-tab');
+  const panels = document.querySelectorAll('.mkt-panel');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const target = tab.getAttribute('data-target');
+      tabs.forEach(t => {
+        t.classList.remove('bg-black', 'text-white');
+        t.classList.add('bg-white', 'text-black');
+        t.setAttribute('aria-selected', 'false');
+      });
+      tab.classList.add('bg-black', 'text-white');
+      tab.classList.remove('bg-white', 'text-black');
+      tab.setAttribute('aria-selected', 'true');
+      panels.forEach(p => p.classList.add('hidden'));
+      const panel = document.getElementById(target);
+      if (panel) panel.classList.remove('hidden');
+    });
+  });
+
+  // ── Load Data ────────────────────────────────────────────────
+  async function loadMarket() {
+    const loadingEl = document.getElementById('mkt-loading');
+    const errorEl = document.getElementById('mkt-error');
+    const pingEl = document.getElementById('mkt-last-ping');
+    const pingCliEl = document.getElementById('mkt-last-ping-cli');
+    const firstPanel = document.getElementById('mkt-panel-crypto');
+
+    try {
+      const res = await fetch('/api/v1/telemetry');
+      if (!res.ok) throw new Error('API ' + res.status);
+      const data = await res.json();
+
+      populateCrypto(data);
+      populateTrending(data);
+      populateMovers(data);
+      populateIntelFeed(data);
+
+      const ping = data.meta?.lastPing ? new Date(data.meta.lastPing) : new Date();
+      const pingStr = ping.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' UTC';
+      if (pingEl) pingEl.textContent = 'SYNCED · ' + pingStr;
+      if (pingCliEl) pingCliEl.textContent = 'LAST PING: ' + pingStr;
+
+      if (loadingEl) loadingEl.classList.add('hidden');
+      if (errorEl) errorEl.classList.add('hidden');
+      if (firstPanel) firstPanel.classList.remove('hidden');
+    } catch (err) {
+      console.error('[MARKET WIDGET] Load error:', err);
+      if (loadingEl) loadingEl.classList.add('hidden');
+      if (errorEl) errorEl.classList.remove('hidden');
+    }
+  }
+
+  // Defer load until element is visible
+  const widget = document.getElementById('market-intelligence-widget');
+  if ('IntersectionObserver' in window && widget) {
+    const obs = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        loadMarket();
+        obs.disconnect();
+      }
+    }, { rootMargin: '100px' });
+    obs.observe(widget);
+  } else {
+    loadMarket();
+  }
+})();
+</script>

@@ -1,19 +1,28 @@
 import { createHmac } from 'node:crypto';
-import type { APIRoute } from 'astro';
 import { Ratelimit } from '@upstash/ratelimit';
 import { Redis } from '@upstash/redis';
+import type { APIRoute } from 'astro';
 import { eq } from 'drizzle-orm';
 import { db } from '../../../../db/client';
 import { inboundWebhooks, posts } from '../../../../db/schema';
 
 const WEBHOOK_SECRET = process.env.RESELLPORTAL_WEBHOOK_SECRET;
 
-// Rate limit: 30 webhook events per minute to prevent replay/abuse
-const webhookRatelimit = new Ratelimit({
-  redis: Redis.fromEnv(),
-  limiter: Ratelimit.slidingWindow(30, '1m'),
-  prefix: 'webhook_resellportal',
-});
+// Lazy-load to prevent build-time crashes on Vercel
+let webhookRatelimit: Ratelimit | null = null;
+
+function getRatelimit() {
+  if (webhookRatelimit) return webhookRatelimit;
+  if (!process.env.UPSTASH_REDIS_REST_URL || !process.env.UPSTASH_REDIS_REST_TOKEN) {
+    return null;
+  }
+  webhookRatelimit = new Ratelimit({
+    redis: Redis.fromEnv(),
+    limiter: Ratelimit.slidingWindow(30, '1m'),
+    prefix: 'webhook_resellportal',
+  });
+  return webhookRatelimit;
+}
 
 export const POST: APIRoute = async ({ request, clientAddress }) => {
   try {
@@ -22,10 +31,13 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
 
     // Rate-limit check — prevent webhook replay & abuse
     const ip = clientAddress || 'global';
-    const { success: rateOk } = await webhookRatelimit.limit(`webhook_${ip}`);
-    if (!rateOk) {
-      console.warn('[WEBHOOK] Rate limit exceeded for IP:', ip);
-      return new Response('Too Many Requests', { status: 429 });
+    const rl = getRatelimit();
+    if (rl) {
+      const { success: rateOk } = await rl.limit(`webhook_${ip}`);
+      if (!rateOk) {
+        console.warn('[WEBHOOK] Rate limit exceeded for IP:', ip);
+        return new Response('Too Many Requests', { status: 429 });
+      }
     }
 
     if (!WEBHOOK_SECRET) {

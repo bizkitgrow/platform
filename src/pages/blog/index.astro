@@ -1,12 +1,23 @@
 ---
 export const prerender = false;
 
+import { Image } from 'astro:assets';
 import { desc } from 'drizzle-orm';
+import MarketIntelligenceWidget from '../../components/MarketIntelligenceWidget.astro';
 import { db } from '../../db/client';
 import { posts as postsTable } from '../../db/schema';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
-const currentUrl = Astro.site ? new URL('/blog', Astro.site).toString() : 'https://bizkitgrow.vercel.app/blog';
+const currentUrl = Astro.site
+  ? new URL('/blog', Astro.site).toString()
+  : 'https://bizkitgrow.vercel.app/blog';
+
+const pillarLabels: Record<string, string> = {
+  esim_data_plans: 'CONNECTIVITY',
+  reputation_management: 'LOCAL SEO',
+  ai_business_tools_suite: 'AI OPERATIONS',
+  general: 'OPERATIONAL SIGNAL',
+};
 
 let dbPosts: any[] = [];
 try {
@@ -24,6 +35,7 @@ const fallbackPosts = [
     readingTime: '3 min read',
     createdAt: 'Jul 4, 2026',
     pillar: 'esim_data_plans',
+    originalImage: null,
   },
   {
     title: 'Google Rewrites the Search Interface',
@@ -33,22 +45,9 @@ const fallbackPosts = [
     readingTime: '5 min read',
     createdAt: 'Jul 4, 2026',
     pillar: 'ai_business_tools_suite',
+    originalImage: null,
   },
 ];
-
-const pillarColors: Record<string, string> = {
-  esim_data_plans: '#0d9488',
-  reputation_management: '#d97706',
-  ai_business_tools_suite: '#2563eb',
-  default: '#475569',
-};
-
-const pillarLabels: Record<string, string> = {
-  esim_data_plans: 'CONNECTIVITY',
-  reputation_management: 'SEARCH AUTHORITY',
-  ai_business_tools_suite: 'AI TOOLS',
-  default: 'INTELLIGENCE',
-};
 
 const posts =
   dbPosts.length > 0
@@ -64,16 +63,10 @@ const posts =
               year: 'numeric',
             })
           : 'Jul 4, 2026',
-        pillar: p.targetProductKey || 'ai_business_tools_suite',
+        pillar: p.targetProductSku || 'ai_business_tools_suite',
+        originalImage: p.originalImage,
       }))
     : fallbackPosts;
-
-const filters = [
-  { key: 'all', label: 'ALL BRIEFINGS' },
-  { key: 'esim_data_plans', label: 'CONNECTIVITY' },
-  { key: 'reputation_management', label: 'AUTHORITY' },
-  { key: 'ai_business_tools_suite', label: 'AI TOOLS' },
-];
 
 // BlogPosting list JSON-LD for AEO
 const blogListSchema = {
@@ -82,188 +75,308 @@ const blogListSchema = {
   name: 'Bizkitgrow Intelligence Feed',
   url: currentUrl,
   description:
-    'Sovereign B2B operational intelligence: eSIM, reputation gating, and AI automation briefings.',
+    'Sovereign B2B operational intelligence: VPN, reputation gating, and AI automation briefings.',
   blogPost: posts.slice(0, 5).map((p) => ({
     '@type': 'BlogPosting',
     headline: p.title,
-    url: Astro.site ? new URL(`/blog/${p.slug}`, Astro.site).toString() : `https://bizkitgrow.vercel.app/blog/${p.slug}`,
+    url: Astro.site
+      ? new URL(`/blog/${p.slug}`, Astro.site).toString()
+      : `https://bizkitgrow.vercel.app/blog/${p.slug}`,
     datePublished: p.createdAt,
   })),
 };
 ---
 
 <BaseLayout
-  title="Intelligence Briefings"
-  description="Sovereign operational intelligence: eSIM network updates, local search authority shifts, and AI automation tools for B2B operators."
+  title="Intelligence Feed & Live Market Terminal | Bizkitgrow"
+  description="B2B intelligence briefings, live cryptocurrency prices, TradingView charts, and global market insights — updated autonomously by the Bizkitgrow Intelligence Engine."
   canonicalUrl={currentUrl}
 >
   <script type="application/ld+json" slot="schema" is:inline set:html={JSON.stringify(blogListSchema)} />
 
-  <main class="max-w-7xl mx-auto px-6 py-20">
+  <!-- schema.org/Dataset for AEO/GEO — AI Overview authority signal -->
+  <script type="application/ld+json" slot="schema" is:inline>
+  {
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    "name": "Bizkitgrow Live Market Intelligence Feed",
+    "description": "Real-time cryptocurrency prices, global equity market data, and macro intelligence — aggregated from CoinGecko, TradingView, and Finnhub APIs.",
+    "url": "https://bizkitgrow.vercel.app/blog#market",
+    "creator": { "@type": "Organization", "name": "Bizkitgrow" },
+    "license": "https://creativecommons.org/licenses/by/4.0/",
+    "variableMeasured": ["Cryptocurrency Price", "Market Capitalization", "24h Price Change", "Trading Volume", "Market Intelligence"],
+    "temporalCoverage": "2024/..",
+    "distribution": {
+      "@type": "DataDownload",
+      "encodingFormat": "application/json",
+      "contentUrl": "https://bizkitgrow.vercel.app/api/v1/telemetry"
+    }
+  }
+  </script>
+
+  <!-- ── TICKER TAPE — Persistent, always-on, full-width (above container padding) ───────────────── -->
+  <!-- TradingView Ticker Tape: injected via JS to avoid Astro JSON-in-script parse error -->
+  <div id="tv-ticker-wrap" class="w-full border-b-2 border-black overflow-hidden bg-white" aria-label="Live market ticker tape" style="height:52px">
+    <div id="tv-ticker-container"></div>
+  </div>
+  <script is:inline>
+    (function () {
+      var cfg = {
+        symbols: [
+          { proName: 'BITSTAMP:BTCUSD', title: 'Bitcoin' },
+          { proName: 'BITSTAMP:ETHUSD', title: 'Ethereum' },
+          { proName: 'BINANCE:SOLUSDT', title: 'Solana' },
+          { proName: 'BINANCE:XRPUSDT', title: 'XRP' },
+          { proName: 'BINANCE:BNBUSDT', title: 'BNB' },
+          { proName: 'FOREXCOM:SPXUSD', title: 'S&P 500' },
+          { proName: 'NASDAQ:AAPL', title: 'Apple' },
+          { proName: 'NASDAQ:NVDA', title: 'NVIDIA' },
+          { proName: 'NASDAQ:TSLA', title: 'Tesla' },
+          { proName: 'TVC:GOLD', title: 'Gold' },
+          { proName: 'FX:EURUSD', title: 'EUR/USD' },
+          { proName: 'FOREXCOM:DJI', title: 'Dow Jones' }
+        ],
+        showSymbolLogo: true,
+        isTransparent: false,
+        displayMode: 'adaptive',
+        colorTheme: 'light',
+        locale: 'en'
+      };
+      var s = document.createElement('script');
+      s.src = 'https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js';
+      s.async = true;
+      s.textContent = JSON.stringify(cfg);
+      var container = document.getElementById('tv-ticker-container');
+      if (container) container.appendChild(s);
+    })();
+  </script>
+
+  <main class="max-w-7xl mx-auto px-6 py-16">
 
     <!-- Header -->
-    <header class="mb-16 border-b border-borders_subtle pb-12">
+    <header class="mb-12 border-b border-borders_subtle pb-8">
       <div class="font-['JetBrains_Mono'] text-[10px] text-text_secondary uppercase tracking-widest mb-4">
-        [ INTELLIGENCE FEED // LIVE ]
+        [ RESOURCES & INSIGHTS // LIVE ]
       </div>
       <h1 class="font-['Outfit'] text-5xl md:text-7xl font-black text-text_primary uppercase tracking-tight">
-        Intelligence<br />Briefings.
+        Operational<br />Briefings.
       </h1>
       <p class="mt-4 text-sm text-text_secondary max-w-xl leading-relaxed">
-        Curated B2B intelligence on global connectivity shifts, local search algorithm changes, and operational automation tools. Updated autonomously.
+        Autonomous briefings on global connectivity networks, local search engine authority, and automated invoicing systems for remote agencies.
       </p>
-
-      <!-- Search and Filters -->
-      <div class="mt-8 flex flex-col md:flex-row md:items-center justify-between gap-6 border-t border-borders_subtle pt-6">
-        <div class="flex flex-wrap gap-2" role="group" aria-label="Filter by category">
-          {filters.map((f, i) => (
-            <button
-              data-filter={f.key}
-              class={`filter-btn font-['JetBrains_Mono'] text-[9px] uppercase tracking-widest px-4 py-2 border transition-colors ${i === 0 ? 'border-brand_cta text-brand_cta' : 'border-borders_subtle text-text_secondary hover:border-text_secondary hover:text-text_primary'}`}
-            >
-              {f.label}
-            </button>
-          ))}
-        </div>
-        
-        <div class="relative w-full md:w-72">
-          <input 
-            type="text" 
-            id="search-input" 
-            placeholder="SEARCH BRIEFINGS..." 
-            class="w-full bg-canvas border border-borders_subtle px-4 py-3 text-[10px] font-mono text-text_primary uppercase tracking-widest focus:outline-none focus:border-brand_cta transition-colors rounded-sm"
-          />
-          <div class="absolute right-3 top-1/2 -translate-y-1/2 text-borders_subtle">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-          </div>
-        </div>
-      </div>
     </header>
 
-    <!-- Posts Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0 divide-y md:divide-y-0" id="posts-grid">
-      {posts.map((post, i) => {
-        const color = pillarColors[post.pillar] || pillarColors.default;
-        const pillarLabel = pillarLabels[post.pillar] || pillarLabels.default;
-        return (
-          <article
-            data-category={post.pillar}
-            data-slug={post.slug}
-            class="post-card border border-borders_subtle -mt-px -ml-px group hover:border-borders transition-colors bg-canvas"
-          >
-            <div class="p-8 flex flex-col h-full">
-              <div class="flex items-center gap-3 mb-4">
-                <span
-                  class="font-['JetBrains_Mono'] text-[9px] uppercase tracking-widest"
-                  style={`color: ${color}`}
-                >
-                  {pillarLabel}
-                </span>
-                <span class="text-borders_subtle">//</span>
-                <span class="font-['JetBrains_Mono'] text-[9px] text-text_secondary uppercase tracking-wider">
-                  {post.readingTime}
-                </span>
-              </div>
-
-              <h2 class="font-['Outfit'] text-xl font-black text-text_primary uppercase tracking-tight leading-snug mb-3 group-hover:text-brand_cta transition-colors">
-                <a href={`/blog/${post.slug}`} class="stretched-link">
-                  {post.title}
-                </a>
-              </h2>
-
-              <p class="text-sm text-text_secondary leading-relaxed mb-6 flex-grow">
-                {post.excerpt}
-              </p>
-
-              <div class="flex items-center justify-between">
-                <span class="font-['JetBrains_Mono'] text-[9px] text-text_secondary uppercase tracking-wider">
-                  {post.createdAt}
-                </span>
-                <span class="font-['JetBrains_Mono'] text-[10px] text-brand_cta uppercase tracking-wider group-hover:text-brand_cta_hover transition-colors">
-                  READ →
-                </span>
-              </div>
-            </div>
-          </article>
-        );
-      })}
+    <!-- Search Engine & Filter -->
+    <div class="mb-12 border-4 border-black bg-white p-6 shadow-brutal flex flex-col md:flex-row gap-4 justify-between items-center">
+      <div class="w-full md:w-2/3 relative" id="search-container">
+        <span class="absolute inset-y-0 left-0 flex items-center pl-4 font-black text-black">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+        </span>
+        <input 
+          type="search" 
+          id="resource-search"
+          placeholder="SEARCH BRIEFINGS ARCHIVE..." 
+          class="w-full bg-canvas_accent border-2 border-black pl-12 pr-4 py-4 font-mono text-sm uppercase font-bold text-black placeholder-gray-500 focus:outline-none focus:border-brand_cta focus:ring-0 transition-colors"
+        />
+      </div>
+      <div class="w-full md:w-1/3 flex justify-end gap-2 overflow-x-auto pb-2 md:pb-0 scrollbar-hide">
+        <button class="filter-btn active bg-black text-white px-5 py-3 font-mono text-[10px] font-bold uppercase tracking-widest shrink-0 border-2 border-black hover:bg-brand_cta hover:text-black transition-colors" data-filter="news" aria-label="Show briefings">BRIEFINGS</button>
+        <button class="filter-btn bg-white text-black px-5 py-3 font-mono text-[10px] font-bold uppercase tracking-widest shrink-0 border-2 border-black hover:bg-brand_cta transition-colors" data-filter="market" aria-label="Show live market terminal">MARKET</button>
+      </div>
     </div>
 
+    <div id="content-wrapper">
+      <!-- Posts Grid (NEWS) -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="posts-grid">
+        {posts.map((post, i) => {
+          const heroImageUrl = post.originalImage
+            ? post.originalImage
+            : `https://image.pollinations.ai/prompt/${encodeURIComponent(`${post.title}, brutalist style tech card, corporate minimalism`)}?width=600&height=400&nologo=true`;
+          
+          const label = pillarLabels[post.pillar] || pillarLabels.general;
+
+          return (
+            <article
+              class={`post-card border-2 border-black group hover:-translate-y-1 transition-transform bg-white rounded-none flex flex-col h-full shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(13,148,136,1)] ${i >= 6 ? 'hidden post-card-hidden' : ''}`}
+              data-title={post.title.toLowerCase()}
+              data-pillar={post.pillar}
+            >
+              <div class="relative w-full aspect-[16/10] bg-gray-100 overflow-hidden border-b-2 border-black">
+                <Image
+                  src={heroImageUrl}
+                  alt={post.title}
+                  width={600}
+                  height={375}
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  inferSize={!heroImageUrl.startsWith('http')}
+                  loading={i < 3 ? "eager" : "lazy"}
+                />
+                <div class="absolute top-3 left-3 bg-black text-white font-mono text-[8px] font-black uppercase tracking-widest px-2 py-0.5 border border-white">
+                  {label}
+                </div>
+              </div>
+              <div class="p-6 flex flex-col flex-grow">
+                <div class="flex items-center gap-3 mb-3">
+                  <span class="font-mono text-[9px] text-gray-500 uppercase tracking-wider font-bold">
+                    {post.readingTime}
+                  </span>
+                </div>
+
+                <h2 class="font-heading text-lg font-black text-black uppercase tracking-tight leading-snug mb-3 group-hover:text-brand_cta transition-colors">
+                  <a href={`/blog/${post.slug}`} class="stretched-link">
+                    {post.title}
+                  </a>
+                </h2>
+
+                <p class="text-sm text-gray-700 leading-relaxed mb-6 flex-grow">
+                  {post.excerpt}
+                </p>
+
+                <div class="flex items-center justify-between border-t-2 border-black pt-4 mt-auto">
+                  <span class="font-mono text-[9px] text-gray-500 uppercase tracking-wider font-bold">
+                    {post.createdAt}
+                  </span>
+                  <span class="font-mono text-[10px] text-brand_cta uppercase tracking-wider group-hover:text-black transition-colors font-black">
+                    READ &rarr;
+                  </span>
+                </div>
+              </div>
+            </article>
+          );
+        })}
+
+        <!-- Pagination Trigger (Load More) -->
+        {posts.length > 6 && (
+          <div id="posts-load-more-wrap" class="col-span-full text-center mt-12">
+            <button
+              id="posts-load-more"
+              class="font-mono text-[10px] font-black uppercase tracking-widest px-6 py-2.5 border-2 border-black bg-white text-black hover:bg-black hover:text-white transition-colors"
+              aria-label="Load more operational briefings"
+            >
+              LOAD MORE BRIEFINGS ↓
+            </button>
+          </div>
+        )}
+      </div>
+
+      <!-- Market Intelligence Widget (MARKET tab) -->
+      <div id="market-grid" style="display: none;" aria-live="polite">
+        <MarketIntelligenceWidget />
+      </div>
+    </div>
+
+    <script is:inline>
+      document.addEventListener('DOMContentLoaded', () => {
+        const searchInput = document.getElementById('resource-search');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const cards = document.querySelectorAll('.post-card');
+        const postsGrid = document.getElementById('posts-grid');
+        const marketGrid = document.getElementById('market-grid');
+        const searchContainer = document.getElementById('search-container');
+        const loadMoreWrap = document.getElementById('posts-load-more-wrap');
+
+        let currentTab = 'news';
+        let searchQuery = '';
+
+        function activateTab(tab) {
+          currentTab = tab;
+          filterBtns.forEach(b => {
+            const isActive = b.getAttribute('data-filter') === tab;
+            b.classList.toggle('bg-black', isActive);
+            b.classList.toggle('text-white', isActive);
+            b.classList.toggle('bg-white', !isActive);
+            b.classList.toggle('text-black', !isActive);
+            b.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+          });
+          render();
+          // Update URL hash without scrolling
+          if (history.replaceState) {
+            history.replaceState(null, '', tab === 'market' ? '#market' : '#');
+          }
+        }
+
+        function render() {
+          if (currentTab === 'market') {
+            postsGrid.style.display = 'none';
+            marketGrid.style.display = 'block';
+            searchContainer.style.display = 'none';
+          } else {
+            postsGrid.style.display = 'grid';
+            marketGrid.style.display = 'none';
+            searchContainer.style.display = 'block';
+            
+            // Apply search filter and reset load more if searching
+            let visibleCount = 0;
+            cards.forEach((card, index) => {
+              const title = card.getAttribute('data-title') || '';
+              const matchesSearch = title.includes(searchQuery);
+              
+              if (matchesSearch) {
+                visibleCount++;
+                // If searching, show all matches. Otherwise, enforce the first 6 limit.
+                if (searchQuery !== '') {
+                  card.classList.remove('hidden');
+                } else {
+                  if (visibleCount <= 6) {
+                    card.classList.remove('hidden');
+                  } else {
+                    card.classList.add('hidden');
+                    card.classList.add('post-card-hidden');
+                  }
+                }
+              } else {
+                card.classList.add('hidden');
+              }
+            });
+
+            if (loadMoreWrap) {
+              loadMoreWrap.style.display = (searchQuery === '' && visibleCount > 6) ? 'block' : 'none';
+            }
+          }
+        }
+
+        if (searchInput) {
+          searchInput.addEventListener('input', (e) => {
+            searchQuery = e.target.value.toLowerCase();
+            render();
+          });
+        }
+
+        filterBtns.forEach(btn => {
+          btn.addEventListener('click', () => {
+            activateTab(btn.getAttribute('data-filter'));
+          });
+        });
+
+        // Load More button click handler
+        const loadMoreBtn = document.getElementById('posts-load-more');
+        if (loadMoreBtn) {
+          loadMoreBtn.addEventListener('click', () => {
+            const hiddenCards = document.querySelectorAll('.post-card-hidden');
+            hiddenCards.forEach(c => {
+              c.classList.remove('hidden', 'post-card-hidden');
+            });
+            if (loadMoreWrap) loadMoreWrap.style.display = 'none';
+          });
+        }
+
+        // Handle #market hash on load (deep-link from homepage CTA)
+        if (window.location.hash === '#market') {
+          activateTab('market');
+          setTimeout(() => {
+            const el = document.getElementById('market-grid');
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 150);
+        }
+      });
+    </script>
+
     {posts.length === 0 && (
-      <div class="border border-borders_subtle p-16 text-center">
-        <div class="font-['JetBrains_Mono'] text-[10px] text-text_secondary uppercase tracking-widest mb-3">FEED INITIALIZING</div>
-        <p class="text-sm text-text_secondary">Intelligence pipeline is warming up. New briefings will appear automatically after the next ingestion cycle.</p>
+      <div class="border border-borders_subtle p-16 text-center rounded-sm">
+        <div class="font-['JetBrains_Mono'] text-[10px] text-text_secondary uppercase tracking-widest mb-3 font-bold">RESOURCES INITIALIZING</div>
+        <p class="text-sm text-text_secondary">Resource pipeline is warming up. New resources will appear automatically after the next ingestion cycle.</p>
       </div>
     )}
 
   </main>
-
-  <script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.min.js" is:inline></script>
-  <script is:inline define:vars={{ posts: posts }}>
-    var btns = document.querySelectorAll('.filter-btn');
-    var cards = document.querySelectorAll('.post-card');
-    var searchInput = document.getElementById('search-input');
-    
-    // Initialize Fuse.js for client-side search
-    var fuse = new Fuse(posts, {
-      keys: ['title', 'excerpt', 'pillar'],
-      threshold: 0.3,
-      includeScore: true
-    });
-    
-    var currentFilter = 'all';
-    var searchQuery = '';
-
-    function renderPosts() {
-      var activeSlugs = new Set();
-      
-      // Step 1: Search
-      if (searchQuery.trim() !== '') {
-        var results = fuse.search(searchQuery);
-        results.forEach(function(r) {
-          activeSlugs.add(r.item.slug);
-        });
-      } else {
-        posts.forEach(function(p) { activeSlugs.add(p.slug); });
-      }
-      
-      // Step 2: Filter and UI Update
-      cards.forEach(function(card) {
-        var cat = card.getAttribute('data-category');
-        var slug = card.getAttribute('data-slug');
-        var matchesCategory = currentFilter === 'all' || cat === currentFilter;
-        var matchesSearch = activeSlugs.has(slug);
-        
-        if (matchesCategory && matchesSearch) {
-          card.classList.remove('hidden');
-        } else {
-          card.classList.add('hidden');
-        }
-      });
-    }
-
-    // Filter Click Handlers
-    btns.forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        currentFilter = btn.getAttribute('data-filter');
-        
-        btns.forEach(function(b) {
-          b.classList.remove('border-brand_cta', 'text-brand_cta');
-          b.classList.add('border-borders_subtle', 'text-text_secondary');
-        });
-        btn.classList.add('border-brand_cta', 'text-brand_cta');
-        btn.classList.remove('border-borders_subtle', 'text-text_secondary');
-        
-        renderPosts();
-      });
-    });
-
-    // Search Input Handler
-    if (searchInput) {
-      searchInput.addEventListener('input', function(e) {
-        searchQuery = e.target.value;
-        renderPosts();
-      });
-    }
-  </script>
 </BaseLayout>

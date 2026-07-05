@@ -1,76 +1,40 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import Hero from '../../components/widgets/Hero.astro';
-import Features from '../../components/widgets/Features.astro';
-import ResellPortalWidget from '../../components/ResellPortalWidget.astro';
 import LeadCaptureWidget from '../../components/LeadCaptureWidget.astro';
-import LighthouseBadge from '../../components/widgets/LighthouseBadge.astro';
+import GrowthVectors from '../../components/widgets/GrowthVectors.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
 
-const currentUrl = Astro.site ? new URL('/solutions', Astro.site).toString() : 'https://bizkitgrow.vercel.app/solutions';
+const currentUrl = Astro.site
+  ? new URL('/solutions', Astro.site).toString()
+  : 'https://bizkitgrow.vercel.app/solutions';
 ---
 
 <BaseLayout
-  title="Flow Automation | Bizkitgrow"
-  description="Consolidate invoicing, AI-powered scheduling, and secure e-signature workflows."
+  title="B2B Operational Solutions | Bizkitgrow"
+  description="Scale your remote business with global VPN infrastructure, algorithmic SEO, and autonomous operational AI."
+  canonicalUrl={currentUrl}
 >
-  <script type="application/ld+json" slot="schema" is:inline>
-    {
-      "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "Bizkitgrow CRM Suite",
-      "operatingSystem": "Web",
-      "applicationCategory": "BusinessApplication",
-      "description": "Consolidate invoicing, AI-powered scheduling, and secure e-signature workflows into a single client portal."
-    }
-  </script>
-  <Hero
-    tagline="PILLAR 03 // FLOW AUTOMATION"
-    title="Operational CRM Suite"
-    subtitle="Consolidate invoicing, AI-powered scheduling, and secure e-signature workflows into a single client portal."
-    actions={[
-      { text: 'INITIALIZE SYSTEM', href: '#features', icon: 'tabler:bolt', variant: 'primary' },
-    ]}
-  />
-
-  <div class="max-w-screen-xl px-4 py-8 mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 border-b-4 border-black">
-    <div class="border-4 border-black p-6 bg-white shadow-brutal">
-      <ResellPortalWidget productSku="crm-suite" resellportalStatus="active" theme="light" />
-    </div>
-    <div class="border-4 border-black p-6 bg-white shadow-brutal flex items-center justify-center">
-      <LighthouseBadge />
+  <div class="pt-16 pb-8 bg-canvas_accent border-b-4 border-black">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="font-mono text-sm font-black text-brand_cta mb-4 tracking-widest uppercase">
+        [ SYSTEM ARCHITECTURE ]
+      </div>
+      <h1 class="font-heading text-5xl md:text-7xl font-black text-black uppercase tracking-tight mb-6">
+        Operational<br />Solutions.
+      </h1>
+      <p class="text-xl text-gray-700 font-medium max-w-3xl leading-relaxed">
+        We provide the foundational infrastructure required to run a global operation. From secure VPN tunneling to autonomous client acquisition and automated invoicing, deploy exactly what you need.
+      </p>
     </div>
   </div>
 
-  <Features
-    id="features"
-    tagline="Components"
-    title="Automate the Back-Office"
-    subtitle="Cut administrative overhead and recover lost revenue from billing friction."
-    items={[
-      {
-        title: 'Invoicing with AI',
-        description: 'Auto-generate invoices based on CRM activity and follow up autonomously.',
-        icon: 'tabler:receipt',
-      },
-      {
-        title: 'Appointment Booking',
-        description: 'Sync your calendar across timezones with intelligent buffer management.',
-        icon: 'tabler:calendar',
-      },
-      {
-        title: 'Secure E-Signatures',
-        description: 'Cryptographically verified signatures for rapid contract execution.',
-        icon: 'tabler:signature',
-      },
-    ]}
-  />
+  <GrowthVectors />
 
-  <div class="max-w-screen-xl px-4 py-12 mx-auto">
+  <div class="max-w-7xl mx-auto px-6 py-20">
     <LeadCaptureWidget
-      title="REQUEST CRM AUTOMATION DEMO"
-      subtitle="Register your corporate operations to configure your custom invoicing and scheduling portal."
-      serviceKey="flow_automation"
-      ctaText="REQUEST AUTOMATION DEMO"
+      title="REQUEST CUSTOM ARCHITECTURE"
+      subtitle="Speak with an operational engineer to design a custom deployment across our three growth pillars."
+      serviceKey="custom_architecture"
+      ctaText="REQUEST DEPLOYMENT DEMO"
     />
   </div>
 </BaseLayout>

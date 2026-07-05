@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="404 - Not Found" description="The requested operations briefing could not be resolved.">
+  <main class="max-w-xl mx-auto text-center py-32 px-6">
+    <div class="font-mono text-xs text-brand_cta uppercase tracking-widest mb-4">[ ERROR // 404 ]</div>
+    <h1 class="font-heading text-4xl sm:text-5xl font-extrabold uppercase tracking-tight text-black mb-6">Briefing Not Found</h1>
+    <p class="text-sm text-text_secondary leading-relaxed mb-8">
+      The intelligence coordinates you requested do not point to an active database node.
+    </p>
+    <a href="/blog" class="font-mono text-xs font-black uppercase tracking-widest bg-black text-white px-6 py-3 border-2 border-black hover:bg-brand_cta hover:text-black transition-colors inline-block">
+      RETURN TO TERMINAL
+    </a>
+  </main>
+</BaseLayout>

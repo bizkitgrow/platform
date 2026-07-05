@@ -20,7 +20,7 @@ class GroqAdapter extends LLMProvider {
     super();
     this.apiKey = apiKey;
     this.url = 'https://api.groq.com/openai/v1/chat/completions';
-    this.model = 'llama3-70b-8192';
+    this.model = 'llama-3.3-70b-versatile'; // Updated from deprecated llama3-70b-8192
   }
 
   async generateResponse(prompt) {
@@ -84,7 +84,7 @@ class OpenRouterAdapter extends LLMProvider {
         Authorization: `Bearer ${this.apiKey}`,
       },
       body: JSON.stringify({
-        model: 'google/gemini-flash-1.5-exp',
+        model: 'google/gemini-1.5-flash', // Updated from 404 google/gemini-flash-1.5-exp
         messages: [{ role: 'user', content: prompt }],
         response_format: { type: 'json_object' },
       }),

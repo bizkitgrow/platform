@@ -6,7 +6,7 @@ import { posts as postsTable } from '../../db/schema';
 import AdminLayout from '../../layouts/AdminLayout.astro';
 
 let postsCount = 0;
-let logsCount = 0;
+const logsCount = 0;
 
 try {
   const [{ value: pCount }] = await db.select({ value: count() }).from(postsTable);

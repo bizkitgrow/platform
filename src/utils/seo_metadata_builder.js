@@ -1,5 +1,5 @@
 import brandManifest from '../../config/brand_manifest.json';
-import systemArchitecture from '../../system_architecture.json';
+import systemArchitecture from '../../config/system_architecture.json';
 
 export function buildAudienceIntentSchema(pillarKey, currentUrl) {
   const cluster = brandManifest.audience_demand_matrix.intent_clusters[pillarKey];

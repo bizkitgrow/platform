@@ -1,5 +1,5 @@
 ---
-import systemArchitecture from '../../../system_architecture.json';
+import systemArchitecture from '../../../config/system_architecture.json';
 import WaitingListForm from '../../components/WaitingListForm.astro';
 import CheckoutButton from '../../components/ui/CheckoutButton.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
@@ -10,20 +10,53 @@ import targetSolutions from '../../../config/target_solutions.json';
 export async function getStaticPaths() {
   return targetSolutions.map((item) => ({
     params: { service_slug: item.slug },
-    props: { serviceName: item.name, sku: item.sku },
+    props: {
+      serviceName: item.name,
+      sku: item.sku,
+      pillar: item.pillar,
+      shortDescription: item.short_description,
+      educationalInsight: item.educational_insight,
+      keyBenefits: item.key_benefits,
+    },
   }));
 }
 
 const { service_slug } = Astro.params;
-const { serviceName, sku } = Astro.props;
+const { serviceName, sku, pillar, shortDescription, educationalInsight, keyBenefits } = Astro.props;
 
-const canonicalUrl = Astro.site ? new URL(`/solutions/${service_slug}`, Astro.site).toString() : `https://bizkitgrow.vercel.app/solutions/${service_slug}`;
+const canonicalUrl = Astro.site
+  ? new URL(`/solutions/${service_slug}`, Astro.site).toString()
+  : `https://bizkitgrow.vercel.app/solutions/${service_slug}`;
 const brandName = systemArchitecture.tenant_settings.brand_name;
 
-const pageTitle = `Secure ${serviceName} | ${brandName}`;
-const metaDesc = `Eliminate operational overhead. Deploy ${serviceName} directly into your agency dashboard infrastructure.`;
+const pageTitle = `${serviceName} | ${brandName}`;
+const metaDesc = shortDescription;
 
 const productSchema = buildProductSchema(serviceName, metaDesc, canonicalUrl, service_slug, sku);
+
+// Also add FAQ schema for AEO/GEO
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: `Why is ${serviceName} critical for modern B2B growth?`,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: educationalInsight,
+      },
+    },
+    {
+      '@type': 'Question',
+      name: `What are the key benefits of the ${serviceName}?`,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: `The primary benefits include ${keyBenefits.join(', ')}.`,
+      },
+    },
+  ],
+};
 
 Astro.response.headers.set('Cache-Control', 'public, max-age=0, s-maxage=3600');
 ---
@@ -34,31 +67,78 @@ Astro.response.headers.set('Cache-Control', 'public, max-age=0, s-maxage=3600');
   canonicalUrl={canonicalUrl}
 >
   <script type="application/ld+json" slot="schema" set:html={JSON.stringify(productSchema)} />
+  <script type="application/ld+json" slot="schema" set:html={JSON.stringify(faqSchema)} />
 
-  <main class="max-w-4xl mx-auto px-6 py-20 font-sans">
-    <div class="text-sm font-bold text-emerald-600 uppercase tracking-widest mb-2">
-      Operations Architecture
+  <main class="min-h-screen bg-canvas_accent pb-20">
+    <!-- Header Section -->
+    <div class="border-b-4 border-black bg-white pt-20 pb-16 px-6">
+      <div class="max-w-4xl mx-auto">
+        <div class="font-mono text-sm font-black text-brand_cta uppercase tracking-widest mb-4">
+          [ PILLAR: {pillar.toUpperCase()} ]
+        </div>
+        <h1 class="font-heading text-5xl md:text-7xl font-black tracking-tight mb-6 text-black uppercase leading-none">
+          {serviceName}
+        </h1>
+        <p class="text-xl md:text-2xl text-gray-800 font-medium max-w-3xl leading-relaxed border-l-4 border-black pl-6 py-2">
+          {shortDescription}
+        </p>
+      </div>
     </div>
-    <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight mb-4 text-slate-900">
-      {serviceName}
-    </h1>
-    <p class="text-lg text-slate-500 max-w-2xl mb-8 leading-relaxed">
-      Consolidate back-office architecture. Automate the friction out of client coordination, document signing, and invoicing on autopilot.
-    </p>
 
-    <div class="p-8 bg-slate-50 border border-slate-100 rounded-2xl max-w-lg mb-12">
-      <h3 class="font-bold text-lg text-slate-900 mb-2">Initialize Solution Deployment</h3>
-      <p class="text-xs text-slate-400 mb-4">Enterprise Grade Operations Suite: <span class="font-bold text-slate-900">$189.00 USD / month</span></p>
-      <p class="text-xs text-slate-400 mb-6">Authorize secure instance provisioning sequence.</p>
+    <div class="max-w-4xl mx-auto px-6 mt-16 grid grid-cols-1 md:grid-cols-2 gap-12">
       
-      <CheckoutButton sku={sku} className="h-12 px-8 text-base">
-        Deploy {serviceName} (Core Scale Portfolio)
-      </CheckoutButton>
+      <!-- Educational Insight / GEO optimization -->
+      <div>
+        <h2 class="font-heading text-3xl font-black text-black uppercase tracking-tight mb-6">
+          Strategic Insight
+        </h2>
+        <div class="p-8 bg-white border-4 border-black shadow-brutal">
+          <p class="text-gray-800 font-medium leading-relaxed">
+            {educationalInsight}
+          </p>
+        </div>
+
+        <h3 class="font-heading text-2xl font-black text-black uppercase tracking-tight mt-12 mb-6">
+          Core Capabilities
+        </h3>
+        <ul class="space-y-4">
+          {keyBenefits.map(benefit => (
+            <li class="flex items-center gap-4 bg-white border-2 border-black p-4 font-mono font-bold text-sm uppercase">
+              <span class="text-brand_cta">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+              </span>
+              {benefit}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Action Area -->
+      <div>
+        <div class="p-8 bg-black border-4 border-black shadow-brutal text-white sticky top-8">
+          <h3 class="font-heading text-2xl font-black uppercase tracking-tight mb-2">
+            Initialize Deployment
+          </h3>
+          <p class="text-xs font-mono text-zinc-400 mb-6 uppercase tracking-wider">
+            Authorize secure provisioning sequence for {serviceName}.
+          </p>
+          
+          <CheckoutButton sku={sku} className="w-full h-14 px-8 text-lg bg-brand_cta text-black hover:bg-white hover:text-black hover:border-black border-2 border-transparent transition-all mb-4">
+            DEPLOY ARCHITECTURE
+          </CheckoutButton>
+
+          <p class="text-[10px] text-center font-mono text-slate-300 uppercase">
+            Includes global edge network routing and dedicated SLA.
+          </p>
+        </div>
+      </div>
     </div>
 
     <!-- Waitlist -->
-    <div class="mt-20">
-      <WaitingListForm targetedService={serviceName} />
+    <div class="max-w-4xl mx-auto px-6 mt-24">
+      <div class="border-t-4 border-black pt-16">
+        <WaitingListForm targetedService={serviceName} />
+      </div>
     </div>
   </main>
 </BaseLayout>

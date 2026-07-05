@@ -1,25 +1,154 @@
 ---
-import systemArchitecture from '../../../system_architecture.json';
-
 interface Props {
- sku: string;
- className?: string;
- testMode?: boolean;
+  sku: string;
+  className?: string;
 }
 
-const { sku, className = '', testMode = true } = Astro.props;
-const resellDomain =
- import.meta.env.RESELLPORTAL_DOMAIN ||
- systemArchitecture.routing_architecture.fulfillment_subdomain.base_checkout_url
- .replace('https://', '')
- .split('/')[0] ||
- 'devhack.appserviceportal.com';
-const checkoutUrl = `https://${resellDomain}/checkout?product_id=${sku}${testMode ? '&test_mode=1' : ''}`;
+const { sku, className = '' } = Astro.props;
+// Generate a unique ID so multiple buttons on a page don't conflict
+const dialogId = `checkout-dialog-${sku}`;
 ---
 
-<a 
- href={checkoutUrl}
- class={`inline-flex items-center justify-center rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold shadow-sm transition-all duration-150 ${className}`}
+<!-- Trigger Button -->
+<button 
+ type="button"
+ onclick={`document.getElementById('${dialogId}').showModal()`}
+ class={`inline-flex items-center justify-center rounded-sm bg-brand_cta hover:bg-brand_cta_hover text-black font-bold shadow-brutal transition-all duration-150 uppercase tracking-widest ${className}`}
 >
- <slot>Provision Authority Asset</slot>
-</a>
+ <slot>Deploy Architecture</slot>
+</button>
+
+<!-- Native Dialog Modal -->
+<dialog 
+ id={dialogId} 
+ class="p-0 bg-transparent backdrop:bg-black/80 backdrop:backdrop-blur-sm w-full max-w-lg shadow-brutal border-0"
+>
+ <div class="bg-black border-4 border-zinc-800 p-8 text-white relative">
+   <button 
+     type="button" 
+     onclick={`document.getElementById('${dialogId}').close()`}
+     class="absolute top-4 right-4 text-zinc-400 hover:text-white font-mono text-xl"
+   >
+     [X]
+   </button>
+
+   <div class="mb-6 border-b-2 border-zinc-800 pb-4">
+     <h2 class="font-heading text-3xl font-black uppercase tracking-tight text-white mb-1">
+       Omnichannel Activation
+     </h2>
+     <p class="text-xs font-mono text-zinc-400 uppercase tracking-widest">
+       Secure deployment protocol for <span class="text-[#ff4500] font-bold">{sku}</span>
+     </p>
+   </div>
+
+   <form method="dialog" id={`form-${dialogId}`} class="space-y-5">
+     <input type="hidden" name="sku" value={sku} />
+
+     <div>
+       <label for={`name-${dialogId}`} class="block text-[10px] font-bold text-zinc-400 font-mono uppercase tracking-widest mb-2">Operator Name</label>
+       <input 
+         id={`name-${dialogId}`}
+         name="client_name"
+         type="text" 
+         required
+         autocomplete="name"
+         class="w-full h-12 px-4 border-2 border-zinc-800 bg-zinc-900 focus:border-[#ff4500] outline-none text-xs font-mono transition-colors text-white rounded-none"
+         placeholder="Jane Doe"
+       />
+     </div>
+
+     <div>
+       <label for={`email-${dialogId}`} class="block text-[10px] font-bold text-zinc-400 font-mono uppercase tracking-widest mb-2">Corporate Email</label>
+       <input 
+         id={`email-${dialogId}`}
+         name="client_email"
+         type="email" 
+         required
+         autocomplete="email"
+         class="w-full h-12 px-4 border-2 border-zinc-800 bg-zinc-900 focus:border-[#ff4500] outline-none text-xs font-mono transition-colors text-white rounded-none"
+         placeholder="operator@acmecorp.com"
+       />
+     </div>
+
+     <div>
+       <label for={`cycle-${dialogId}`} class="block text-[10px] font-bold text-zinc-400 font-mono uppercase tracking-widest mb-2">Billing Cycle</label>
+       <select 
+         id={`cycle-${dialogId}`}
+         name="billing_cycle"
+         class="w-full h-12 px-4 border-2 border-zinc-800 bg-zinc-900 focus:border-[#ff4500] outline-none text-xs font-mono transition-colors text-white rounded-none appearance-none"
+       >
+         <option value="monthly">Monthly Allocation</option>
+         <option value="annual">Annual Allocation (15% Savings)</option>
+       </select>
+     </div>
+
+     <button 
+       type="submit"
+       class="w-full h-14 bg-[#ff4500] hover:bg-[#e03e00] text-white text-sm font-bold font-mono uppercase tracking-widest transition-colors flex items-center justify-center gap-2 mt-4"
+     >
+       <span class="btn-text">INITIALIZE PROVISIONING SEQUENCE</span>
+       <svg class="btn-spinner animate-spin hidden w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+     </button>
+   </form>
+
+   <div class="form-response mt-4 text-center text-xs font-mono uppercase tracking-wider hidden"></div>
+ </div>
+</dialog>
+
+<script>
+ // Wrap in standard event listener to handle multiple components
+ document.querySelectorAll('form[id^="form-checkout-dialog"]').forEach(form => {
+   form.addEventListener('submit', async (e) => {
+     e.preventDefault();
+     const dialog = form.closest('dialog');
+     const submitBtn = form.querySelector('button[type="submit"]');
+     const btnText = submitBtn.querySelector('.btn-text');
+     const btnSpinner = submitBtn.querySelector('.btn-spinner');
+     const responseDiv = form.nextElementSibling;
+     
+     const formData = new FormData(form);
+     const payload = Object.fromEntries(formData);
+
+     submitBtn.disabled = true;
+     btnText.textContent = 'PROVISIONING...';
+     btnSpinner.classList.remove('hidden');
+     responseDiv.classList.add('hidden');
+     responseDiv.classList.remove('text-[#ff4500]', 'text-emerald-500');
+
+     try {
+       const res = await fetch('/api/v1/ingest/lead', {
+         method: 'POST',
+         headers: { 'Content-Type': 'application/json' },
+         body: JSON.stringify(payload)
+       });
+
+       const data = await res.json();
+       
+       submitBtn.disabled = false;
+       btnText.textContent = 'INITIALIZE PROVISIONING SEQUENCE';
+       btnSpinner.classList.add('hidden');
+       responseDiv.classList.remove('hidden');
+
+       if (res.ok) {
+         responseDiv.classList.add('text-emerald-500');
+         responseDiv.innerHTML = `SUCCESS. ORDER ID: <span class="font-bold text-white">${data.order_id || 'MOCK'}</span>`;
+         form.reset();
+         setTimeout(() => {
+           dialog.close();
+           responseDiv.classList.add('hidden');
+         }, 3000);
+       } else {
+         responseDiv.classList.add('text-[#ff4500]');
+         responseDiv.textContent = data.error || 'Provisioning sequence failed.';
+       }
+     } catch (err) {
+       submitBtn.disabled = false;
+       btnText.textContent = 'INITIALIZE PROVISIONING SEQUENCE';
+       btnSpinner.classList.add('hidden');
+       responseDiv.classList.remove('hidden');
+       responseDiv.classList.add('text-[#ff4500]');
+       responseDiv.textContent = 'Network partition detected. Retry.';
+     }
+   });
+ });
+</script>

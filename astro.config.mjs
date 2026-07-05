@@ -1,8 +1,8 @@
-import icon from 'astro-icon';
 import sitemap from '@astrojs/sitemap';
 import tailwind from '@astrojs/tailwind';
 import vercel from '@astrojs/vercel';
 import robotsTxt from 'astro-ai-robots-txt';
+import icon from 'astro-icon';
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
@@ -12,7 +12,7 @@ export default defineConfig({
       bypassToken: process.env.VERCEL_ISR_BYPASS_TOKEN, // Protects on-demand webhook execution
     },
   }),
-  output: 'static', // Enforces absolute edge distribution with zero serverless latency costs
+  output: 'static', // Enables static generation for pages but keeps dynamic endpoints alive
   integrations: [
     tailwind({
       applyBaseStyles: true,

@@ -1,8 +1,10 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
 import Hero from '../../components/widgets/Hero.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
 
-const currentUrl = Astro.site ? new URL('/terms', Astro.site).toString() : 'https://bizkitgrow.vercel.app/terms';
+const currentUrl = Astro.site
+  ? new URL('/terms', Astro.site).toString()
+  : 'https://bizkitgrow.vercel.app/terms';
 ---
 
 <BaseLayout

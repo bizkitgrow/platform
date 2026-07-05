@@ -1,13 +1,17 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import Hero from '../../components/widgets/Hero.astro';
-import Features from '../../components/widgets/Features.astro';
-import ResellPortalWidget from '../../components/ResellPortalWidget.astro';
+export const prerender = false;
 import LeadCaptureWidget from '../../components/LeadCaptureWidget.astro';
-import SEOAuditsWidget from '../../components/widgets/SEOAuditsWidget.astro';
+import LocalVisibilityScanner from '../../components/LocalVisibilityScanner.astro';
+import ResellPortalWidget from '../../components/ResellPortalWidget.astro';
+import Features from '../../components/widgets/Features.astro';
 import GoogleReviewsWidget from '../../components/widgets/GoogleReviewsWidget.astro';
+import Hero from '../../components/widgets/Hero.astro';
+import SEOAuditsWidget from '../../components/widgets/SEOAuditsWidget.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
 
-const currentUrl = Astro.site ? new URL('/reputation', Astro.site).toString() : 'https://bizkitgrow.vercel.app/reputation';
+const currentUrl = Astro.site
+  ? new URL('/reputation', Astro.site).toString()
+  : 'https://bizkitgrow.vercel.app/reputation';
 ---
 
 <BaseLayout
@@ -34,9 +38,10 @@ const currentUrl = Astro.site ? new URL('/reputation', Astro.site).toString() : 
   </div>
 
   <div class="max-w-screen-xl px-4 py-12 mx-auto border-b-4 border-black">
-    <div class="border-4 border-black p-6 bg-white shadow-brutal">
+    <div class="border-4 border-black p-6 bg-white shadow-brutal mb-12">
       <SEOAuditsWidget />
     </div>
+    <LocalVisibilityScanner />
   </div>
 
   <Features

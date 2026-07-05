@@ -29,6 +29,20 @@
       "when": 1783230850100,
       "tag": "0003_woozy_kingpin",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1783243338540,
+      "tag": "0004_lucky_junta",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1783249600279,
+      "tag": "0005_cold_doorman",
+      "breakpoints": true
     }
   ]
 }

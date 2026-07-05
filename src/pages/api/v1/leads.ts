@@ -1,8 +1,8 @@
+import { Ratelimit } from '@upstash/ratelimit';
+import { Redis } from '@upstash/redis';
 import type { APIRoute } from 'astro';
 import { db } from '~/db/client';
 import { leads } from '~/db/schema';
-import { Ratelimit } from '@upstash/ratelimit';
-import { Redis } from '@upstash/redis';
 
 export const prerender = false;
 
@@ -21,7 +21,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     if (!rateOk) {
       return new Response(
         JSON.stringify({ error: 'Too many submissions. Please wait a moment and try again.' }),
-        { status: 429, headers: { 'Content-Type': 'application/json' } }
+        { status: 429, headers: { 'Content-Type': 'application/json' } },
       );
     }
 
@@ -31,20 +31,26 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     // Simple email validation
     if (!email || typeof email !== 'string' || !email.includes('@')) {
       console.warn('[LEADS_API] Validation failed: Invalid email');
-      return new Response(
-        JSON.stringify({ error: 'Valid email address is required.' }),
-        { status: 400, headers: { 'Content-Type': 'application/json' } }
-      );
+      return new Response(JSON.stringify({ error: 'Valid email address is required.' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
     const business = businessName && typeof businessName === 'string' ? businessName.trim() : null;
-    const service = targetedService && typeof targetedService === 'string' ? targetedService.trim() : 'general';
+    const service =
+      targetedService && typeof targetedService === 'string' ? targetedService.trim() : 'general';
 
-    const safeUtmSource = utmSource && typeof utmSource === 'string' ? utmSource.substring(0, 255) : null;
-    const safeUtmMedium = utmMedium && typeof utmMedium === 'string' ? utmMedium.substring(0, 255) : null;
-    const safeUtmCampaign = utmCampaign && typeof utmCampaign === 'string' ? utmCampaign.substring(0, 255) : null;
+    const safeUtmSource =
+      utmSource && typeof utmSource === 'string' ? utmSource.substring(0, 255) : null;
+    const safeUtmMedium =
+      utmMedium && typeof utmMedium === 'string' ? utmMedium.substring(0, 255) : null;
+    const safeUtmCampaign =
+      utmCampaign && typeof utmCampaign === 'string' ? utmCampaign.substring(0, 255) : null;
 
-    console.log(`[LEADS_API] Received lead for ${email}. UTM: ${safeUtmSource}/${safeUtmMedium}/${safeUtmCampaign}`);
+    console.log(
+      `[LEADS_API] Received lead for ${email}. UTM: ${safeUtmSource}/${safeUtmMedium}/${safeUtmCampaign}`,
+    );
 
     // Insert into Supabase
     await db.insert(leads).values({
@@ -56,15 +62,15 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
       utmCampaign: safeUtmCampaign,
     });
 
-    return new Response(
-      JSON.stringify({ success: true, message: 'Lead successfully captured.' }),
-      { status: 200, headers: { 'Content-Type': 'application/json' } }
-    );
+    return new Response(JSON.stringify({ success: true, message: 'Lead successfully captured.' }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    });
   } catch (error: any) {
     console.error('[LEADS_API] [ERROR]', error.message);
     return new Response(
       JSON.stringify({ error: 'Internal Server Error. Please try again later.' }),
-      { status: 500, headers: { 'Content-Type': 'application/json' } }
+      { status: 500, headers: { 'Content-Type': 'application/json' } },
     );
   }
 };

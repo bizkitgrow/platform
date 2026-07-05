@@ -1,0 +1,83 @@
+---
+---
+
+<div class="network-checker border border-borders_subtle p-8 bg-canvas shadow-subtle mb-12" id="network-checker-widget">
+  <div class="mb-6 border-b border-borders_subtle pb-4">
+    <h3 class="font-heading text-2xl font-black text-text_primary uppercase tracking-tight">Check eSIM Compatibility</h3>
+    <p class="text-sm text-text_secondary font-mono mt-2 uppercase">Verify your device's global connectivity status</p>
+  </div>
+  
+  <form id="network-checker-form" class="space-y-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label for="brand" class="block font-mono text-[10px] text-text_secondary uppercase font-bold mb-2">Device Brand</label>
+        <select id="brand" class="w-full bg-canvas_accent border border-borders_subtle p-3 text-sm font-mono focus:border-brand_cta focus:ring-0" required>
+          <option value="">Select Brand</option>
+          <option value="apple">Apple (iPhone/iPad)</option>
+          <option value="samsung">Samsung Galaxy</option>
+          <option value="google">Google Pixel</option>
+          <option value="other">Other / Check Manual</option>
+        </select>
+      </div>
+      <div>
+        <label for="model" class="block font-mono text-[10px] text-text_secondary uppercase font-bold mb-2">Device Model</label>
+        <input type="text" id="model" placeholder="e.g. iPhone 15 Pro" class="w-full bg-canvas_accent border border-borders_subtle p-3 text-sm font-mono focus:border-brand_cta focus:ring-0" required />
+      </div>
+    </div>
+    
+    <div class="pt-4">
+      <button type="submit" class="w-full bg-brand_cta hover:bg-brand_cta_hover text-black font-mono text-sm uppercase tracking-widest font-bold py-4 transition-colors">
+        SCAN NETWORK COMPATIBILITY
+      </button>
+    </div>
+  </form>
+
+  <div id="checker-result" class="hidden mt-8 p-6 bg-canvas_accent border border-brand_cta relative overflow-hidden">
+    <!-- Success UI -->
+    <div class="flex items-start gap-4">
+      <div class="w-10 h-10 rounded-full bg-teal-100 flex items-center justify-center border border-teal-500 shrink-0">
+        <svg class="w-5 h-5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+      </div>
+      <div>
+        <h4 class="font-heading text-lg font-black text-text_primary uppercase tracking-tight">DEVICE COMPATIBLE</h4>
+        <p class="text-sm text-text_secondary font-mono mt-2 leading-relaxed">
+          Your device supports Bizkitgrow sovereign eSIM routing. You can activate connectivity in 190+ regions instantly.
+        </p>
+      </div>
+    </div>
+    
+    <!-- Lead Gen Form inside Success State -->
+    <div class="mt-6 pt-6 border-t border-borders_subtle">
+      <p class="font-mono text-[10px] text-text_primary font-bold uppercase mb-4">Initialize Onboarding & Get Early Pricing:</p>
+      <form class="flex gap-2" id="checker-lead-form">
+        <input type="email" placeholder="ENTER CORPORATE EMAIL" class="flex-1 bg-white border border-borders_subtle p-2 text-xs font-mono focus:border-brand_cta" required />
+        <button type="submit" class="bg-black text-white px-4 py-2 font-mono text-[10px] uppercase font-bold hover:bg-gray-800 transition-colors shrink-0">
+          SECURE ALLOCATION
+        </button>
+      </form>
+      <p id="checker-lead-success" class="hidden mt-3 text-xs text-brand_cta font-mono uppercase font-bold">Email registered. Allocation secured.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.getElementById('network-checker-form')?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const btn = e.target.querySelector('button[type="submit"]');
+    const originalText = btn.textContent;
+    btn.textContent = 'SCANNING...';
+    btn.disabled = true;
+    btn.classList.add('opacity-50');
+    
+    setTimeout(() => {
+      document.getElementById('network-checker-form').style.display = 'none';
+      document.getElementById('checker-result').classList.remove('hidden');
+    }, 1500);
+  });
+
+  document.getElementById('checker-lead-form')?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    e.target.style.display = 'none';
+    document.getElementById('checker-lead-success').classList.remove('hidden');
+  });
+</script>

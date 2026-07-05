@@ -1,0 +1,224 @@
+---
+// Swiss Brutalist Unified Market Telemetry Widget (Cointop & Finnhub Native)
+---
+
+<div class="border-4 border-black bg-white shadow-brutal hover:-translate-x-1 hover:-translate-y-1 hover:shadow-brutal_hover transition-all duration-150 overflow-hidden">
+  <div class="p-6">
+    <div class="flex flex-col md:flex-row md:items-center justify-between border-b-4 border-black pb-4 mb-6 gap-4">
+      <div>
+        <div class="font-mono text-xs text-brand_cta uppercase tracking-widest font-black mb-1">LIVE INFRASTRUCTURE OVERVIEW</div>
+        <h3 class="font-heading text-3xl md:text-4xl font-extrabold text-black uppercase tracking-tight leading-[0.9]">
+          MARKET TELEMETRY
+        </h3>
+      </div>
+      <div class="flex flex-col items-end gap-2">
+        <div class="flex items-center gap-2">
+          <span class="inline-block w-2.5 h-2.5 rounded-full bg-green-500 animate-ping"></span>
+          <span class="font-mono text-[10px] font-bold text-gray-500 uppercase tracking-widest">CDN CACHE OPTIMIZED</span>
+        </div>
+        <div class="font-mono text-[9px] text-gray-400 uppercase tracking-widest text-right max-w-[200px]">
+          Intelligence provided by Finnhub, Alpha Vantage, & CoinMarketCap
+        </div>
+      </div>
+    </div>
+
+    <!-- STATE MACHINE WRAPPER -->
+    <div id="telemetry-container" class="font-mono text-xs text-black">
+      <!-- LOADING STATE -->
+      <div id="telemetry-loading" class="flex flex-col items-center justify-center py-10 gap-4">
+        <div class="w-10 h-10 border-4 border-black border-t-brand_cta rounded-full animate-spin"></div>
+        <div class="font-bold tracking-widest text-[10px] text-gray-500 uppercase">SYNCING TELEMETRY ORACLES...</div>
+      </div>
+
+      <!-- ERROR STATE -->
+      <div id="telemetry-error" class="hidden border-4 border-red-500 p-4 bg-red-50 text-red-700 font-bold mb-4 uppercase">
+        FAILED TO SYNC WITH THE CENTRAL DATA NODE. API OVERLOAD PROTECTION ACTIVE.
+      </div>
+
+      <!-- DATA STATE -->
+      <div id="telemetry-data" class="hidden flex flex-col gap-8">
+        
+        <!-- SECTION: Crypto CLI (Cointop style) & Finnhub Holdings -->
+        <div class="grid grid-cols-1 gap-6">
+          
+          <!-- Crypto CLI (cointop aesthetic) -->
+          <div class="bg-[#0f111a] border-4 border-black text-gray-300 p-4 font-mono overflow-hidden">
+            <h4 class="font-black text-sm border-b border-gray-700 pb-2 mb-3 flex justify-between text-white uppercase tracking-widest">
+              <span>DIGITAL ASSETS</span>
+              <span class="text-[#00ff00]">CLI MODE</span>
+            </h4>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-[11px] whitespace-nowrap">
+                <thead class="text-gray-500 border-b border-gray-800">
+                  <tr>
+                    <th class="py-2 pr-4 font-normal">SYM</th>
+                    <th class="py-2 pr-4 font-normal text-right">PRICE(USD)</th>
+                    <th class="py-2 pr-4 font-normal text-right">24H%</th>
+                    <th class="py-2 pr-4 font-normal text-right">SPARK</th>
+                  </tr>
+                </thead>
+                <tbody id="crypto-table-body" class="divide-y divide-gray-800/50">
+                  <!-- Dynamically populated -->
+                </tbody>
+              </table>
+            </div>
+            <div id="crypto-last-ping" class="text-[9px] text-gray-600 text-right mt-3 uppercase tracking-widest"></div>
+          </div>
+
+          <!-- Finnhub ETF Holdings Widget -->
+          <div class="flex flex-col w-full min-h-[350px]">
+            <h4 class="font-mono font-black text-sm border-b-2 border-black pb-2 mb-3 flex justify-between uppercase tracking-widest">
+              <span>ETF HOLDINGS</span>
+              <span class="text-brand_cta">ARKK</span>
+            </h4>
+            <!-- Finnhub Widget BEGIN -->
+            <div style="border: 4px solid #000; height: 100%; width: 100%; min-height: 350px;" class="bg-canvas_accent flex-grow">
+                <iframe width="100%" frameBorder="0"
+                        height="100%"
+                        src="https://widget.finnhub.io/widgets/etf-holdings?symbol=ARKK&theme=light" title="ARKK Holdings Data by Finnhub Stock API"
+                        class="w-full h-full grayscale contrast-125">
+                </iframe>
+            </div>
+            <div style="width: 100%; text-align: right; margin-top:8px;" class="font-mono text-[9px] uppercase tracking-widest font-bold">
+                    ARKK Holdings Data by <a href="https://finnhub.io/" target="_blank" style="color: #1db954;" class="hover:underline">Finnhub Stock API</a>
+            </div>
+            <!-- Finnhub Widget END -->
+          </div>
+          
+        </div>
+
+        <!-- MIDDLE SECTION: Finnhub Performance Chart -->
+        <div class="w-full">
+           <h4 class="font-mono font-black text-sm border-b-2 border-black pb-2 mb-3 flex justify-between uppercase tracking-widest">
+              <span>PERFORMANCE CHART</span>
+              <span class="text-brand_cta">EQUITIES</span>
+            </h4>
+            <!-- Finnhub Widget BEGIN -->
+            <div style="border: 4px solid #000; height: 400px; width: 100%" class="bg-canvas_accent">
+                <iframe width="100%" frameBorder="0"
+                        height="100%"
+                        src="https://widget.finnhub.io/widgets/performance-chart?symbols=IVV,AVUV,VTI,GLD&initialInvestment=10000&monthlyInvestment=0&reinvestDividends=true&dividendTax=15&period=5Y&theme=light" title="IVV,AVUV,VTI,GLD Performance Charts by Finnhub Stock API"
+                        class="w-full h-full grayscale contrast-125">
+                </iframe>
+            </div>
+            <div style="width: 100%; text-align: right; margin-top:8px;" class="font-mono text-[9px] uppercase tracking-widest font-bold">
+                    Performance Charts by <a href="https://finnhub.io/" target="_blank" style="color: #1db954;" class="hover:underline">Finnhub Stock API</a>
+            </div>
+            <!-- Finnhub Widget END -->
+        </div>
+
+      </div>
+    </div>
+  </div>
+  
+  <!-- BOTTOM SECTION: Intelligence Feed (News/Filings) Marquee -->
+  <div class="border-t-4 border-black bg-black text-white p-3 overflow-hidden hidden" id="intelligence-feed-container">
+    <div class="flex items-center gap-4 font-mono text-[10px] uppercase font-bold">
+       <span class="bg-[#00ff00] text-black px-2 py-1 shrink-0">LIVE FEED</span>
+       <div class="relative flex overflow-x-hidden group flex-grow">
+          <div class="animate-marquee whitespace-nowrap flex gap-8 items-center" id="intelligence-feed-content">
+             <!-- Dynamically populated -->
+          </div>
+       </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Simple Marquee Animation */
+  .animate-marquee {
+    animation: marquee 30s linear infinite;
+  }
+  .animate-marquee:hover {
+    animation-play-state: paused;
+  }
+  @keyframes marquee {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+  }
+</style>
+
+<script is:inline>
+  // Helper to generate a fake "sparkline" text string based on 24h change
+  function generateSpark(change) {
+      const bars = [' ', '▂', '▃', '▄', '▅', '▆', '▇', '█'];
+      let spark = '';
+      const isPositive = change >= 0;
+      // create 6 pseudo-random bars, trending based on the overall change
+      for (let i = 0; i < 6; i++) {
+         const base = isPositive ? 4 : 0;
+         const rand = Math.floor(Math.random() * 4);
+         spark += bars[base + rand];
+      }
+      return spark;
+  }
+
+  async function loadTelemetry() {
+    const loadingEl = document.getElementById('telemetry-loading');
+    const errorEl = document.getElementById('telemetry-error');
+    const dataEl = document.getElementById('telemetry-data');
+    const cryptoTableBody = document.getElementById('crypto-table-body');
+    const cryptoLastPing = document.getElementById('crypto-last-ping');
+    const feedContainer = document.getElementById('intelligence-feed-container');
+    const feedContent = document.getElementById('intelligence-feed-content');
+
+    try {
+      const res = await fetch('/api/v1/telemetry');
+      if (!res.ok) throw new Error('API down');
+      const data = await res.json();
+
+      // Populate Crypto (Cointop style)
+      if (cryptoTableBody && data.crypto) {
+        cryptoTableBody.innerHTML = data.crypto.map(coin => {
+          const change = parseFloat(coin.change24h);
+          const isUp = change >= 0;
+          const statusColor = isUp ? 'text-[#00ff00]' : 'text-[#ff003c]';
+          const indicator = isUp ? '▲' : '▼';
+          const spark = generateSpark(change);
+          
+          return `
+            <tr class="hover:bg-gray-800 transition-colors">
+              <td class="py-2 pr-4 text-white font-bold">${coin.symbol}</td>
+              <td class="py-2 pr-4 text-right">$${coin.price}</td>
+              <td class="py-2 pr-4 text-right ${statusColor}">${indicator} ${Math.abs(change).toFixed(2)}%</td>
+              <td class="py-2 text-right ${statusColor}">${spark}</td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      if (cryptoLastPing && data.meta?.lastPing) {
+         const date = new Date(data.meta.lastPing);
+         cryptoLastPing.innerText = `LAST PING: ${date.toLocaleTimeString()} (UTC)`;
+      }
+
+      // Populate Intelligence Feed
+      if (feedContent && data.intelligence && data.intelligence.length > 0) {
+         feedContent.innerHTML = data.intelligence.map(item => {
+             const timeStr = new Date(item.time * 1000).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+             return `
+               <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="hover:text-[#00ff00] transition-colors flex items-center gap-2">
+                 <span class="text-gray-500">[${timeStr} - ${item.category}]</span> 
+                 <span class="text-white">${item.headline}</span>
+                 <span class="text-gray-500 border border-gray-600 px-1 text-[8px] rounded-sm">${item.source}</span>
+               </a>
+             `;
+         }).join('<span class="text-gray-600 font-bold mx-2">///</span>');
+         feedContainer.classList.remove('hidden');
+      }
+
+      // Toggle visibility
+      loadingEl.classList.add('hidden');
+      errorEl.classList.add('hidden');
+      dataEl.classList.remove('hidden');
+
+    } catch (err) {
+      console.error('[TELEMETRY] Load error:', err);
+      loadingEl.classList.add('hidden');
+      errorEl.classList.remove('hidden');
+    }
+  }
+
+  // Load telemetry data on mount
+  document.addEventListener('DOMContentLoaded', loadTelemetry);
+</script>

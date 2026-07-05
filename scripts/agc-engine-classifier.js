@@ -134,10 +134,20 @@ function classifyContent(title, content) {
   }
 
   if (!bestMatch || bestScore === 0) {
-    return { key: 'ai_business_tools_suite', route: '/solutions', confidence: 0 };
+    return {
+      key: 'ai_business_tools_suite',
+      route: '/solutions',
+      category_slug: 'ai_business_tools_suite',
+      confidence: 0,
+    };
   }
 
-  return { key: bestMatch.key, route: bestMatch.route, confidence: bestScore };
+  return {
+    key: bestMatch.key,
+    route: bestMatch.route,
+    category_slug: bestMatch.key,
+    confidence: bestScore,
+  };
 }
 
-module.exports = { classifyContent };
+module.exports = { classifyContent, getProductAndRoute: classifyContent };

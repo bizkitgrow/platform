@@ -1,64 +1,110 @@
 ---
-import { APP_BLOG } from 'astrowind:config';
+import { Image } from 'astro:assets';
 
-import Grid from '~/components/blog/Grid.astro';
+interface Post {
+  title: string;
+  slug: string;
+  excerpt: string;
+  readingTime: string;
+  createdAt: string;
+  pillar: string;
+  originalImage?: string | null;
+}
 
-import { getBlogPermalink } from '~/utils/permalinks';
-import { findPostsByIds } from '~/utils/blog';
-import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
-import type { Widget } from '~/types';
-
-export interface Props extends Widget {
- title?: string;
- linkText?: string;
- linkUrl?: string | URL;
- information?: string;
- postIds: string[];
+interface Props {
+  title?: string;
+  linkText?: string;
+  linkUrl?: string | URL;
+  information?: string;
+  posts: Post[];
 }
 
 const {
- title = await Astro.slots.render('title'),
- linkText = 'View all posts',
- linkUrl = getBlogPermalink(),
- information = await Astro.slots.render('information'),
- postIds = [],
-
- id,
- isDark = false,
- classes = {},
- bg = await Astro.slots.render('bg'),
+  title = 'Latest Briefings',
+  linkText = 'View all guides',
+  linkUrl = '/blog',
+  information,
+  posts = [],
 } = Astro.props;
 
-const posts = APP_BLOG.isEnabled ? await findPostsByIds(postIds) : [];
+const pillarLabels: Record<string, string> = {
+  esim_data_plans: 'CONNECTIVITY',
+  reputation_management: 'SEARCH AUTHORITY',
+  ai_business_tools_suite: 'AI OPERATIONS',
+  general: 'OPERATIONAL SIGNAL',
+};
 ---
 
-{
- APP_BLOG.isEnabled ? (
- <WidgetWrapper id={id} isDark={isDark} containerClass={classes?.container as string} bg={bg}>
- <div class="flex flex-col lg:justify-between lg:flex-row mb-8">
- {title && (
- <div class="md:max-w-sm">
- <h2
- class="text-3xl font-bold tracking-tight sm:text-4xl sm:leading-none group font-heading mb-2"
- set:html={title}
- />
- {APP_BLOG.list.isEnabled && linkText && linkUrl && (
- <a
- class="text-muted dark:text-slate-400 hover:text-primary transition ease-in duration-200 block mb-6 lg:mb-0"
- href={linkUrl}
- >
- {linkText} »
- </a>
- )}
- </div>
- )}
+<section class="max-w-screen-xl mx-auto px-4 py-16 border-b-4 border-black bg-white">
+  <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+    <div>
+      <h2 class="font-heading text-3xl sm:text-4xl font-extrabold text-black uppercase tracking-tight leading-none mb-3">
+        {title}
+      </h2>
+      {information && (
+        <p class="text-sm text-text_secondary max-w-xl leading-relaxed">
+          {information}
+        </p>
+      )}
+    </div>
+    {linkText && linkUrl && (
+      <a
+        href={linkUrl}
+        class="font-mono text-xs font-black uppercase tracking-widest text-brand_cta hover:underline inline-flex items-center gap-1 shrink-0"
+      >
+        {linkText} &rarr;
+      </a>
+    )}
+  </div>
 
- {information && <p class="text-muted dark:text-slate-400 lg:text-sm lg:max-w-md"set:html={information} />}
- </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    {posts.map((post) => {
+      const heroImageUrl = post.originalImage
+        ? post.originalImage
+        : `https://image.pollinations.ai/prompt/${encodeURIComponent(`${post.title}, brutalist style tech card, corporate minimalism`)}?width=600&height=400&nologo=true`;
+      
+      const label = pillarLabels[post.pillar] || pillarLabels.general;
 
- <Grid posts={posts} />
- </WidgetWrapper>
- ) : (
- <Fragment />
- )
-}
+      return (
+        <article class="border-4 border-black bg-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[8px_8px_0px_0px_rgba(13,148,136,1)] hover:-translate-y-1 transition-all flex flex-col group h-full">
+          <div class="relative w-full aspect-[16/10] bg-gray-100 overflow-hidden border-b-4 border-black">
+            <Image
+              src={heroImageUrl}
+              alt={post.title}
+              width={600}
+              height={375}
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              inferSize={!heroImageUrl.startsWith('http')}
+              loading="lazy"
+            />
+            <div class="absolute top-4 left-4 bg-black text-white font-mono text-[9px] font-black uppercase tracking-widest px-2.5 py-1 border border-white">
+              {label}
+            </div>
+          </div>
+          <div class="p-6 flex flex-col flex-grow">
+            <div class="font-mono text-[9px] text-gray-500 uppercase tracking-widest font-black mb-3">
+              {post.createdAt} · {post.readingTime}
+            </div>
+            <h3 class="font-heading text-xl sm:text-2xl font-extrabold text-black uppercase tracking-tight leading-none mb-3 group-hover:text-brand_cta transition-colors">
+              <a href={`/blog/${post.slug}`} class="focus:outline-none">
+                {post.title}
+              </a>
+            </h3>
+            <p class="text-sm text-text_secondary leading-relaxed mb-6 flex-grow">
+              {post.excerpt}
+            </p>
+            <div class="border-t-2 border-black pt-4 mt-auto">
+              <a
+                href={`/blog/${post.slug}`}
+                class="font-mono text-[10px] font-black uppercase tracking-widest text-brand_cta hover:underline inline-flex items-center gap-1"
+                aria-label={`Read ${post.title}`}
+              >
+                ACCESS DEEP BRIEFING &rarr;
+              </a>
+            </div>
+          </div>
+        </article>
+      );
+    })}
+  </div>
+</section>

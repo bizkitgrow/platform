@@ -6,15 +6,15 @@ import Image from '~/components/common/Image.astro';
 import Headline from '~/components/ui/Headline.astro';
 import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
 const {
- title = '',
- subtitle = '',
- tagline = '',
- icons = [],
- images = [],
- id,
- isDark = false,
- classes = {},
- bg = await Astro.slots.render('bg'),
+  title = '',
+  subtitle = '',
+  tagline = '',
+  icons = [],
+  images = [],
+  id,
+  isDark = false,
+  classes = {},
+  bg = await Astro.slots.render('bg'),
 } = Astro.props;
 ---
 

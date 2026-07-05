@@ -23,10 +23,10 @@ BIZKITDEV/
 ├── config/
 │   ├── brand_manifest.json     ← Target B2B Search Intent & Copy
 │   ├── integration_catalog.json ← Zero-cost Integration API matrix
-│   └── open_ecosystem_catalog.json ← Open source library assets
-├── system_architecture.json    ← Config global (JANGAN hardcode)
-├── ux_design_token.json        ← Design system tokens
-├── seo_aeo_manifest.json       ← SEO/GEO configuration
+│   ├── open_ecosystem_catalog.json ← Open source library assets
+│   ├── system_architecture.json ← Config global (JANGAN hardcode)
+│   ├── ux_design_token.json     ← Design system tokens
+│   └── seo_aeo_manifest.json    ← SEO/AEO/GEO configuration
 ├── scripts/
 │   ├── agc-parser.js
 │   ├── agc-engine-classifier.js
@@ -47,7 +47,9 @@ BIZKITDEV/
 2. Ambil copywriting & intent dari config/brand_manifest.json
 3. Semua panggilan AI → melalui scripts/universal-ai-adapter.js
 4. Proses > 2.5 detik → pindah ke GitHub Actions, BUKAN Vercel
-5. Setelah selesai → validasi DOD di docs/01_RULES_AND_AI_AGENT.md#3
+5. WAJIB patuhi Vibe Coder Workflow: (Brainstorming → Planning → Architecture Review → Execution → Code Review) sebelum merge.
+6. WAJIB aktifkan skill `anti-ai-slop` SEBELUM menyentuh UI, copywriting, atau komponen visual apapun (terapkan state machine lengkap: idle, loading, success, error, empty).
+7. Setelah selesai → validasi DOD di docs/01_RULES_AND_AI_AGENT.md#3
 ```
 
 ---

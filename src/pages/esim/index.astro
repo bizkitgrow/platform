@@ -1,12 +1,16 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
+export const prerender = false;
+import LeadCaptureWidget from '../../components/LeadCaptureWidget.astro';
+import NetworkChecker from '../../components/NetworkChecker.astro';
+import ResellPortalWidget from '../../components/ResellPortalWidget.astro';
+import AstroStatusPage from '../../components/widgets/AstroStatusPage.astro';
 import Hero from '../../components/widgets/Hero.astro';
 import Pricing from '../../components/widgets/Pricing.astro';
-import ResellPortalWidget from '../../components/ResellPortalWidget.astro';
-import LeadCaptureWidget from '../../components/LeadCaptureWidget.astro';
-import AstroStatusPage from '../../components/widgets/AstroStatusPage.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
 
-const currentUrl = Astro.site ? new URL('/esim', Astro.site).toString() : 'https://bizkitgrow.vercel.app/esim';
+const currentUrl = Astro.site
+  ? new URL('/esim', Astro.site).toString()
+  : 'https://bizkitgrow.vercel.app/esim';
 ---
 
 <BaseLayout
@@ -27,9 +31,13 @@ const currentUrl = Astro.site ? new URL('/esim', Astro.site).toString() : 'https
     <div class="border-4 border-black p-6 bg-white shadow-brutal">
       <ResellPortalWidget productSku="esim-global-pass" resellportalStatus="active" theme="light" />
     </div>
-    <div class="border-4 border-black p-6 bg-white shadow-brutal">
+    <div class="border-4 border-black p-6 bg-white shadow-brutal flex flex-col justify-center">
       <AstroStatusPage />
     </div>
+  </div>
+
+  <div class="max-w-screen-xl px-4 py-12 mx-auto">
+    <NetworkChecker />
   </div>
 
   <Pricing

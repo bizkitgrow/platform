@@ -1,13 +1,13 @@
 ---
 export interface Props {
- regions?: { name: string; latency: number; status: 'operational' | 'degraded' | 'down' }[];
+  regions?: { name: string; latency: number; status: 'operational' | 'degraded' | 'down' }[];
 }
 
 const defaultRegions = [
- { name: 'US-EAST (Virginia)', latency: 12, status: 'operational' },
- { name: 'EU-WEST (Frankfurt)', latency: 8, status: 'operational' },
- { name: 'AP-SOUTHEAST (Singapore)', latency: 18, status: 'operational' },
- { name: 'SA-EAST (São Paulo)', latency: 24, status: 'operational' },
+  { name: 'US-EAST (Virginia)', latency: 12, status: 'operational' },
+  { name: 'EU-WEST (Frankfurt)', latency: 8, status: 'operational' },
+  { name: 'AP-SOUTHEAST (Singapore)', latency: 18, status: 'operational' },
+  { name: 'SA-EAST (São Paulo)', latency: 24, status: 'operational' },
 ];
 
 const { regions = defaultRegions } = Astro.props;

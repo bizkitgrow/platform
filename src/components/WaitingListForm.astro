@@ -1,6 +1,6 @@
 ---
 interface Props {
- targetedService?: string;
+  targetedService?: string;
 }
 
 const { targetedService = 'General' } = Astro.props;
@@ -21,6 +21,7 @@ const { targetedService = 'General' } = Astro.props;
  id="email"
  type="email"
  name="email"
+ autocomplete="email"
  required 
  placeholder="operations@acmecorp.com"
  class="w-full h-12 px-4 border border-borders_subtle focus:border-brand_cta outline-none text-xs font-mono transition-colors bg-white text-text_primary rounded-sm placeholder-text_secondary/50"
@@ -33,6 +34,7 @@ const { targetedService = 'General' } = Astro.props;
  id="business_name"
  type="text"
  name="business_name"
+ autocomplete="organization"
  placeholder="Acme Operations Ltd"
  class="w-full h-12 px-4 border border-borders_subtle focus:border-brand_cta outline-none text-xs font-mono transition-colors bg-white text-text_primary rounded-sm placeholder-text_secondary/50"
  />
@@ -75,7 +77,7 @@ const { targetedService = 'General' } = Astro.props;
  btnSpinner.classList.remove('hidden');
 
  try {
- const res = await fetch('/api/waiting-list', {
+ const res = await fetch('/api/v1/ingest/lead', {
  method: 'POST',
  headers: {
  'Content-Type': 'application/json'

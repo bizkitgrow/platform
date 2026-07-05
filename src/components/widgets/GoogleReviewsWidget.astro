@@ -1,21 +1,21 @@
 ---
 export interface Props {
- reviews?: { author: string; company: string; text: string; rating: number }[];
+  reviews?: { author: string; company: string; text: string; rating: number }[];
 }
 
 const defaultReviews = [
- {
- author: 'Marcus Vance',
- company: 'Nexus logistics',
- text: 'Bizkitgrow bypassed sitemap conflicts and elevated our Google Business ranking within 14 days of activation.',
- rating: 5,
- },
- {
- author: 'Sarah Lin',
- company: 'Apex Networks',
- text: 'The reputation gating is flawless. All negative feedback is routed directly to our internal CRM, while 5-star reviews hit Google automatically.',
- rating: 5,
- },
+  {
+    author: 'Marcus Vance',
+    company: 'Nexus logistics',
+    text: 'Bizkitgrow bypassed sitemap conflicts and elevated our Google Business ranking within 14 days of activation.',
+    rating: 5,
+  },
+  {
+    author: 'Sarah Lin',
+    company: 'Apex Networks',
+    text: 'The reputation gating is flawless. All negative feedback is routed directly to our internal CRM, while 5-star reviews hit Google automatically.',
+    rating: 5,
+  },
 ];
 
 const { reviews = defaultReviews } = Astro.props;

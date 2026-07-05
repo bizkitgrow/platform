@@ -1,0 +1,102 @@
+---
+---
+
+<div class="visibility-scanner border border-borders_subtle p-8 bg-canvas shadow-subtle mb-12" id="visibility-scanner-widget">
+  <div class="mb-6 border-b border-borders_subtle pb-4">
+    <h3 class="font-heading text-2xl font-black text-text_primary uppercase tracking-tight">Local Visibility Scanner</h3>
+    <p class="text-sm text-text_secondary font-mono mt-2 uppercase">Audit your current Google Business Profile authority</p>
+  </div>
+  
+  <form id="visibility-scanner-form" class="space-y-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label for="businessName" class="block font-mono text-[10px] text-text_secondary uppercase font-bold mb-2">Business Name</label>
+        <input type="text" id="businessName" placeholder="e.g. Acme Corp" class="w-full bg-canvas_accent border border-borders_subtle p-3 text-sm font-mono focus:border-brand_cta focus:ring-0" required />
+      </div>
+      <div>
+        <label for="zipCode" class="block font-mono text-[10px] text-text_secondary uppercase font-bold mb-2">Target Zip / Postal Code</label>
+        <input type="text" id="zipCode" placeholder="e.g. 10001" class="w-full bg-canvas_accent border border-borders_subtle p-3 text-sm font-mono focus:border-brand_cta focus:ring-0" required />
+      </div>
+    </div>
+    
+    <div class="pt-4">
+      <button type="submit" class="w-full bg-brand_cta hover:bg-brand_cta_hover text-black font-mono text-sm uppercase tracking-widest font-bold py-4 transition-colors">
+        RUN SEO AUTHORITY AUDIT
+      </button>
+    </div>
+  </form>
+
+  <!-- Scanning State -->
+  <div id="scanner-loading" class="hidden mt-8 p-12 bg-canvas_accent border border-borders_subtle flex flex-col items-center justify-center text-center">
+    <div class="w-12 h-12 border-4 border-borders_subtle border-t-brand_cta rounded-full animate-spin mb-4"></div>
+    <p class="font-mono text-xs uppercase tracking-widest text-text_primary font-bold animate-pulse" id="scanner-loading-text">Querying Local Grid...</p>
+  </div>
+
+  <!-- Result State -->
+  <div id="scanner-result" class="hidden mt-8 p-6 bg-canvas_accent border border-brand_cta relative overflow-hidden">
+    <div class="flex items-start gap-6">
+      <div class="w-16 h-16 rounded-full bg-orange-100 flex items-center justify-center border border-orange-500 shrink-0">
+        <span class="font-heading text-2xl font-black text-orange-600">42%</span>
+      </div>
+      <div>
+        <h4 class="font-heading text-lg font-black text-text_primary uppercase tracking-tight">SUB-OPTIMAL VISIBILITY</h4>
+        <p class="text-sm text-text_secondary font-mono mt-2 leading-relaxed">
+          Your business is missing out on local search traffic. Competitors are outranking you in the 3-Pack.
+        </p>
+      </div>
+    </div>
+    
+    <!-- Lead Gen Form inside Result State -->
+    <div class="mt-6 pt-6 border-t border-borders_subtle">
+      <p class="font-mono text-[10px] text-text_primary font-bold uppercase mb-4">Get the full report & optimization plan:</p>
+      <form class="flex gap-2" id="scanner-lead-form">
+        <input type="email" placeholder="ENTER CORPORATE EMAIL" class="flex-1 bg-white border border-borders_subtle p-2 text-xs font-mono focus:border-brand_cta" required />
+        <button type="submit" class="bg-black text-white px-4 py-2 font-mono text-[10px] uppercase font-bold hover:bg-gray-800 transition-colors shrink-0">
+          SEND REPORT
+        </button>
+      </form>
+      <p id="scanner-lead-success" class="hidden mt-3 text-xs text-brand_cta font-mono uppercase font-bold">Report requested. Check your inbox shortly.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.getElementById('visibility-scanner-form')?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const form = e.target;
+    form.style.display = 'none';
+    
+    const loading = document.getElementById('scanner-loading');
+    const loadingText = document.getElementById('scanner-loading-text');
+    const result = document.getElementById('scanner-result');
+    
+    loading.classList.remove('hidden');
+    
+    const messages = [
+      'Querying Local Grid...',
+      'Analyzing Competitor Density...',
+      'Checking Google Review Velocity...',
+      'Generating Authority Score...'
+    ];
+    
+    let msgIndex = 0;
+    const interval = setInterval(() => {
+      msgIndex++;
+      if(msgIndex < messages.length) {
+        loadingText.textContent = messages[msgIndex];
+      }
+    }, 800);
+
+    setTimeout(() => {
+      clearInterval(interval);
+      loading.classList.add('hidden');
+      result.classList.remove('hidden');
+    }, 3500);
+  });
+
+  document.getElementById('scanner-lead-form')?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    e.target.style.display = 'none';
+    document.getElementById('scanner-lead-success').classList.remove('hidden');
+  });
+</script>

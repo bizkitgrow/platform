@@ -6,27 +6,27 @@ import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
 import type { Features as Props } from '~/types';
 
 const {
- title = await Astro.slots.render('title'),
- subtitle = await Astro.slots.render('subtitle'),
- tagline = await Astro.slots.render('tagline'),
- items = [],
- columns = 2,
- defaultIcon,
+  title = await Astro.slots.render('title'),
+  subtitle = await Astro.slots.render('subtitle'),
+  tagline = await Astro.slots.render('tagline'),
+  items = [],
+  columns = 2,
+  defaultIcon,
 
- id,
- isDark = false,
- classes = {},
- bg = await Astro.slots.render('bg'),
+  id,
+  isDark = false,
+  classes = {},
+  bg = await Astro.slots.render('bg'),
 } = Astro.props;
 
 const columnsClass =
- columns === 4
- ? 'lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2'
- : columns === 3
- ? 'lg:grid-cols-3 sm:grid-cols-2'
- : columns === 2
- ? 'sm:grid-cols-2'
- : '';
+  columns === 4
+    ? 'lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2'
+    : columns === 3
+      ? 'lg:grid-cols-3 sm:grid-cols-2'
+      : columns === 2
+        ? 'sm:grid-cols-2'
+        : '';
 ---
 
 <WidgetWrapper id={id} isDark={isDark} containerClass={`max-w-5xl ${classes?.container ?? ''}`} bg={bg}>
