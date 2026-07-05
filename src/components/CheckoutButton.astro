@@ -1,9 +1,9 @@
 ---
 interface Props {
-  productId: string;
-  label?: string;
-  variant?: 'primary' | 'outline';
-  class?: string;
+ productId: string;
+ label?: string;
+ variant?: 'primary' | 'outline';
+ class?: string;
 }
 
 const { productId, label = 'Checkout', variant = 'primary', class: className = '' } = Astro.props;
@@ -13,15 +13,15 @@ const resellDomain = import.meta.env.RESELLPORTAL_DOMAIN || 'devhack.appservicep
 const checkoutUrl = `https://${resellDomain}/checkout?product_id=${productId}`;
 
 const baseStyles =
-  'inline-flex items-center justify-center rounded-lg text-sm font-semibold transition-all duration-150 ease-out';
+ 'inline-flex items-center justify-center rounded-lg text-sm font-semibold transition-all duration-150 ease-out';
 const primaryStyles =
-  'bg-brand_cta hover:bg-brand_cta_hover text-white shadow-subtle hover:shadow-md';
+ 'bg-brand_cta hover:bg-brand_cta_hover text-white shadow-subtle hover:shadow-md';
 const outlineStyles = 'border border-borders_subtle text-text_primary hover:bg-canvas_accent';
 
 const finalClasses = `${baseStyles} ${variant === 'primary' ? primaryStyles : outlineStyles} px-5 py-2.5 ${className}`;
 ---
 
 <a href={checkoutUrl} class={finalClasses}>
-  {label}
-  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-2 w-4 h-4"><path d="m9 18 6-6-6-6"/></svg>
+ {label}
+ <svg xmlns="http://www.w3.org/2000/svg"width="16"height="16"viewBox="0 0 24 24"fill="none"stroke="currentColor"stroke-width="2"stroke-linecap="round"stroke-linejoin="round"class="ml-2 w-4 h-4"><path d="m9 18 6-6-6-6"/></svg>
 </a>

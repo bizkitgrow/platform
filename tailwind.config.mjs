@@ -10,13 +10,14 @@ export default {
   theme: {
     extend: {
       colors: {
-        canvas: '#000000',
-        canvas_accent: '#111111',
-        brand_cta: '#0f766e', // teal-700
-        brand_cta_hover: '#115e59', // teal-800
-        text_primary: '#F8FAFC', // slate-50
-        text_secondary: '#94A3B8', // slate-400
-        borders_subtle: '#334155', // slate-700
+        canvas: '#FFFFFF',
+        canvas_accent: '#F8FAFC',
+        brand_cta: '#0d9488', // teal-600
+        brand_cta_hover: '#0f766e', // teal-700
+        text_primary: '#0F172A', // slate-900
+        text_secondary: '#475569', // slate-600
+        borders_subtle: '#E2E8F0', // slate-200
+        borders: '#000000', // thick black borders for brutalism
       },
       fontFamily: {
         sans: ['Outfit', ...defaultTheme.fontFamily.sans],
@@ -25,6 +26,7 @@ export default {
       },
       boxShadow: {
         subtle: '0 1px 3px 0 rgba(0,0,0,0.05), 0 1px 2px -1px rgba(0,0,0,0.05)',
+        brutal: '8px 8px 0px 0px rgba(0,0,0,1)',
       },
       transitionTimingFunction: {
         smooth: 'cubic-bezier(0.4, 0, 0.2, 1)',

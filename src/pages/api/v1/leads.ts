@@ -26,10 +26,11 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     }
 
     const body = await request.json();
-    const { email, businessName, targetedService } = body;
+    const { email, businessName, targetedService, utmSource, utmMedium, utmCampaign } = body;
 
     // Simple email validation
     if (!email || typeof email !== 'string' || !email.includes('@')) {
+      console.warn('[LEADS_API] Validation failed: Invalid email');
       return new Response(
         JSON.stringify({ error: 'Valid email address is required.' }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
@@ -39,11 +40,20 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     const business = businessName && typeof businessName === 'string' ? businessName.trim() : null;
     const service = targetedService && typeof targetedService === 'string' ? targetedService.trim() : 'general';
 
+    const safeUtmSource = utmSource && typeof utmSource === 'string' ? utmSource.substring(0, 255) : null;
+    const safeUtmMedium = utmMedium && typeof utmMedium === 'string' ? utmMedium.substring(0, 255) : null;
+    const safeUtmCampaign = utmCampaign && typeof utmCampaign === 'string' ? utmCampaign.substring(0, 255) : null;
+
+    console.log(`[LEADS_API] Received lead for ${email}. UTM: ${safeUtmSource}/${safeUtmMedium}/${safeUtmCampaign}`);
+
     // Insert into Supabase
     await db.insert(leads).values({
       email: email.trim().toLowerCase(),
       businessName: business,
       targetedService: service,
+      utmSource: safeUtmSource,
+      utmMedium: safeUtmMedium,
+      utmCampaign: safeUtmCampaign,
     });
 
     return new Response(

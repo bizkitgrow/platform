@@ -1,122 +1,122 @@
 ---
 interface Props {
-  targetedService?: string;
+ targetedService?: string;
 }
 
 const { targetedService = 'General' } = Astro.props;
 ---
 
-<div id="waitlist-card" class="p-8 sm:p-12 bg-canvas_accent border border-borders_subtle max-w-xl mx-auto mt-20 rounded-sm relative z-20 shadow-subtle">
-  <div class="text-left mb-8 border-b border-borders_subtle pb-6">
-    <h2 class="font-heading text-2xl font-extrabold text-text_primary uppercase tracking-tight mb-2">Join the Operational Perimeter</h2>
-    <p class="text-xs text-text_secondary leading-relaxed font-mono uppercase tracking-wider">Secure system resource allocation and gain onboarding priority.</p>
-  </div>
+<div id="waitlist-card"class="p-8 sm:p-12 bg-canvas_accent border border-borders_subtle max-w-xl mx-auto mt-20 rounded-sm relative z-20 shadow-subtle">
+ <div class="text-left mb-8 border-b border-borders_subtle pb-6">
+ <h2 class="font-heading text-2xl font-extrabold text-text_primary uppercase tracking-tight mb-2">Join the Operational Perimeter</h2>
+ <p class="text-xs text-text_secondary leading-relaxed font-mono uppercase tracking-wider">Secure system resource allocation and gain onboarding priority.</p>
+ </div>
 
-  <form id="waiting-list-form" class="space-y-6">
-    <input type="hidden" name="targeted_service" value={targetedService} />
-    
-    <div>
-      <label for="email" class="block text-[9px] font-bold text-text_secondary font-mono uppercase tracking-widest mb-2">Corporate Email</label>
-      <input 
-        id="email"
-        type="email" 
-        name="email" 
-        required 
-        placeholder="operations@acmecorp.com" 
-        class="w-full h-12 px-4 border border-borders_subtle focus:border-brand_cta outline-none text-xs font-mono transition-colors bg-white text-text_primary rounded-sm placeholder-text_secondary/50"
-      />
-    </div>
+ <form id="waiting-list-form"class="space-y-6">
+ <input type="hidden"name="targeted_service"value={targetedService} />
+ 
+ <div>
+ <label for="email"class="block text-[9px] font-bold text-text_secondary font-mono uppercase tracking-widest mb-2">Corporate Email</label>
+ <input 
+ id="email"
+ type="email"
+ name="email"
+ required 
+ placeholder="operations@acmecorp.com"
+ class="w-full h-12 px-4 border border-borders_subtle focus:border-brand_cta outline-none text-xs font-mono transition-colors bg-white text-text_primary rounded-sm placeholder-text_secondary/50"
+ />
+ </div>
 
-    <div>
-      <label for="business_name" class="block text-[9px] font-bold text-text_secondary font-mono uppercase tracking-widest mb-2">Business Identity</label>
-      <input 
-        id="business_name"
-        type="text" 
-        name="business_name" 
-        placeholder="Acme Operations Ltd" 
-        class="w-full h-12 px-4 border border-borders_subtle focus:border-brand_cta outline-none text-xs font-mono transition-colors bg-white text-text_primary rounded-sm placeholder-text_secondary/50"
-      />
-    </div>
+ <div>
+ <label for="business_name"class="block text-[9px] font-bold text-text_secondary font-mono uppercase tracking-widest mb-2">Business Identity</label>
+ <input 
+ id="business_name"
+ type="text"
+ name="business_name"
+ placeholder="Acme Operations Ltd"
+ class="w-full h-12 px-4 border border-borders_subtle focus:border-brand_cta outline-none text-xs font-mono transition-colors bg-white text-text_primary rounded-sm placeholder-text_secondary/50"
+ />
+ </div>
 
-    <button 
-      id="submit-btn"
-      type="submit" 
-      class="w-full h-12 bg-brand_cta hover:bg-brand_cta_hover text-white text-xs font-bold font-mono uppercase tracking-widest transition-colors flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed rounded-sm mt-8"
-    >
-      <span id="btn-text">Initialize Onboarding Queue</span>
-      <svg id="btn-spinner" class="animate-spin hidden w-4 h-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-    </button>
-  </form>
+ <button 
+ id="submit-btn"
+ type="submit"
+ class="w-full h-12 bg-brand_cta hover:bg-brand_cta_hover text-white text-xs font-bold font-mono uppercase tracking-widest transition-colors flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed rounded-sm mt-8"
+ >
+ <span id="btn-text">Initialize Onboarding Queue</span>
+ <svg id="btn-spinner"class="animate-spin hidden w-4 h-4 text-white"xmlns="http://www.w3.org/2000/svg"fill="none"viewBox="0 0 24 24"><circle class="opacity-25"cx="12"cy="12"r="10"stroke="currentColor"stroke-width="4"></circle><path class="opacity-75"fill="currentColor"d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+ </button>
+ </form>
 
-  <div id="form-response" class="mt-4 text-center text-xs font-mono uppercase tracking-wider hidden"></div>
+ <div id="form-response"class="mt-4 text-center text-xs font-mono uppercase tracking-wider hidden"></div>
 </div>
 
 <script is:inline>
-  const form = document.getElementById('waiting-list-form');
-  const responseDiv = document.getElementById('form-response');
-  const submitBtn = document.getElementById('submit-btn');
-  const btnText = document.getElementById('btn-text');
-  const btnSpinner = document.getElementById('btn-spinner');
+ const form = document.getElementById('waiting-list-form');
+ const responseDiv = document.getElementById('form-response');
+ const submitBtn = document.getElementById('submit-btn');
+ const btnText = document.getElementById('btn-text');
+ const btnSpinner = document.getElementById('btn-spinner');
 
-  if (form) {
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      
-      const formData = new FormData(form);
-      const email = formData.get('email');
-      const business_name = formData.get('business_name');
-      const targeted_service = formData.get('targeted_service');
+ if (form) {
+ form.addEventListener('submit', async (e) => {
+ e.preventDefault();
+ 
+ const formData = new FormData(form);
+ const email = formData.get('email');
+ const business_name = formData.get('business_name');
+ const targeted_service = formData.get('targeted_service');
 
-      // State: Loading
-      responseDiv.classList.add('hidden');
-      responseDiv.classList.remove('text-red-600', 'text-teal-600');
-      submitBtn.disabled = true;
-      btnText.textContent = 'Processing...';
-      btnSpinner.classList.remove('hidden');
+ // State: Loading
+ responseDiv.classList.add('hidden');
+ responseDiv.classList.remove('text-red-600', 'text-teal-600');
+ submitBtn.disabled = true;
+ btnText.textContent = 'Processing...';
+ btnSpinner.classList.remove('hidden');
 
-      try {
-        const res = await fetch('/api/waiting-list', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            email,
-            business_name,
-            targeted_service
-          })
-        });
+ try {
+ const res = await fetch('/api/waiting-list', {
+ method: 'POST',
+ headers: {
+ 'Content-Type': 'application/json'
+ },
+ body: JSON.stringify({
+ email,
+ business_name,
+ targeted_service
+ })
+ });
 
-        let data = {};
-        try {
-          data = await res.json();
-        } catch (jsonError) {
-          console.error("Failed to parse JSON response:", jsonError);
-        }
+ let data = {};
+ try {
+ data = await res.json();
+ } catch (jsonError) {
+ console.error("Failed to parse JSON response:", jsonError);
+ }
 
-        
-        // State: Done
-        submitBtn.disabled = false;
-        btnText.textContent = 'Initialize Onboarding Queue';
-        btnSpinner.classList.add('hidden');
-        responseDiv.classList.remove('hidden');
-        
-        if (res.ok) {
-          responseDiv.classList.add('text-teal-600');
-          responseDiv.textContent = 'Priority access secured. Please check your email.';
-          form.reset();
-        } else {
-          responseDiv.classList.add('text-red-600');
-          responseDiv.textContent = data.error || 'System error occurred. Please refresh the page.';
-        }
-      } catch (err) {
-        submitBtn.disabled = false;
-        btnText.textContent = 'Initialize Onboarding Queue';
-        btnSpinner.classList.add('hidden');
-        responseDiv.classList.remove('hidden');
-        responseDiv.classList.add('text-red-600');
-        responseDiv.textContent = 'Connection lost. Please ensure your device is connected to the internet.';
-      }
-    });
-  }
+ 
+ // State: Done
+ submitBtn.disabled = false;
+ btnText.textContent = 'Initialize Onboarding Queue';
+ btnSpinner.classList.add('hidden');
+ responseDiv.classList.remove('hidden');
+ 
+ if (res.ok) {
+ responseDiv.classList.add('text-teal-600');
+ responseDiv.textContent = 'Priority access secured. Please check your email.';
+ form.reset();
+ } else {
+ responseDiv.classList.add('text-red-600');
+ responseDiv.textContent = data.error || 'System error occurred. Please refresh the page.';
+ }
+ } catch (err) {
+ submitBtn.disabled = false;
+ btnText.textContent = 'Initialize Onboarding Queue';
+ btnSpinner.classList.add('hidden');
+ responseDiv.classList.remove('hidden');
+ responseDiv.classList.add('text-red-600');
+ responseDiv.textContent = 'Connection lost. Please ensure your device is connected to the internet.';
+ }
+ });
+ }
 </script>

@@ -12,7 +12,12 @@ export const dynamic = 'force-static';
 
 export const GET: APIRoute = async ({ request }) => {
   const url = new URL(request.url);
-  const sitemap: SitemapItem[] = [{ loc: new URL('/', url).href, lastModified: new Date() }];
+  const sitemap: SitemapItem[] = [
+    { loc: new URL('/', url).href, lastModified: new Date() },
+    { loc: new URL('/esim', url).href, lastModified: new Date() },
+    { loc: new URL('/reputation', url).href, lastModified: new Date() },
+    { loc: new URL('/solutions', url).href, lastModified: new Date() },
+  ];
 
   const paths = await getStaticPaths();
   for (const p of paths) {

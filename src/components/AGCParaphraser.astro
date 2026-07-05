@@ -1,61 +1,61 @@
 ---
 export interface Props {
-  originalText: string;
-  paraphrasedHook?: string;
-  syntacticVariant?: string;
-  paraphraseSummary?: string;
+ originalText: string;
+ paraphrasedHook?: string;
+ syntacticVariant?: string;
+ paraphraseSummary?: string;
 }
 
 const { originalText, paraphrasedHook, syntacticVariant, paraphraseSummary } = Astro.props;
 ---
 
 <div class="agc-paraphraser mt-12 mb-12 border border-borders_subtle py-8 px-6 bg-canvas_accent text-text_primary rounded-sm shadow-subtle relative overflow-hidden">
-  <div class="absolute left-0 top-0 bottom-0 w-1 bg-brand_cta"></div>
-  <div class="flex items-center justify-between mb-6">
-    <h3 class="text-xl font-bold uppercase tracking-wider font-heading">AI Ingestion Synapse</h3>
-    <span class="bg-brand_cta text-white text-xs font-bold px-3 py-1 uppercase tracking-widest rounded-sm">AI Polished</span>
-  </div>
+ <div class="absolute left-0 top-0 bottom-0 w-1 bg-brand_cta"></div>
+ <div class="flex items-center justify-between mb-6">
+ <h3 class="text-xl font-bold uppercase tracking-wider font-heading">AI Ingestion Synapse</h3>
+ <span class="bg-brand_cta text-white text-xs font-bold px-3 py-1 uppercase tracking-widest rounded-sm">AI Polished</span>
+ </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-    <div class="original-content border border-borders_subtle p-6 bg-white rounded-sm shadow-subtle">
-      <h4 class="text-xs uppercase text-text_secondary mb-4 tracking-widest font-mono">Original Source</h4>
-      <div class="prose prose-sm max-w-none opacity-80">
-        <p class="text-text_secondary">{originalText.substring(0, 300)}...</p>
-      </div>
-    </div>
-    
-    <div class="paraphrased-content border-l-4 border-brand_cta p-6 bg-white border border-borders_subtle rounded-sm shadow-subtle">
-      <h4 class="text-xs uppercase text-text_primary mb-4 tracking-widest font-mono flex items-center gap-2">
-        <svg class="w-4 h-4 text-brand_cta" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-        Tactical Refinement
-      </h4>
-      
-      {paraphrasedHook && (
-        <div class="mb-4">
-          <span class="text-xs uppercase text-text_secondary block mb-1">Hook</span>
-          <p class="font-bold text-lg text-text_primary">{paraphrasedHook}</p>
-        </div>
-      )}
-      
-      {syntacticVariant && (
-        <div class="mb-4">
-          <span class="text-xs uppercase text-text_secondary block mb-1">Syntactic Variant</span>
-          <p class="italic border-l-2 border-borders_subtle pl-3 text-text_secondary">{syntacticVariant}</p>
-        </div>
-      )}
+ <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+ <div class="original-content border border-borders_subtle p-6 bg-white rounded-sm shadow-subtle">
+ <h4 class="text-xs uppercase text-text_secondary mb-4 tracking-widest font-mono">Original Source</h4>
+ <div class="prose prose-sm max-w-none opacity-80">
+ <p class="text-text_secondary">{originalText.substring(0, 300)}...</p>
+ </div>
+ </div>
+ 
+ <div class="paraphrased-content border-l-4 border-brand_cta p-6 bg-white border border-borders_subtle rounded-sm shadow-subtle">
+ <h4 class="text-xs uppercase text-text_primary mb-4 tracking-widest font-mono flex items-center gap-2">
+ <svg class="w-4 h-4 text-brand_cta"fill="none"stroke="currentColor"viewBox="0 0 24 24"><path stroke-linecap="square"stroke-linejoin="miter"stroke-width="2"d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+ Tactical Refinement
+ </h4>
+ 
+ {paraphrasedHook && (
+ <div class="mb-4">
+ <span class="text-xs uppercase text-text_secondary block mb-1">Hook</span>
+ <p class="font-bold text-lg text-text_primary">{paraphrasedHook}</p>
+ </div>
+ )}
+ 
+ {syntacticVariant && (
+ <div class="mb-4">
+ <span class="text-xs uppercase text-text_secondary block mb-1">Syntactic Variant</span>
+ <p class="italic border-l-2 border-borders_subtle pl-3 text-text_secondary">{syntacticVariant}</p>
+ </div>
+ )}
 
-      {paraphraseSummary && (
-        <div>
-          <span class="text-xs uppercase text-text_secondary block mb-1">Executive Summary</span>
-          <p class="text-sm text-text_secondary">{paraphraseSummary}</p>
-        </div>
-      )}
-    </div>
-  </div>
+ {paraphraseSummary && (
+ <div>
+ <span class="text-xs uppercase text-text_secondary block mb-1">Executive Summary</span>
+ <p class="text-sm text-text_secondary">{paraphraseSummary}</p>
+ </div>
+ )}
+ </div>
+ </div>
 </div>
 
 <style>
-  .agc-paraphraser {
-    font-family: var(--font-body);
-  }
+ .agc-paraphraser {
+ font-family: var(--font-body);
+ }
 </style>

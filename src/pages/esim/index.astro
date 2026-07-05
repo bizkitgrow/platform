@@ -23,9 +23,13 @@ const currentUrl = Astro.site ? new URL('/esim', Astro.site).toString() : 'https
     ]}
   />
 
-  <div class="max-w-screen-xl px-4 py-8 mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 border-b border-borders_subtle">
-    <ResellPortalWidget productSku="esim-global-pass" resellportalStatus="active" theme="dark" />
-    <AstroStatusPage />
+  <div class="max-w-screen-xl px-4 py-8 mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 border-b-4 border-black">
+    <div class="border-4 border-black p-6 bg-white shadow-brutal">
+      <ResellPortalWidget productSku="esim-global-pass" resellportalStatus="active" theme="light" />
+    </div>
+    <div class="border-4 border-black p-6 bg-white shadow-brutal">
+      <AstroStatusPage />
+    </div>
   </div>
 
   <Pricing

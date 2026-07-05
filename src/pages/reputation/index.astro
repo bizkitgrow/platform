@@ -24,13 +24,19 @@ const currentUrl = Astro.site ? new URL('/reputation', Astro.site).toString() : 
     ]}
   />
 
-  <div class="max-w-screen-xl px-4 py-8 mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 border-b border-borders_subtle">
-    <ResellPortalWidget productSku="reputation-ai" resellportalStatus="active" theme="dark" />
-    <GoogleReviewsWidget />
+  <div class="max-w-screen-xl px-4 py-8 mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 border-b-4 border-black">
+    <div class="border-4 border-black p-6 bg-white shadow-brutal">
+      <ResellPortalWidget productSku="reputation-ai" resellportalStatus="active" theme="light" />
+    </div>
+    <div class="border-4 border-black p-6 bg-white shadow-brutal">
+      <GoogleReviewsWidget />
+    </div>
   </div>
 
-  <div class="max-w-screen-xl px-4 py-12 mx-auto border-b border-borders_subtle">
-    <SEOAuditsWidget />
+  <div class="max-w-screen-xl px-4 py-12 mx-auto border-b-4 border-black">
+    <div class="border-4 border-black p-6 bg-white shadow-brutal">
+      <SEOAuditsWidget />
+    </div>
   </div>
 
   <Features

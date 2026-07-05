@@ -2,86 +2,86 @@
 ---
 
 <div class="seo-audit-widget border-4 border-black p-8 bg-white text-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] max-w-xl mx-auto font-mono">
-  <div class="border-b-2 border-black pb-4 mb-6">
-    <div class="text-xs font-bold uppercase tracking-widest text-brand_cta mb-1">// TELEMETRY_AUDIT</div>
-    <h4 class="text-xl font-black uppercase tracking-tight">Instant Authority Scanner</h4>
-    <p class="text-xs text-gray-700 mt-1 font-medium">Scan your Google indexation and reputation gate score.</p>
-  </div>
+ <div class="border-b-2 border-black pb-4 mb-6">
+ <div class="text-xs font-bold uppercase tracking-widest text-brand_cta mb-1">// TELEMETRY_AUDIT</div>
+ <h4 class="text-xl font-black uppercase tracking-tight">Instant Authority Scanner</h4>
+ <p class="text-xs text-gray-700 mt-1 font-medium">Scan your Google indexation and reputation gate score.</p>
+ </div>
 
-  <div id="scan-flow">
-    <div class="flex flex-col space-y-4">
-      <div class="flex flex-col">
-        <label for="audit-url" class="text-xs font-bold uppercase tracking-wider mb-1">Target URL</label>
-        <input
-          type="url"
-          id="audit-url"
-          required
-          placeholder="https://yourbusiness.com"
-          class="border-2 border-black p-3 font-mono text-sm focus:outline-none focus:bg-yellow-50 focus:ring-0 placeholder-gray-400"
-        />
-      </div>
+ <div id="scan-flow">
+ <div class="flex flex-col space-y-4">
+ <div class="flex flex-col">
+ <label for="audit-url"class="text-xs font-bold uppercase tracking-wider mb-1">Target URL</label>
+ <input
+ type="url"
+ id="audit-url"
+ required
+ placeholder="https://yourbusiness.com"
+ class="border-2 border-black p-3 font-mono text-sm focus:outline-none focus:bg-yellow-50 focus:ring-0 placeholder-gray-400"
+ />
+ </div>
 
-      <button
-        type="button"
-        id="audit-btn"
-        class="bg-black text-white hover:bg-yellow-400 hover:text-black border-2 border-black p-4 font-bold uppercase tracking-widest transition-colors duration-150 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px]"
-      >
-        EXECUTE SCAN
-      </button>
-    </div>
-  </div>
+ <button
+ type="button"
+ id="audit-btn"
+ class="bg-black text-white hover:bg-yellow-400 hover:text-black border-2 border-black p-4 font-bold uppercase tracking-widest transition-colors duration-150 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px]"
+ >
+ EXECUTE SCAN
+ </button>
+ </div>
+ </div>
 
-  <div id="scan-results" class="hidden space-y-6 mt-4">
-    <div class="grid grid-cols-3 gap-3">
-      <div class="border border-black p-3 text-center bg-gray-50">
-        <div class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">SEO</div>
-        <div class="text-xl font-black text-yellow-600">84/100</div>
-      </div>
-      <div class="border border-black p-3 text-center bg-gray-50">
-        <div class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">Indexation</div>
-        <div class="text-xl font-black text-red-600">42%</div>
-      </div>
-      <div class="border border-black p-3 text-center bg-gray-50">
-        <div class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">Reviews</div>
-        <div class="text-xl font-black text-yellow-600">68/100</div>
-      </div>
-    </div>
+ <div id="scan-results"class="hidden space-y-6 mt-4">
+ <div class="grid grid-cols-3 gap-3">
+ <div class="border border-black p-3 text-center bg-gray-50">
+ <div class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">SEO</div>
+ <div class="text-xl font-black text-yellow-600">84/100</div>
+ </div>
+ <div class="border border-black p-3 text-center bg-gray-50">
+ <div class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">Indexation</div>
+ <div class="text-xl font-black text-red-600">42%</div>
+ </div>
+ <div class="border border-black p-3 text-center bg-gray-50">
+ <div class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">Reviews</div>
+ <div class="text-xl font-black text-yellow-600">68/100</div>
+ </div>
+ </div>
 
-    <div class="border-2 border-dashed border-red-500 p-4 bg-red-50 text-red-900 text-xs space-y-1">
-      <div class="font-bold uppercase tracking-wide">🚨 ANOMALIES DETECTED:</div>
-      <p>• 4 broken sitemap paths mapping to defunct routes.</p>
-      <p>• Negative review leakage detected without operational gating.</p>
-    </div>
+ <div class="border-2 border-dashed border-red-500 p-4 bg-red-50 text-red-900 text-xs space-y-1">
+ <div class="font-bold uppercase tracking-wide">🚨 ANOMALIES DETECTED:</div>
+ <p>• 4 broken sitemap paths mapping to defunct routes.</p>
+ <p>• Negative review leakage detected without operational gating.</p>
+ </div>
 
-    <a
-      href="#lead-capture-form"
-      class="block text-center bg-brand_cta text-white hover:bg-black border-2 border-black p-4 font-bold uppercase tracking-widest transition-all duration-150 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px]"
-    >
-      REQUEST CORRECTIVE FLUID
-    </a>
-  </div>
+ <a
+ href="#lead-capture-form"
+ class="block text-center bg-brand_cta text-white hover:bg-black border-2 border-black p-4 font-bold uppercase tracking-widest transition-all duration-150 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px]"
+ >
+ REQUEST CORRECTIVE FLUID
+ </a>
+ </div>
 </div>
 
 <script>
-  const auditBtn = document.getElementById('audit-btn');
-  const auditUrl = document.getElementById('audit-url') as HTMLInputElement;
-  const scanFlow = document.getElementById('scan-flow');
-  const scanResults = document.getElementById('scan-results');
+ const auditBtn = document.getElementById('audit-btn');
+ const auditUrl = document.getElementById('audit-url') as HTMLInputElement;
+ const scanFlow = document.getElementById('scan-flow');
+ const scanResults = document.getElementById('scan-results');
 
-  if (auditBtn && auditUrl && scanFlow && scanResults) {
-    auditBtn.addEventListener('click', () => {
-      if (!auditUrl.value || !auditUrl.validity.valid) {
-        auditUrl.reportValidity();
-        return;
-      }
+ if (auditBtn && auditUrl && scanFlow && scanResults) {
+ auditBtn.addEventListener('click', () => {
+ if (!auditUrl.value || !auditUrl.validity.valid) {
+ auditUrl.reportValidity();
+ return;
+ }
 
-      auditBtn.disabled = true;
-      auditBtn.textContent = 'RUNNING TELEMETRY...';
+ auditBtn.disabled = true;
+ auditBtn.textContent = 'RUNNING TELEMETRY...';
 
-      setTimeout(() => {
-        scanFlow.classList.add('hidden');
-        scanResults.classList.remove('hidden');
-      }, 1500);
-    });
-  }
+ setTimeout(() => {
+ scanFlow.classList.add('hidden');
+ scanResults.classList.remove('hidden');
+ }, 1500);
+ });
+ }
 </script>

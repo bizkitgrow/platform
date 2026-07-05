@@ -8,6 +8,7 @@ import {
   timestamp,
   uniqueIndex,
   varchar,
+  index,
 } from 'drizzle-orm/pg-core';
 
 export const categories = pgTable('categories', {
@@ -74,5 +75,14 @@ export const leads = pgTable('leads', {
   email: varchar('email', { length: 255 }).notNull(),
   businessName: varchar('business_name', { length: 255 }),
   targetedService: varchar('targeted_service', { length: 100 }),
+  status: varchar('status', { length: 50 }).default('new'),
+  utmSource: varchar('utm_source', { length: 255 }),
+  utmMedium: varchar('utm_medium', { length: 255 }),
+  utmCampaign: varchar('utm_campaign', { length: 255 }),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
-});
+  updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow(),
+}, (table) => ({
+  emailIdx: index('idx_leads_email').on(table.email),
+  createdIdx: index('idx_leads_created_at').on(table.createdAt),
+  statusIdx: index('idx_leads_status').on(table.status)
+}));

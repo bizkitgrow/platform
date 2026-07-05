@@ -12,8 +12,17 @@ const currentUrl = Astro.site ? new URL('/solutions', Astro.site).toString() : '
 <BaseLayout
   title="Flow Automation | Bizkitgrow"
   description="Consolidate invoicing, AI-powered scheduling, and secure e-signature workflows."
-  canonicalUrl={currentUrl}
 >
+  <script type="application/ld+json" slot="schema" is:inline>
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Bizkitgrow CRM Suite",
+      "operatingSystem": "Web",
+      "applicationCategory": "BusinessApplication",
+      "description": "Consolidate invoicing, AI-powered scheduling, and secure e-signature workflows into a single client portal."
+    }
+  </script>
   <Hero
     tagline="PILLAR 03 // FLOW AUTOMATION"
     title="Operational CRM Suite"
@@ -23,9 +32,13 @@ const currentUrl = Astro.site ? new URL('/solutions', Astro.site).toString() : '
     ]}
   />
 
-  <div class="max-w-screen-xl px-4 py-8 mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 border-b border-borders_subtle">
-    <ResellPortalWidget productSku="crm-suite" resellportalStatus="active" theme="dark" />
-    <LighthouseBadge />
+  <div class="max-w-screen-xl px-4 py-8 mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 border-b-4 border-black">
+    <div class="border-4 border-black p-6 bg-white shadow-brutal">
+      <ResellPortalWidget productSku="crm-suite" resellportalStatus="active" theme="light" />
+    </div>
+    <div class="border-4 border-black p-6 bg-white shadow-brutal flex items-center justify-center">
+      <LighthouseBadge />
+    </div>
   </div>
 
   <Features
