@@ -36,6 +36,25 @@ async function scrapeFullContent(url) {
     if (!res.ok) return null;
     const html = await res.text();
     const dom = new JSDOM(html, { url });
+    
+    // Extract first image
+    let originalImage = null;
+    const imgElement = dom.window.document.querySelector('img');
+    if (imgElement && imgElement.src) {
+      originalImage = imgElement.src;
+    }
+    
+    // Remove unwanted elements
+    const unwantedSelectors = ['.related-posts', '#related-posts', 'footer', '.widget', '.advertisement', 'aside', '.share-buttons', '.social-share'];
+    unwantedSelectors.forEach(selector => {
+      const elements = dom.window.document.querySelectorAll(selector);
+      elements.forEach(el => el.remove());
+    });
+    
+    // Remove ALL images from the content to avoid duplicates with the hero image
+    const allImages = dom.window.document.querySelectorAll('img');
+    allImages.forEach(img => img.remove());
+
     const reader = new Readability(dom.window.document);
     const article = reader.parse();
     if (!article || !article.textContent) return null;
@@ -43,6 +62,7 @@ async function scrapeFullContent(url) {
       title: article.title,
       textContent: article.textContent.trim(),
       contentHtml: article.content,
+      originalImage: originalImage,
     };
   } catch (err) {
     console.error('Error scraping:', err.message);
@@ -129,6 +149,7 @@ Format response STRICTLY as a raw JSON object (no markdown code fences or markdo
     source_url: url,
     ai_summary: aiSummary,
     hash: hash,
+    original_image: scraped.originalImage,
   }]);
 
   if (error) {
@@ -247,6 +268,7 @@ Format response STRICTLY as a raw JSON object (no markdown code fences or markdo
       source_url: url,
       ai_summary: aiSummary,
       hash: hash,
+      original_image: originalImage,
     }]);
 
     if (error) {

@@ -30,6 +30,25 @@ async function scrapeFullContent(url) {
     }
     const html = await res.text();
     const dom = new JSDOM(html, { url });
+    
+    // Extract first image
+    let originalImage = null;
+    const imgElement = dom.window.document.querySelector('img');
+    if (imgElement && imgElement.src) {
+      originalImage = imgElement.src;
+    }
+    
+    // Remove unwanted elements
+    const unwantedSelectors = ['.related-posts', '#related-posts', 'footer', '.widget', '.advertisement', 'aside', '.share-buttons', '.social-share'];
+    unwantedSelectors.forEach(selector => {
+      const elements = dom.window.document.querySelectorAll(selector);
+      elements.forEach(el => el.remove());
+    });
+    
+    // Remove ALL images from the content to avoid duplicates with the hero image
+    const allImages = dom.window.document.querySelectorAll('img');
+    allImages.forEach(img => img.remove());
+
     const reader = new Readability(dom.window.document);
     const article = reader.parse();
     if (!article || !article.textContent) {
@@ -39,6 +58,7 @@ async function scrapeFullContent(url) {
     return {
       textContent: article.textContent.trim(),
       contentHtml: article.content,
+      originalImage: originalImage,
     };
   } catch (err) {
     console.warn(`[Pipeline] Scraper: Error scraping ${url}:`, err.message);
@@ -318,6 +338,7 @@ Format response STRICTLY as a raw JSON object (no markdown code fences or markdo
             target_product_sku: classified.key,
             source_url: art.link,
             ai_summary: aiSummary,
+            original_image: scraped.originalImage,
             hash: hash,
           },
         ]);

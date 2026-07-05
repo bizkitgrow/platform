@@ -107,6 +107,13 @@ const { targetedService = 'General' } = Astro.props;
  responseDiv.classList.add('text-teal-600');
  responseDiv.textContent = 'Priority access secured. Please check your email.';
  form.reset();
+ 
+ // Trigger OneSignal Push Notification Prompt
+ if (window.OneSignalDeferred) {
+   window.OneSignalDeferred.push(function(OneSignal) {
+     OneSignal.Slidedown.promptPush();
+   });
+ }
  } else {
  responseDiv.classList.add('text-red-600');
  responseDiv.textContent = data.error || 'System error occurred. Please refresh the page.';

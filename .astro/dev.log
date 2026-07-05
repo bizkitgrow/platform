@@ -4534,3 +4534,305 @@ Redis set failed for shortUrl: TypeError: Failed to parse URL from /pipeline
 {"message":"/node_modules/@astrojs/tailwind/base.css, /src/styles/global.css","label":"watch","level":"info"}
 {"message":"/node_modules/@astrojs/tailwind/base.css, /src/styles/global.css","label":"watch","level":"info"}
 {"message":"/node_modules/@astrojs/tailwind/base.css, /src/styles/global.css","label":"watch","level":"info"}
+{"message":"[console.warn] [OneSignal] Initialization bypassed: Error: Can only be used on: https://bizkitgrow.vercel.app\n    at https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:18361\n    at https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:18423\n    at async t.zr (https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:135403)\n    at async t.init (https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:136036)\n    at async http://localhost:4321/blog/the-future-of-work-is-slowmadism-the-answer-to-cutting-the-carbon-cost-of-remote-work-diginomica:5:9\n    at async https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:140457","label":"vite","level":"warn"}
+[Upstash Redis] Unable to find environment variable: `UPSTASH_REDIS_REST_URL`
+[Upstash Redis] Unable to find environment variable: `UPSTASH_REDIS_REST_TOKEN`
+[Upstash Redis] The 'url' property is missing or undefined in your Redis config.
+[Upstash Redis] The 'token' property is missing or undefined in your Redis config.
+[Upstash Redis] Redis client was initialized without url or token. Failed to execute command.
+Redis shortUrl read failed: TypeError: Failed to parse URL from /pipeline
+    at node:internal/deps/undici/undici:15845:13
+    at async HttpClient.request (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:170:15)
+    at async Pipeline.exec (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:3057:17)
+    ... 2 lines matching cause stack trace ...
+    at async eval (/Users/mac/Downloads/PROYEK/BIZKITDEV/src/pages/blog/[slug].astro:177:1)
+    at async callComponentAsTemplateResultOrResponse (/Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/astro/dist/runtime/server/render/astro/render.js:203:25)
+    at async renderToAsyncIterable (/Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/astro/dist/runtime/server/render/astro/render.js:235:26)
+    at async renderPage (/Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/astro/dist/runtime/server/render/page.js:43:24)
+    at async PagesHandler.handle (/Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/astro/dist/core/pages/handler.js:37:22) {
+  [cause]: TypeError: Invalid URL
+      at new URL (node:internal/url:828:25)
+      at new Request (node:internal/deps/undici/undici:10413:25)
+      at fetch (node:internal/deps/undici/undici:11325:25)
+      at fetch (node:internal/deps/undici/undici:15843:10)
+      at fetch (node:internal/bootstrap/web/exposed-window-or-worker:83:12)
+      at HttpClient.request (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:170:21)
+      at async Pipeline.exec (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:3057:17)
+      at async AutoPipelineExecutor.withAutoPipeline (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:4116:21)
+      at async getOrCreateShortUrl (/Users/mac/Downloads/PROYEK/BIZKITDEV/src/pages/blog/[slug].astro:25:1)
+      at async eval (/Users/mac/Downloads/PROYEK/BIZKITDEV/src/pages/blog/[slug].astro:177:1) {
+    code: 'ERR_INVALID_URL',
+    input: '/pipeline'
+  }
+}
+[Upstash Redis] Redis client was initialized without url or token. Failed to execute command.
+Redis set failed for shortUrl: TypeError: Failed to parse URL from /pipeline
+    at node:internal/deps/undici/undici:15845:13
+    at async HttpClient.request (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:170:15)
+    at async Pipeline.exec (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:3057:17)
+    ... 2 lines matching cause stack trace ...
+    at async eval (/Users/mac/Downloads/PROYEK/BIZKITDEV/src/pages/blog/[slug].astro:177:1)
+    at async callComponentAsTemplateResultOrResponse (/Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/astro/dist/runtime/server/render/astro/render.js:203:25)
+    at async renderToAsyncIterable (/Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/astro/dist/runtime/server/render/astro/render.js:235:26)
+    at async renderPage (/Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/astro/dist/runtime/server/render/page.js:43:24)
+    at async PagesHandler.handle (/Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/astro/dist/core/pages/handler.js:37:22) {
+  [cause]: TypeError: Invalid URL
+      at new URL (node:internal/url:828:25)
+      at new Request (node:internal/deps/undici/undici:10413:25)
+      at fetch (node:internal/deps/undici/undici:11325:25)
+      at fetch (node:internal/deps/undici/undici:15843:10)
+      at fetch (node:internal/bootstrap/web/exposed-window-or-worker:83:12)
+      at HttpClient.request (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:170:21)
+      at async Pipeline.exec (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:3057:17)
+      at async AutoPipelineExecutor.withAutoPipeline (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:4116:21)
+      at async getOrCreateShortUrl (/Users/mac/Downloads/PROYEK/BIZKITDEV/src/pages/blog/[slug].astro:53:1)
+      at async eval (/Users/mac/Downloads/PROYEK/BIZKITDEV/src/pages/blog/[slug].astro:177:1) {
+    code: 'ERR_INVALID_URL',
+    input: '/pipeline'
+  }
+}
+[Upstash Redis] Redis client was initialized without url or token. Failed to execute command.
+Redis shortUrl read failed: TypeError: Failed to parse URL from /pipeline
+    at node:internal/deps/undici/undici:15845:13
+    at async HttpClient.request (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:170:15)
+    at async Pipeline.exec (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:3057:17)
+    ... 2 lines matching cause stack trace ...
+    at async eval (/Users/mac/Downloads/PROYEK/BIZKITDEV/src/pages/blog/[slug].astro:179:1)
+    at async callComponentAsTemplateResultOrResponse (/Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/astro/dist/runtime/server/render/astro/render.js:203:25)
+    at async renderToAsyncIterable (/Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/astro/dist/runtime/server/render/astro/render.js:235:26)
+    at async renderPage (/Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/astro/dist/runtime/server/render/page.js:43:24)
+    at async PagesHandler.handle (/Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/astro/dist/core/pages/handler.js:37:22) {
+  [cause]: TypeError: Invalid URL
+      at new URL (node:internal/url:828:25)
+      at new Request (node:internal/deps/undici/undici:10413:25)
+      at fetch (node:internal/deps/undici/undici:11325:25)
+      at fetch (node:internal/deps/undici/undici:15843:10)
+      at fetch (node:internal/bootstrap/web/exposed-window-or-worker:83:12)
+      at HttpClient.request (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:170:21)
+      at async Pipeline.exec (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:3057:17)
+      at async AutoPipelineExecutor.withAutoPipeline (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:4116:21)
+      at async getOrCreateShortUrl (/Users/mac/Downloads/PROYEK/BIZKITDEV/src/pages/blog/[slug].astro:25:1)
+      at async eval (/Users/mac/Downloads/PROYEK/BIZKITDEV/src/pages/blog/[slug].astro:179:1) {
+    code: 'ERR_INVALID_URL',
+    input: '/pipeline'
+  }
+}
+[Upstash Redis] Redis client was initialized without url or token. Failed to execute command.
+Redis set failed for shortUrl: TypeError: Failed to parse URL from /pipeline
+    at node:internal/deps/undici/undici:15845:13
+    at async HttpClient.request (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:170:15)
+    at async Pipeline.exec (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:3057:17)
+    ... 2 lines matching cause stack trace ...
+    at async eval (/Users/mac/Downloads/PROYEK/BIZKITDEV/src/pages/blog/[slug].astro:179:1)
+    at async callComponentAsTemplateResultOrResponse (/Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/astro/dist/runtime/server/render/astro/render.js:203:25)
+    at async renderToAsyncIterable (/Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/astro/dist/runtime/server/render/astro/render.js:235:26)
+    at async renderPage (/Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/astro/dist/runtime/server/render/page.js:43:24)
+    at async PagesHandler.handle (/Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/astro/dist/core/pages/handler.js:37:22) {
+  [cause]: TypeError: Invalid URL
+      at new URL (node:internal/url:828:25)
+      at new Request (node:internal/deps/undici/undici:10413:25)
+      at fetch (node:internal/deps/undici/undici:11325:25)
+      at fetch (node:internal/deps/undici/undici:15843:10)
+      at fetch (node:internal/bootstrap/web/exposed-window-or-worker:83:12)
+      at HttpClient.request (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:170:21)
+      at async Pipeline.exec (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:3057:17)
+      at async AutoPipelineExecutor.withAutoPipeline (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:4116:21)
+      at async getOrCreateShortUrl (/Users/mac/Downloads/PROYEK/BIZKITDEV/src/pages/blog/[slug].astro:53:1)
+      at async eval (/Users/mac/Downloads/PROYEK/BIZKITDEV/src/pages/blog/[slug].astro:179:1) {
+    code: 'ERR_INVALID_URL',
+    input: '/pipeline'
+  }
+}
+[Upstash Redis] Redis client was initialized without url or token. Failed to execute command.
+Redis shortUrl read failed: TypeError: Failed to parse URL from /pipeline
+    at node:internal/deps/undici/undici:15845:13
+    at async HttpClient.request (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:170:15)
+    at async Pipeline.exec (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:3057:17)
+    ... 2 lines matching cause stack trace ...
+    at async eval (/Users/mac/Downloads/PROYEK/BIZKITDEV/src/pages/blog/[slug].astro:181:1)
+    at async callComponentAsTemplateResultOrResponse (/Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/astro/dist/runtime/server/render/astro/render.js:203:25)
+    at async renderToAsyncIterable (/Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/astro/dist/runtime/server/render/astro/render.js:235:26)
+    at async renderPage (/Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/astro/dist/runtime/server/render/page.js:43:24)
+    at async PagesHandler.handle (/Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/astro/dist/core/pages/handler.js:37:22) {
+  [cause]: TypeError: Invalid URL
+      at new URL (node:internal/url:828:25)
+      at new Request (node:internal/deps/undici/undici:10413:25)
+      at fetch (node:internal/deps/undici/undici:11325:25)
+      at fetch (node:internal/deps/undici/undici:15843:10)
+      at fetch (node:internal/bootstrap/web/exposed-window-or-worker:83:12)
+      at HttpClient.request (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:170:21)
+      at async Pipeline.exec (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:3057:17)
+      at async AutoPipelineExecutor.withAutoPipeline (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:4116:21)
+      at async getOrCreateShortUrl (/Users/mac/Downloads/PROYEK/BIZKITDEV/src/pages/blog/[slug].astro:25:1)
+      at async eval (/Users/mac/Downloads/PROYEK/BIZKITDEV/src/pages/blog/[slug].astro:181:1) {
+    code: 'ERR_INVALID_URL',
+    input: '/pipeline'
+  }
+}
+[Upstash Redis] Redis client was initialized without url or token. Failed to execute command.
+Redis set failed for shortUrl: TypeError: Failed to parse URL from /pipeline
+    at node:internal/deps/undici/undici:15845:13
+    at async HttpClient.request (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:170:15)
+    at async Pipeline.exec (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:3057:17)
+    ... 2 lines matching cause stack trace ...
+    at async eval (/Users/mac/Downloads/PROYEK/BIZKITDEV/src/pages/blog/[slug].astro:181:1)
+    at async callComponentAsTemplateResultOrResponse (/Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/astro/dist/runtime/server/render/astro/render.js:203:25)
+    at async renderToAsyncIterable (/Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/astro/dist/runtime/server/render/astro/render.js:235:26)
+    at async renderPage (/Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/astro/dist/runtime/server/render/page.js:43:24)
+    at async PagesHandler.handle (/Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/astro/dist/core/pages/handler.js:37:22) {
+  [cause]: TypeError: Invalid URL
+      at new URL (node:internal/url:828:25)
+      at new Request (node:internal/deps/undici/undici:10413:25)
+      at fetch (node:internal/deps/undici/undici:11325:25)
+      at fetch (node:internal/deps/undici/undici:15843:10)
+      at fetch (node:internal/bootstrap/web/exposed-window-or-worker:83:12)
+      at HttpClient.request (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:170:21)
+      at async Pipeline.exec (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:3057:17)
+      at async AutoPipelineExecutor.withAutoPipeline (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/@upstash/redis/chunk-2X4SLXT7.mjs:4116:21)
+      at async getOrCreateShortUrl (/Users/mac/Downloads/PROYEK/BIZKITDEV/src/pages/blog/[slug].astro:53:1)
+      at async eval (/Users/mac/Downloads/PROYEK/BIZKITDEV/src/pages/blog/[slug].astro:181:1) {
+    code: 'ERR_INVALID_URL',
+    input: '/pipeline'
+  }
+}
+{"message":"[200] /blog/the-future-of-work-is-slowmadism-the-answer-to-cutting-the-carbon-cost-of-remote-work-diginomica 26852ms","label":null,"level":"info"}
+{"message":"[console.warn] [OneSignal] Initialization bypassed: Error: Can only be used on: https://bizkitgrow.vercel.app\n    at https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:18361\n    at https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:18423\n    at async t.zr (https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:135403)\n    at async t.init (https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:136036)\n    at async http://localhost:4321/blog/the-future-of-work-is-slowmadism-the-answer-to-cutting-the-carbon-cost-of-remote-work-diginomica:5:9\n    at async https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:140457","label":"vite","level":"warn"}
+{"message":"/src/pages/blog/[slug].astro?astro&type=style&index=0&lang.css","label":"watch","level":"info"}
+{"message":"src/pages/blog/[slug].astro","label":"watch","level":"info"}
+{"message":"[200] /blog/the-future-of-work-is-slowmadism-the-answer-to-cutting-the-carbon-cost-of-remote-work-diginomica 852ms","label":null,"level":"info"}
+{"message":"[console.warn] [OneSignal] Initialization bypassed: Error: Can only be used on: https://bizkitgrow.vercel.app\n    at https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:18361\n    at https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:18423\n    at async t.zr (https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:135403)\n    at async t.init (https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:136036)\n    at async http://localhost:4321/blog/the-future-of-work-is-slowmadism-the-answer-to-cutting-the-carbon-cost-of-remote-work-diginomica:5:9\n    at async https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:140457","label":"vite","level":"warn"}
+{"message":"[200] /esim/united-states 243ms","label":null,"level":"info"}
+{"message":"/node_modules/@astrojs/tailwind/base.css, /src/styles/global.css","label":"watch","level":"info"}
+{"message":"[200] / 1469ms","label":null,"level":"info"}
+{"message":"/node_modules/@astrojs/tailwind/base.css, /src/styles/global.css","label":"watch","level":"info"}
+{"message":"/node_modules/@astrojs/tailwind/base.css, /src/styles/global.css","label":"watch","level":"info"}
+{"message":"src/components/widgets/NetworkOptimizer.astro","label":"watch","level":"info"}
+{"message":"[200] / 256ms","label":null,"level":"info"}
+{"message":"[200] / 262ms","label":null,"level":"info"}
+{"message":"/node_modules/@astrojs/tailwind/base.css, /src/styles/global.css","label":"watch","level":"info"}
+{"message":"[200] / 193ms","label":null,"level":"info"}
+{"message":"[console.warn] [OneSignal] Initialization bypassed: Error: Can only be used on: https://bizkitgrow.vercel.app\n    at https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:18361\n    at https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:18423\n    at async t.zr (https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:135403)\n    at async t.init (https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:136036)\n    at async http://localhost:4321/:5:9\n    at async https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:140457","label":"vite","level":"warn"}
+{"message":".vercel/output/static/404.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/privacy/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/terms/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/canada/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/germany/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/united-states/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/ai-web-builder/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/appointment-booking/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/email-marketing/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/global-vpn-infrastructure/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/crm-system/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/invoicing-with-ai/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/secure-cloud-storage/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/social-automation/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/search-engine-optimization/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/united-kingdom/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/berlin/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/new-york/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/cpanel-managed-hosting/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/london/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/sydney/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/australia/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/toronto/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/privacy/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/sydney/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/new-york/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/toronto/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/london/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/berlin/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/terms/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/404.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/invoicing-with-ai/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/global-vpn-infrastructure/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/email-marketing/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/ai-web-builder/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/social-automation/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/crm-system/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/secure-cloud-storage/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/appointment-booking/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/search-engine-optimization/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/cpanel-managed-hosting/index.html","label":"watch","level":"info"}
+{"message":"[200] /esim/united-states 572ms","label":null,"level":"info"}
+{"message":"[200] /reputation/new-york 198ms","label":null,"level":"info"}
+{"message":"[console.warn] [OneSignal] Initialization bypassed: Error: Can only be used on: https://bizkitgrow.vercel.app\n    at https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:18361\n    at https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:18423\n    at async t.zr (https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:135403)\n    at async t.init (https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:136036)\n    at async http://localhost:4321/reputation/new-york:5:9\n    at async https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:140457","label":"vite","level":"warn"}
+{"message":"[200] /esim/united-states 28ms","label":null,"level":"info"}
+{"message":"[200] /reputation/new-york 35ms","label":null,"level":"info"}
+{"message":"[console.warn] [OneSignal] Initialization bypassed: Error: Can only be used on: https://bizkitgrow.vercel.app\n    at https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:18361\n    at https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:18423\n    at async t.zr (https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:135403)\n    at async t.init (https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:136036)\n    at async http://localhost:4321/reputation/new-york:5:9\n    at async https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:140457","label":"vite","level":"warn"}
+{"message":"[200] /solutions/crm-system 182ms","label":null,"level":"info"}
+{"message":"[console.warn] [OneSignal] Initialization bypassed: Error: Can only be used on: https://bizkitgrow.vercel.app\n    at https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:18361\n    at https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:18423\n    at async t.zr (https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:135403)\n    at async t.init (https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:136036)\n    at async http://localhost:4321/solutions/crm-system:5:9\n    at async https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:140457","label":"vite","level":"warn"}
+{"message":"[200] /blog 566ms","label":null,"level":"info"}
+{"message":"[console.warn] [OneSignal] Initialization bypassed: Error: Can only be used on: https://bizkitgrow.vercel.app\n    at https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:18361\n    at https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:18423\n    at async t.zr (https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:135403)\n    at async t.init (https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:136036)\n    at async http://localhost:4321/blog:22:9\n    at async https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:140457","label":"vite","level":"warn"}
+{"message":"[200] /blog/ai-edge-computing 325ms","label":null,"level":"info"}
+{"message":"[console.warn] [OneSignal] Initialization bypassed: Error: Can only be used on: https://bizkitgrow.vercel.app\n    at https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:18361\n    at https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:18423\n    at async t.zr (https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:135403)\n    at async t.init (https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:136036)\n    at async http://localhost:4321/blog/ai-edge-computing:5:9\n    at async https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:140457","label":"vite","level":"warn"}
+{"message":"[200] /s/e36130 148ms","label":null,"level":"info"}
+{"message":"[200] / 378ms","label":null,"level":"info"}
+{"message":"[console.warn] [OneSignal] Initialization bypassed: Error: Can only be used on: https://bizkitgrow.vercel.app\n    at https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:18361\n    at https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:18423\n    at async t.zr (https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:135403)\n    at async t.init (https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:136036)\n    at async http://localhost:4321/:5:9\n    at async https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:140457","label":"vite","level":"warn"}
+{"message":"[200] /solutions/crm-system 48ms","label":null,"level":"info"}
+{"message":"[console.warn] [OneSignal] Initialization bypassed: Error: Can only be used on: https://bizkitgrow.vercel.app\n    at https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:18361\n    at https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:18423\n    at async t.zr (https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:135403)\n    at async t.init (https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:136036)\n    at async http://localhost:4321/solutions/crm-system:5:9\n    at async https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:140457","label":"vite","level":"warn"}
+{"message":"[200] /reputation/new-york 47ms","label":null,"level":"info"}
+{"message":"[200] /reputation 373ms","label":null,"level":"info"}
+{"message":"[200] /esim/united-states 41ms","label":null,"level":"info"}
+{"message":"[console.warn] [OneSignal] Initialization bypassed: Error: Can only be used on: https://bizkitgrow.vercel.app\n    at https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:18361\n    at https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:18423\n    at async t.zr (https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:135403)\n    at async t.init (https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:136036)\n    at async http://localhost:4321/esim/united-states:5:9\n    at async https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:140457","label":"vite","level":"warn"}
+{"message":"[200] /esim 25ms","label":null,"level":"info"}
+{"message":"[200] /solutions/crm-system 48ms","label":null,"level":"info"}
+{"message":"[console.warn] [OneSignal] Initialization bypassed: Error: Can only be used on: https://bizkitgrow.vercel.app\n    at https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:18361\n    at https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:18423\n    at async t.zr (https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:135403)\n    at async t.init (https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:136036)\n    at async http://localhost:4321/solutions/crm-system:5:9\n    at async https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:140457","label":"vite","level":"warn"}
+{"message":"[200] /solutions 241ms","label":null,"level":"info"}
+{"message":"[console.warn] [OneSignal] Initialization bypassed: Error: Can only be used on: https://bizkitgrow.vercel.app\n    at https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:18361\n    at https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:18423\n    at async t.zr (https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:135403)\n    at async t.init (https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:136036)\n    at async http://localhost:4321/solutions:5:9\n    at async https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:140457","label":"vite","level":"warn"}
+{"message":"src/components/widgets/NetworkOptimizer.astro","label":"watch","level":"info"}
+{"message":"src/pages/esim/[country].astro","label":"watch","level":"info"}
+{"message":"src/pages/esim/index.astro","label":"watch","level":"info"}
+{"message":"/node_modules/@astrojs/tailwind/base.css, /src/styles/global.css","label":"watch","level":"info"}
+{"message":"src/pages/blog/[slug].astro","label":"watch","level":"info"}
+{"message":"src/layouts/BaseLayout.astro","label":"watch","level":"info"}
+{"message":"src/layouts/BaseLayout.astro","label":"watch","level":"info"}
+{"message":"src/layouts/BaseLayout.astro","label":"watch","level":"info"}
+{"message":".vercel/output/static/404.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/terms/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/privacy/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/berlin/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/london/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/sydney/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/new-york/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/toronto/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/crm-system/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/cpanel-managed-hosting/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/email-marketing/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/search-engine-optimization/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/invoicing-with-ai/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/global-vpn-infrastructure/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/social-automation/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/appointment-booking/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/secure-cloud-storage/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/ai-web-builder/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/privacy/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/sydney/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/new-york/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/toronto/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/london/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/berlin/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/terms/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/404.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/invoicing-with-ai/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/global-vpn-infrastructure/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/email-marketing/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/ai-web-builder/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/social-automation/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/crm-system/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/secure-cloud-storage/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/appointment-booking/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/search-engine-optimization/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/cpanel-managed-hosting/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/australia/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/germany/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/united-states/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/canada/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/united-kingdom/index.html","label":"watch","level":"info"}

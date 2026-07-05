@@ -14,50 +14,9 @@ Astro.response.headers.set('Cache-Control', 'public, max-age=0, s-maxage=3600');
 
 export const prerender = false;
 
-// Initialize Redis for url cache
-const redis = Redis.fromEnv();
+// Redis integration for short URLs was removed to simplify the architecture 
+// and prevent SSR errors on Vercel Edge when crypto/upstash fails.
 
-async function getOrCreateShortUrl(url: string, origin: string) {
-  if (!url) return '';
-
-  // Try reading from Upstash Redis cache first
-  try {
-    const cached = await redis.get(`shorturl:${url}`);
-    if (cached && typeof cached === 'string') return cached;
-  } catch (err) {
-    console.warn('Redis shortUrl read failed:', err);
-  }
-
-  const encoder = new TextEncoder();
-  const data = encoder.encode(url);
-  const hashBuffer = await crypto.subtle.digest('SHA-1', data);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  const hash = hashArray
-    .map((b) => b.toString(16).padStart(2, '0'))
-    .join('')
-    .slice(0, 6);
-
-  const shorted = new URL(`/s/${hash}`, origin).toString();
-
-  try {
-    await db
-      .insert(shortUrls)
-      .values({ hash, originalUrl: url })
-      .onConflictDoNothing({ target: shortUrls.hash });
-  } catch (e) {
-    console.warn('DB insert failed for shortUrl:', e);
-  }
-
-  try {
-    // Cache the resolved URL in Redis mapping both ways
-    await redis.set(`shorturl:${url}`, shorted);
-    await redis.set(`shorturl-hash:${hash}`, url);
-  } catch (e) {
-    console.warn('Redis set failed for shortUrl:', e);
-  }
-
-  return shorted;
-}
 
 const { slug } = Astro.params;
 
@@ -174,11 +133,10 @@ const pillarLabels: Record<string, string> = {
 const metaDesc = aiMeta.metaDesc || activePost.metaDesc || activePost.title;
 
 // Short URL Generation
-const shareUrl = await getOrCreateShortUrl(Astro.url.href, Astro.url.origin);
-const sourceUrlShort = activePost.sourceUrl
-  ? await getOrCreateShortUrl(activePost.sourceUrl, Astro.url.origin)
-  : null;
-const embedIframeSrc = await getOrCreateShortUrl(`${Astro.url.href}?embed=true`, Astro.url.origin);
+const shareUrl = Astro.url.href;
+const sourceUrlShort = activePost.sourceUrl ? activePost.sourceUrl : '';
+
+const embedIframeSrc = `${Astro.url.href}?embed=true`;
 
 // Breadcrumb Schema
 const breadcrumbSchema = {
@@ -551,6 +509,10 @@ const articleSchema = {
     /* Brutalist prose overrides for Flowbite format */
     .prose-brutalist {
         font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .prose-brutalist p {
+        margin-bottom: 1.5rem;
+        line-height: 1.8;
     }
     .prose-brutalist h2, .prose-brutalist h3, .prose-brutalist h4 {
         font-family: 'Plus Jakarta Sans', sans-serif;

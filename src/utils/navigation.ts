@@ -5,17 +5,17 @@ export interface NavLink {
 
 export const navigationLinks: NavLink[] = [
   { href: '/', label: 'HOME' },
-  { href: '/esim/united-states', label: 'eSIM CONNECTIVITY' },
-  { href: '/reputation/new-york', label: 'LOCAL AUTHORITY' },
-  { href: '/solutions/crm-system', label: 'SAAS SUITE' },
+  { href: '/esim', label: 'eSIM CONNECTIVITY' },
+  { href: '/reputation', label: 'LOCAL AUTHORITY' },
+  { href: '/solutions', label: 'SAAS SUITE' },
   { href: '/blog', label: 'INTELLIGENCE' },
 ];
 
 export const footerLinks = {
   product: [
-    { href: '/esim/united-states', label: 'Global eSIM Plans' },
-    { href: '/reputation/new-york', label: 'Reputation Gating' },
-    { href: '/solutions/crm-system', label: 'CRM & Automation' },
+    { href: '/esim', label: 'Global eSIM Plans' },
+    { href: '/reputation', label: 'Reputation Gating' },
+    { href: '/solutions', label: 'CRM & Automation' },
     { href: '/blog', label: 'Intelligence Feed' },
   ],
   company: [

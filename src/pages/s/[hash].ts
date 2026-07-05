@@ -6,7 +6,14 @@ import { shortUrls } from '../../db/schema';
 
 export const prerender = false;
 
-const redis = Redis.fromEnv();
+let redis = null;
+try {
+  if (import.meta.env.UPSTASH_REDIS_REST_URL && import.meta.env.UPSTASH_REDIS_REST_TOKEN) {
+    redis = Redis.fromEnv();
+  }
+} catch (e) {
+  console.warn('Redis initialization failed, fallback to DB only');
+}
 
 export const GET: APIRoute = async ({ params, redirect }) => {
   const hash = params.hash;
@@ -15,13 +22,15 @@ export const GET: APIRoute = async ({ params, redirect }) => {
     return redirect('/404');
   }
 
-  try {
-    const cachedUrl = await redis.get(`shorturl-hash:${hash}`);
-    if (cachedUrl && typeof cachedUrl === 'string') {
-      return redirect(cachedUrl, 301);
+  if (redis) {
+    try {
+      const cachedUrl = await redis.get(`shorturl-hash:${hash}`);
+      if (cachedUrl && typeof cachedUrl === 'string') {
+        return redirect(cachedUrl, 301);
+      }
+    } catch (error) {
+      console.warn('Redis shortUrl read failed:', error);
     }
-  } catch (error) {
-    console.warn('Redis shortUrl read failed:', error);
   }
 
   try {
