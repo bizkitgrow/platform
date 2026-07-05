@@ -1,50 +1,87 @@
 /** @type {import('tailwindcss').Config} */
 const defaultTheme = require('tailwindcss/defaultTheme');
 
-export default {
+module.exports = {
+  darkMode: ["class"],
   content: [
     './src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}',
-    './node_modules/flowbite/**/*.js',
   ],
-  darkMode: 'class', // Enforce dark mode
   theme: {
+    container: {
+      center: true,
+      padding: "2rem",
+      screens: {
+        "2xl": "1400px",
+      },
+    },
     extend: {
       colors: {
+        border: "var(--border)",
+        input: "var(--input)",
+        ring: "var(--ring)",
+        background: "var(--background)",
+        foreground: "var(--foreground)",
+        primary: {
+          DEFAULT: "var(--primary)",
+          foreground: "var(--primary-foreground)",
+        },
+        secondary: {
+          DEFAULT: "var(--secondary)",
+          foreground: "var(--secondary-foreground)",
+        },
+        destructive: {
+          DEFAULT: "var(--destructive)",
+          foreground: "var(--destructive-foreground)",
+        },
+        muted: {
+          DEFAULT: "var(--muted)",
+          foreground: "var(--muted-foreground)",
+        },
+        accent: {
+          DEFAULT: "var(--accent)",
+          foreground: "var(--accent-foreground)",
+        },
+        popover: {
+          DEFAULT: "var(--popover)",
+          foreground: "var(--popover-foreground)",
+        },
+        card: {
+          DEFAULT: "var(--card)",
+          foreground: "var(--card-foreground)",
+        },
         canvas: '#FFFFFF',
         canvas_accent: '#F8FAFC',
-        brand_cta: '#0f766e', // teal-700
-        brand_cta_hover: '#115e59', // teal-800
-        text_primary: '#0F172A', // slate-900
-        text_secondary: '#475569', // slate-600
-        borders_subtle: '#E2E8F0', // slate-200
-        borders: '#000000', // thick black borders for brutalism
+        brand_cta: '#0f766e',
+        brand_cta_hover: '#115e59',
+        text_primary: '#0F172A',
+        text_secondary: '#475569',
+        borders_subtle: '#E2E8F0',
+      },
+      borderRadius: {
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        sans: ['Outfit', ...defaultTheme.fontFamily.sans],
-        heading: ['Outfit', ...defaultTheme.fontFamily.sans],
+        sans: ['Geist Variable', ...defaultTheme.fontFamily.sans],
+        heading: ['Geist Variable', ...defaultTheme.fontFamily.sans],
         mono: ['JetBrains Mono', ...defaultTheme.fontFamily.mono],
       },
-      boxShadow: {
-        subtle: '0 1px 3px 0 rgba(0,0,0,0.05), 0 1px 2px -1px rgba(0,0,0,0.05)',
-        brutal: '8px 8px 0px 0px rgba(0,0,0,1)',
-      },
-      transitionTimingFunction: {
-        smooth: 'cubic-bezier(0.4, 0, 0.2, 1)',
-      },
-      typography: (theme) => ({
-        DEFAULT: {
-          css: {
-            color: theme('colors.text_primary'),
-            a: {
-              color: theme('colors.brand_cta'),
-              '&:hover': {
-                color: theme('colors.brand_cta_hover'),
-              },
-            },
-          },
+      keyframes: {
+        "accordion-down": {
+          from: { height: 0 },
+          to: { height: "var(--radix-accordion-content-height)" },
         },
-      }),
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: 0 },
+        },
+      },
+      animation: {
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
+      },
     },
   },
-  plugins: [require('@tailwindcss/typography'), require('flowbite/plugin')],
-};
+  plugins: [require("tailwindcss-animate"), require('@tailwindcss/typography')],
+}

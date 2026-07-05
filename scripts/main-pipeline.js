@@ -57,6 +57,7 @@ async function scrapeFullContent(url) {
     }
 
     // Remove ALL images from the content to avoid duplicates with the hero image
+    const allImages = dom.window.document.querySelectorAll('img');
     for (const img of allImages) {
       img.remove();
     }
@@ -349,7 +350,7 @@ Format response STRICTLY as a raw JSON object (no markdown code fences or markdo
             target_product_sku: classified.key,
             source_url: art.link,
             ai_summary: aiSummary,
-            original_image: scraped.originalImage,
+            original_image: scraped?.originalImage || null,
             hash: hash,
           },
         ]);

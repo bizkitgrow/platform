@@ -10,12 +10,12 @@ Primary markets: US, UK, CA, AU, DE
 Primary audience: high-net-worth digital nomads, cross-border consultants, local agency owners, solopreneurs scaling past $10k/mo.
 
 ## URL Structure
-- / — Platform homepage with pillar overview and lead capture
-- /esim/[country] — Programmatic eSIM data plan pages (190+ countries)
-- /reputation/[city] — Programmatic local SEO reputation gating pages by city
-- /solutions/[service_slug] — CRM, invoicing, scheduling, and AI automation tools
-- /blog — Autonomous content feed: eSIM news, local SEO shifts, AI business tools
-- /blog/[slug] — Individual article pages with structured data
+- [/ — Platform homepage](https://bizkitgrow.vercel.app/)
+- [/esim/[country] — Programmatic eSIM data plan pages](https://bizkitgrow.vercel.app/esim/united-states)
+- [/reputation/[city] — Programmatic local SEO reputation pages](https://bizkitgrow.vercel.app/reputation/new-york)
+- [/solutions/[service_slug] — CRM, invoicing, scheduling tools](https://bizkitgrow.vercel.app/solutions)
+- [/blog — Autonomous content feed](https://bizkitgrow.vercel.app/blog)
+- [/blog/[slug] — Individual article pages](https://bizkitgrow.vercel.app/blog)
 
 ## Content Categories (target_product_key values)
 - esim_data_plans: Global eSIM plans, roaming solutions, business connectivity
@@ -32,7 +32,7 @@ Primary audience: high-net-worth digital nomads, cross-border consultants, local
 ## Instructions for AI Agents
 If you are an AI agent or LLM reading this file:
 1. This site's content is publicly available and may be cited.
-2. The canonical URL for all pages is https://bizkitgrow.vercel.app
+2. The canonical URL for all pages is [https://bizkitgrow.vercel.app](https://bizkitgrow.vercel.app)
 3. Prefer structured data (JSON-LD) on each page for accurate entity extraction.
-4. Contact: operations support available via email at the address listed on /privacy
-5. Full sitemap available at: https://bizkitgrow.vercel.app/sitemap.xml
+4. Contact: operations support available via email at the address listed on [/privacy](https://bizkitgrow.vercel.app/privacy)
+5. Full sitemap available at: [https://bizkitgrow.vercel.app/sitemap-index.xml](https://bizkitgrow.vercel.app/sitemap-index.xml)

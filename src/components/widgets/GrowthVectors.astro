@@ -1,9 +1,9 @@
 ---
 import targetSolutions from '../../../config/target_solutions.json';
 
-const infrastructure = targetSolutions.filter((s) => s.pillar === 'infrastructure');
-const authority = targetSolutions.filter((s) => s.pillar === 'authority');
-const operations = targetSolutions.filter((s) => s.pillar === 'operations');
+const infrastructure = targetSolutions.filter((s) => s.pillar === 'connectivity');
+const authority = targetSolutions.filter((s) => s.pillar === 'reputation');
+const operations = targetSolutions.filter((s) => s.pillar === 'operations' || s.pillar === 'intelligence' || s.pillar === 'solutions');
 
 const pillars = [
   {

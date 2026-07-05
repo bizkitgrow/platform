@@ -1,7 +1,7 @@
 ---
 import LeadCaptureWidget from '../../components/LeadCaptureWidget.astro';
-import GrowthVectors from '../../components/widgets/GrowthVectors.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { Button } from '../../components/ui/button';
 
 const currentUrl = Astro.site
   ? new URL('/solutions', Astro.site).toString()
@@ -10,31 +10,57 @@ const currentUrl = Astro.site
 
 <BaseLayout
   title="B2B Operational Solutions | Bizkitgrow"
-  description="Scale your remote business with global VPN infrastructure, algorithmic SEO, and autonomous operational AI."
+  description="Managed Cloud Core Hosting, Cloud Storage Cells, and Automated Invoice Platforms."
   canonicalUrl={currentUrl}
 >
   <div class="pt-16 pb-8 bg-canvas_accent border-b-4 border-black">
     <div class="max-w-7xl mx-auto px-6">
       <div class="font-mono text-sm font-black text-brand_cta mb-4 tracking-widest uppercase">
-        [ SYSTEM ARCHITECTURE ]
+        [ PILLAR 04 // SOLUTIONS ]
       </div>
       <h1 class="font-heading text-5xl md:text-7xl font-black text-black uppercase tracking-tight mb-6">
-        Operational<br />Solutions.
+        Operations<br />Without Drama.
       </h1>
       <p class="text-xl text-gray-700 font-medium max-w-3xl leading-relaxed">
-        We provide the foundational infrastructure required to run a global operation. From secure VPN tunneling to autonomous client acquisition and automated invoicing, deploy exactly what you need.
+        Stop worrying about server downtime, hidden hosting fees, and chaotic invoicing. Centralize your core business infrastructure onto a single, highly-optimized platform.
       </p>
     </div>
   </div>
 
-  <GrowthVectors />
+  <div class="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-3 gap-8 border-b-4 border-black pb-20">
+    <div class="border-4 border-black p-6 bg-white shadow-brutal flex flex-col justify-start">
+      <h3 class="font-heading text-xl font-black text-black uppercase tracking-tight mb-2">Cloud Core Hosting</h3>
+      <p class="text-sm font-mono text-gray-600 mb-6">Always-on, lightning fast serverless hosting. Prevent revenue loss from downtime during peak traffic spikes.</p>
+    </div>
+    <div class="border-4 border-black p-6 bg-white shadow-brutal flex flex-col justify-start">
+      <h3 class="font-heading text-xl font-black text-black uppercase tracking-tight mb-2">Cloud Storage Cells</h3>
+      <p class="text-sm font-mono text-gray-600 mb-6">Secure, unmetered storage for all your agency's files, contracts, and digital assets. Never lose a file again.</p>
+    </div>
+    <div class="border-4 border-black p-6 bg-white shadow-brutal flex flex-col justify-start">
+      <h3 class="font-heading text-xl font-black text-black uppercase tracking-tight mb-2">Automated Invoicing</h3>
+      <p class="text-sm font-mono text-gray-600 mb-6">End the chaos. Automatically generate, send, and track client invoices without manual intervention.</p>
+    </div>
+  </div>
 
-  <div class="max-w-7xl mx-auto px-6 py-20">
+  <!-- Frictionless Conversion Hook -->
+  <div class="bg-brand_cta text-black border-y-4 border-black py-16">
+    <div class="max-w-screen-xl mx-auto px-4 text-center">
+      <h2 class="font-heading text-3xl font-black uppercase tracking-tight mb-4">Every 1-second delay on your website cuts conversions by 7%.</h2>
+      <p class="font-mono font-bold max-w-2xl mx-auto mb-8">Migrate your systems to our serverless hosting optimized for extreme speed.</p>
+      <a href="#deploy">
+        <Button size="lg" className="text-sm tracking-wide h-14 px-8 uppercase font-bold rounded-none bg-black text-white hover:bg-gray-800">
+          Migrate Infrastructure
+        </Button>
+      </a>
+    </div>
+  </div>
+
+  <div id="deploy" class="max-w-7xl mx-auto px-6 py-20">
     <LeadCaptureWidget
-      title="REQUEST CUSTOM ARCHITECTURE"
-      subtitle="Speak with an operational engineer to design a custom deployment across our three growth pillars."
+      title="REQUEST CLOUD DEPLOYMENT"
+      subtitle="Speak with an operational engineer to migrate your hosting and automation."
       serviceKey="custom_architecture"
-      ctaText="REQUEST DEPLOYMENT DEMO"
+      ctaText="REQUEST DEMO"
     />
   </div>
 </BaseLayout>

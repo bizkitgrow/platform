@@ -3,11 +3,11 @@ export const prerender = false;
 import LeadCaptureWidget from '../../components/LeadCaptureWidget.astro';
 import LocalVisibilityScanner from '../../components/LocalVisibilityScanner.astro';
 import ResellPortalWidget from '../../components/ResellPortalWidget.astro';
-import Features from '../../components/widgets/Features.astro';
 import GoogleReviewsWidget from '../../components/widgets/GoogleReviewsWidget.astro';
 import Hero from '../../components/widgets/Hero.astro';
 import SEOAuditsWidget from '../../components/widgets/SEOAuditsWidget.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { Button } from '../../components/ui/button';
 
 const currentUrl = Astro.site
   ? new URL('/reputation', Astro.site).toString()
@@ -15,25 +15,42 @@ const currentUrl = Astro.site
 ---
 
 <BaseLayout
-  title="Search Authority | Bizkitgrow"
-  description="Automated Google Business Profile optimization, review capture sequences, and local semantic indexation."
+  title="Reputation & Local Authority | Bizkitgrow"
+  description="Automated AI Review Responder and Local Leads Discovery Engine."
   canonicalUrl={currentUrl}
 >
   <Hero
-    tagline="PILLAR 02 // SEARCH AUTHORITY"
-    title="Reputation Gating Engine"
-    subtitle="Own the search grid in high-value zip codes without volatile ad spend. Automated Google Business Profile optimization and review capture."
+    tagline="PILLAR 02 // REPUTATION"
+    title="Automated Reputation Engine"
+    subtitle="Keep your Google Maps rating pristine and discover fresh local leads. Never let a 1-star review go unanswered again."
     actions={[
-      { text: 'ACTIVATE AUTHORITY', href: '#features', icon: 'tabler:seo', variant: 'primary' },
+      { text: 'START AUTOMATION', href: '#deploy', icon: 'tabler:robot', variant: 'primary' },
     ]}
   />
 
   <div class="max-w-screen-xl px-4 py-8 mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 border-b-4 border-black">
-    <div class="border-4 border-black p-6 bg-white shadow-brutal">
+    <div class="border-4 border-black p-6 bg-white shadow-brutal flex flex-col justify-center">
+      <h3 class="font-heading text-xl font-black text-black uppercase tracking-tight mb-2">AI Review Responder</h3>
+      <p class="text-sm font-mono text-gray-600 mb-6">Automatically reply to reviews on Google Maps professionally, 2 seconds after they arrive, protecting your local SEO algorithm.</p>
+      <GoogleReviewsWidget />
+    </div>
+    <div class="border-4 border-black p-6 bg-white shadow-brutal flex flex-col justify-center">
+      <h3 class="font-heading text-xl font-black text-black uppercase tracking-tight mb-2">Local Leads Discovery</h3>
+      <p class="text-sm font-mono text-gray-600 mb-6">Keep your pipeline full. Extract contact data from businesses around your target zip codes without paying expensive ad agencies.</p>
       <ResellPortalWidget productSku="reputation-ai" resellportalStatus="active" theme="light" />
     </div>
-    <div class="border-4 border-black p-6 bg-white shadow-brutal">
-      <GoogleReviewsWidget />
+  </div>
+
+  <!-- Frictionless Conversion Hook -->
+  <div class="bg-brand_cta text-black border-y-4 border-black py-16">
+    <div class="max-w-screen-xl mx-auto px-4 text-center">
+      <h2 class="font-heading text-3xl font-black uppercase tracking-tight mb-4">Don't let emotions ruin your business rating.</h2>
+      <p class="font-mono font-bold max-w-2xl mx-auto mb-8">Let our reputation assistant reply to every review professionally within 2 seconds of it arriving.</p>
+      <a href="#deploy">
+        <Button size="lg" className="text-sm tracking-wide h-14 px-8 uppercase font-bold rounded-none bg-black text-white hover:bg-gray-800">
+          Deploy AI Responder
+        </Button>
+      </a>
     </div>
   </div>
 
@@ -44,36 +61,26 @@ const currentUrl = Astro.site
     <LocalVisibilityScanner />
   </div>
 
-  <Features
-    id="features"
-    tagline="Capabilities"
-    title="Dominate Local Search"
-    subtitle="Our system actively intercepts customer experiences."
-    items={[
-      {
-        title: 'Review Gating',
-        description: 'Automatically filter 5-star experiences to public platforms, while routing negative feedback to internal customer service.',
-        icon: 'tabler:star',
-      },
-      {
-        title: 'Semantic Indexation',
-        description: 'Continuous content optimization aligned with the latest search engine algorithms for maximum visibility.',
-        icon: 'tabler:search',
-      },
-      {
-        title: 'Competitor Tracking',
-        description: 'Real-time telemetry on competitor movements in your targeted zip codes.',
-        icon: 'tabler:chart-bar',
-      },
-    ]}
-  />
+  <!-- Coverage Cities Section -->
+  <div class="max-w-screen-xl px-4 py-12 mx-auto border-b-4 border-black">
+    <div class="border-4 border-black p-8 bg-canvas_accent shadow-brutal">
+      <h3 class="font-heading text-2xl font-black text-black uppercase tracking-tight mb-6">Target Search Authority Locations</h3>
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+        <a href="/reputation/new-york" class="bg-white border-2 border-black p-4 font-mono font-bold text-center hover:bg-brand_cta hover:text-black transition-colors">NEW YORK</a>
+        <a href="/reputation/london" class="bg-white border-2 border-black p-4 font-mono font-bold text-center hover:bg-brand_cta hover:text-black transition-colors">LONDON</a>
+        <a href="/reputation/berlin" class="bg-white border-2 border-black p-4 font-mono font-bold text-center hover:bg-brand_cta hover:text-black transition-colors">BERLIN</a>
+        <a href="/reputation/toronto" class="bg-white border-2 border-black p-4 font-mono font-bold text-center hover:bg-brand_cta hover:text-black transition-colors">TORONTO</a>
+        <a href="/reputation/sydney" class="bg-white border-2 border-black p-4 font-mono font-bold text-center hover:bg-brand_cta hover:text-black transition-colors">SYDNEY</a>
+      </div>
+    </div>
+  </div>
 
-  <div class="max-w-screen-xl px-4 py-12 mx-auto">
+  <div id="deploy" class="max-w-screen-xl px-4 py-12 mx-auto">
     <LeadCaptureWidget
-      title="REQUEST LOCAL SEO AUDIT"
+      title="REQUEST LOCAL SEO AUDIT & RESPONDER"
       subtitle="Register your Google Business profile URL for a complete reputation analysis."
       serviceKey="search_authority"
-      ctaText="REQUEST SEO AUDIT"
+      ctaText="REQUEST AUTOMATION"
     />
   </div>
 </BaseLayout>

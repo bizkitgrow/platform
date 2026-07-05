@@ -70,15 +70,16 @@ const pillarLabels: Record<string, string> = {
       return (
         <article class="border-4 border-black bg-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[8px_8px_0px_0px_rgba(13,148,136,1)] hover:-translate-y-1 transition-all flex flex-col group h-full">
           <div class="relative w-full aspect-[16/10] bg-gray-100 overflow-hidden border-b-4 border-black">
-            <Image
-              src={heroImageUrl}
-              alt={post.title}
-              width={600}
-              height={375}
-              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-              inferSize={!heroImageUrl.startsWith('http')}
-              loading="lazy"
-            />
+              <Image
+                src={heroImageUrl}
+                alt={post.title}
+                width={600}
+                height={375}
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                inferSize={!heroImageUrl.startsWith('http')}
+                loading="lazy"
+                decoding="async"
+              />
             <div class="absolute top-4 left-4 bg-black text-white font-mono text-[9px] font-black uppercase tracking-widest px-2.5 py-1 border border-white">
               {label}
             </div>
@@ -99,7 +100,7 @@ const pillarLabels: Record<string, string> = {
               <a
                 href={`/blog/${post.slug}`}
                 class="font-mono text-[10px] font-black uppercase tracking-widest text-brand_cta hover:underline inline-flex items-center gap-1"
-                aria-label={`Read ${post.title}`}
+                aria-label={`ACCESS DEEP BRIEFING: ${post.title}`}
               >
                 ACCESS DEEP BRIEFING &rarr;
               </a>

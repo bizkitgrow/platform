@@ -7,6 +7,7 @@ import AstroStatusPage from '../../components/widgets/AstroStatusPage.astro';
 import Hero from '../../components/widgets/Hero.astro';
 import Pricing from '../../components/widgets/Pricing.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { Button } from '../../components/ui/button';
 
 const currentUrl = Astro.site
   ? new URL('/esim', Astro.site).toString()
@@ -15,29 +16,46 @@ const currentUrl = Astro.site
 
 <BaseLayout
   title="Global Connectivity | Bizkitgrow"
-  description="Enterprise-grade eSIM provisioning with dedicated financial-grade encryption."
+  description="Dedicated VPN Networks & Global eSIM Plans for remote professionals."
   canonicalUrl={currentUrl}
 >
   <Hero
     tagline="PILLAR 01 // CONNECTIVITY"
-    title="Global eSIM Infrastructure"
-    subtitle="Instant cellular routing across 190+ sovereign networks. No roaming friction, full uptime guarantee."
+    title="Security & Global Mobility"
+    subtitle="Instant secure routing for remote teams. Eliminate the paranoia of public Wi-Fi data breaches and the frustration of physical SIM bureaucracy."
     actions={[
-      { text: 'START PROVISIONING', href: '#pricing', icon: 'tabler:download', variant: 'primary' },
+      { text: 'START PROVISIONING', href: '#deploy', icon: 'tabler:shield-lock', variant: 'primary' },
     ]}
   />
 
   <div class="max-w-screen-xl px-4 py-8 mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 border-b-4 border-black">
     <div class="border-4 border-black p-6 bg-white shadow-brutal">
+      <h3 class="font-heading text-xl font-black text-black uppercase tracking-tight mb-2">Dedicated VPN Networks</h3>
+      <p class="text-sm font-mono text-gray-600 mb-6">One connection mistake on public Wi-Fi can expose all your client data. Secure your routing instantly.</p>
       <ResellPortalWidget productSku="esim-global-pass" resellportalStatus="active" theme="light" />
     </div>
     <div class="border-4 border-black p-6 bg-white shadow-brutal flex flex-col justify-center">
+      <h3 class="font-heading text-xl font-black text-black uppercase tracking-tight mb-2">Global eSIM Infrastructure</h3>
+      <p class="text-sm font-mono text-gray-600 mb-6">Internet connection that activates the moment your plane touches the tarmac. No physical SIMs required.</p>
       <AstroStatusPage />
     </div>
   </div>
 
-  <div class="max-w-screen-xl px-4 py-12 mx-auto">
+  <div class="max-w-screen-xl px-4 py-12 mx-auto border-b-4 border-black">
     <NetworkChecker />
+  </div>
+
+  <!-- Frictionless Conversion Hook -->
+  <div class="bg-brand_cta text-black border-y-4 border-black py-16">
+    <div class="max-w-screen-xl mx-auto px-4 text-center">
+      <h2 class="font-heading text-3xl font-black uppercase tracking-tight mb-4">One public network mistake can expose all your client data.</h2>
+      <p class="font-mono font-bold max-w-2xl mx-auto mb-8">Activate your team's corporate VPN directly from here in under 60 seconds.</p>
+      <a href="#deploy">
+        <Button size="lg" className="text-sm tracking-wide h-14 px-8 uppercase font-bold rounded-none bg-black text-white hover:bg-gray-800">
+          Activate Protection Now
+        </Button>
+      </a>
+    </div>
   </div>
 
   <Pricing
@@ -53,7 +71,7 @@ const currentUrl = Astro.site
         items: [
           { description: '10GB Global Data' },
           { description: '190+ Countries' },
-          { description: '4G/5G Speeds' },
+          { description: '4G/5G Speeds & VPN' },
         ],
         callToAction: { target: '_blank', text: 'Get Started', href: '#' },
       },
@@ -64,7 +82,7 @@ const currentUrl = Astro.site
         period: 'Per Month',
         items: [
           { description: '100GB Pooled Data' },
-          { description: 'Priority Routing' },
+          { description: 'Priority Routing & VPN' },
           { description: 'Dedicated Account Manager' },
         ],
         callToAction: { target: '_blank', text: 'Contact Sales', href: '#' },
@@ -74,7 +92,7 @@ const currentUrl = Astro.site
     ]}
   />
 
-  <div class="max-w-screen-xl px-4 py-12 mx-auto">
+  <div id="deploy" class="max-w-screen-xl px-4 py-12 mx-auto">
     <LeadCaptureWidget
       title="REQUEST ESIM DEPLOYMENT"
       subtitle="Register your corporate perimeter to schedule an automated network test."

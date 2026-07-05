@@ -5065,3 +5065,143 @@ Local icons changed, reloading
 {"message":".vercel/output/static/esim/canada/index.html","label":"watch","level":"info"}
 {"message":".vercel/output/static/esim/united-kingdom/index.html","label":"watch","level":"info"}
 {"message":"[200] / 575ms","label":null,"level":"info"}
+{"message":"[200] HEAD / 606ms","label":null,"level":"info"}
+{"message":"[200] / 72ms","label":null,"level":"info"}
+{"message":"[console.warn] [OneSignal] Initialization bypassed: Error: Can only be used on: https://bizkitgrow.vercel.app\n    at https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:18361\n    at https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:18423\n    at async t.zr (https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:135403)\n    at async t.init (https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:136036)\n    at async http://localhost:4321/:5:9\n    at async https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:140457","label":"vite","level":"warn"}
+{"message":"[200] / 268ms","label":null,"level":"info"}
+{"message":"lighthouse-audit/report.html","label":"watch","level":"info"}
+{"message":"[200] / 188ms","label":null,"level":"info"}
+{"message":"[console.warn] [OneSignal] Initialization bypassed: Error: Can only be used on: https://bizkitgrow.vercel.app\n    at https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:18361\n    at https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:18423\n    at async t.zr (https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:135403)\n    at async t.init (https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:136036)\n    at async http://localhost:4321/:5:9\n    at async https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.es6.js?v=160607:1:140457","label":"vite","level":"warn"}
+{"message":"/node_modules/@astrojs/tailwind/base.css, /src/styles/global.css","label":"watch","level":"info"}
+{"message":"/node_modules/@astrojs/tailwind/base.css, /src/styles/global.css","label":"watch","level":"info"}
+{"message":"[200] / 2595ms","label":null,"level":"info"}
+{"message":"[200] / 941ms","label":null,"level":"info"}
+{"message":"/node_modules/@astrojs/tailwind/base.css, /src/styles/global.css","label":"watch","level":"info"}
+{"message":"/node_modules/@astrojs/tailwind/base.css, /src/styles/global.css","label":"watch","level":"info"}
+{"message":"/node_modules/@astrojs/tailwind/base.css, /src/styles/global.css","label":"watch","level":"info"}
+{"message":"/node_modules/@astrojs/tailwind/base.css, /src/styles/global.css","label":"watch","level":"info"}
+{"message":"/node_modules/@astrojs/tailwind/base.css, /src/styles/global.css","label":"watch","level":"info"}
+{"message":"/node_modules/@astrojs/tailwind/base.css, /src/styles/global.css","label":"watch","level":"info"}
+{"message":"src/layouts/BaseLayout.astro","label":"watch","level":"info"}
+{"message":"src/layouts/BaseLayout.astro","label":"watch","level":"info"}
+{"message":".vercel/output/static/404.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/privacy/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/terms/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/australia/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/germany/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/canada/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/united-states/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/united-kingdom/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/sydney/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/london/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/new-york/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/ai-review-responder/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/cpanel-managed-hosting/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/competitor-website-spy/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/global-esim-data/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/global-vpn-infrastructure/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/toronto/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/market-metrics-dashboard/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/invoicing-with-ai/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/secure-cloud-storage/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/berlin/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/local-leads-discovery/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/privacy/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/sydney/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/new-york/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/toronto/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/london/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/berlin/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/terms/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/404.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/invoicing-with-ai/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/local-leads-discovery/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/competitor-website-spy/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/global-vpn-infrastructure/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/market-metrics-dashboard/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/secure-cloud-storage/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/global-esim-data/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/ai-review-responder/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/cpanel-managed-hosting/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/australia/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/germany/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/united-states/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/united-kingdom/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/canada/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/canada/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/united-kingdom/index.html","label":"watch","level":"info"}
+Local icons changed, reloading
+{"message":"changed tsconfig file detected: /Users/mac/Downloads/PROYEK/BIZKITDEV/tsconfig.json - Clearing cache and forcing full-reload to ensure TypeScript is compiled with updated config values.","label":"vite","level":"info"}
+{"message":"program reload","label":"vite","level":"info"}
+{"message":"An error happened during full reload\nFailed to load url astro:server-app.js (resolved id: astro:server-app.js). Does the file exist?\nError: Failed to load url astro:server-app.js (resolved id: astro:server-app.js). Does the file exist?\n    at loadAndTransform (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/vite/dist/node/chunks/node.js:19718:31)","label":"vite","level":"error"}
+{"message":"/src/styles/global.css","label":"watch","level":"info"}
+{"message":"/node_modules/@astrojs/tailwind/base.css, /src/layouts/BaseLayout.astro?astro&type=style&index=0&lang.css, /src/styles/global.css, /src/components/ResellPortalWidget.astro?astro&type=style&index=0&lang.css, /src/pages/blog/[slug].astro?astro&type=style&index=0&lang.css, /src/components/AGCParaphraser.astro?astro&type=style&index=0&lang.css, /src/components/MarketIntelligenceWidget.astro?astro&type=style&index=0&lang.css","label":"watch","level":"info"}
+{"message":"/node_modules/@astrojs/tailwind/base.css, /src/layouts/BaseLayout.astro?astro&type=style&index=0&lang.css, /src/styles/global.css, /src/components/ResellPortalWidget.astro?astro&type=style&index=0&lang.css, /src/pages/blog/[slug].astro?astro&type=style&index=0&lang.css, /src/components/AGCParaphraser.astro?astro&type=style&index=0&lang.css, /src/components/MarketIntelligenceWidget.astro?astro&type=style&index=0&lang.css","label":"watch","level":"info"}
+{"message":"src/layouts/BaseLayout.astro","label":"watch","level":"info"}
+{"message":"src/layouts/BaseLayout.astro","label":"watch","level":"info"}
+{"message":"/node_modules/@astrojs/tailwind/base.css, /src/styles/global.css","label":"watch","level":"info"}
+{"message":".vercel/output/static/404.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/terms/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/privacy/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/new-york/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/berlin/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/sydney/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/toronto/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/london/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/competitor-website-spy/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/ai-review-responder/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/global-esim-data/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/cpanel-managed-hosting/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/invoicing-with-ai/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/local-leads-discovery/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/market-metrics-dashboard/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/global-vpn-infrastructure/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/germany/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/secure-cloud-storage/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/united-states/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/australia/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/united-kingdom/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/canada/index.html","label":"watch","level":"info"}
+{"message":"/node_modules/@astrojs/tailwind/base.css, /src/layouts/BaseLayout.astro?astro&type=style&index=0&lang.css, /src/styles/global.css, /src/components/ResellPortalWidget.astro?astro&type=style&index=0&lang.css, /src/pages/blog/[slug].astro?astro&type=style&index=0&lang.css, /src/components/AGCParaphraser.astro?astro&type=style&index=0&lang.css, /src/components/MarketIntelligenceWidget.astro?astro&type=style&index=0&lang.css","label":"watch","level":"info"}
+{"message":"/src/styles/global.css","label":"watch","level":"info"}
+{"message":"/src/styles/global.css","label":"watch","level":"info"}
+{"message":"/node_modules/@astrojs/tailwind/base.css, /src/styles/global.css","label":"watch","level":"info"}
+{"message":"/node_modules/@astrojs/tailwind/base.css, /src/styles/global.css","label":"watch","level":"info"}
+{"message":".vercel/output/static/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/privacy/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/sydney/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/new-york/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/toronto/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/toronto/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/london/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/berlin/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/terms/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/404.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/invoicing-with-ai/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/local-leads-discovery/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/competitor-website-spy/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/global-vpn-infrastructure/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/market-metrics-dashboard/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/secure-cloud-storage/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/global-esim-data/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/ai-review-responder/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/cpanel-managed-hosting/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/australia/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/germany/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/united-states/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/canada/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/united-kingdom/index.html","label":"watch","level":"info"}
+{"message":"src/layouts/BaseLayout.astro","label":"watch","level":"info"}
+{"message":"/node_modules/@astrojs/tailwind/base.css, /src/styles/global.css","label":"watch","level":"info"}
+{"message":"/node_modules/@astrojs/tailwind/base.css, /src/styles/global.css","label":"watch","level":"info"}
+{"message":"/node_modules/@astrojs/tailwind/base.css, /src/styles/global.css","label":"watch","level":"info"}
+{"message":"/node_modules/@astrojs/tailwind/base.css, /src/styles/global.css","label":"watch","level":"info"}
+{"message":"/node_modules/@astrojs/tailwind/base.css, /src/styles/global.css","label":"watch","level":"info"}
+{"message":"/node_modules/@astrojs/tailwind/base.css, /src/styles/global.css","label":"watch","level":"info"}

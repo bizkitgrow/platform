@@ -1,0 +1,75 @@
+---
+export const prerender = false;
+import LeadCaptureWidget from '../../components/LeadCaptureWidget.astro';
+import Stats from '../../components/widgets/Stats.astro';
+import Hero from '../../components/widgets/Hero.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { Button } from '../../components/ui/button';
+
+const currentUrl = Astro.site
+  ? new URL('/intelligence', Astro.site).toString()
+  : 'https://bizkitgrow.vercel.app/intelligence';
+---
+
+<BaseLayout
+  title="Market Intelligence | Bizkitgrow"
+  description="AI Website Competitor Spy & Market Data Telemetry Feeds."
+  canonicalUrl={currentUrl}
+>
+  <Hero
+    tagline="PILLAR 03 // INTELLIGENCE"
+    title="Market Intelligence Engine"
+    subtitle="Eliminate your blindspots. Sieve through the noise and get clean, actionable competitor telemetry."
+    actions={[
+      { text: 'START SPYING', href: '#deploy', icon: 'tabler:radar', variant: 'primary' },
+    ]}
+  />
+
+  <div class="max-w-screen-xl px-4 py-8 mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 border-b-4 border-black">
+    <div class="border-4 border-black p-6 bg-white shadow-brutal flex flex-col justify-center">
+      <h3 class="font-heading text-xl font-black text-black uppercase tracking-tight mb-2">AI Competitor Spy</h3>
+      <p class="text-sm font-mono text-gray-600 mb-6">Track the technology, traffic sources, and hidden strategies your competitors are using to steal your market share.</p>
+      <div class="bg-canvas_accent border-2 border-black p-4 text-center">
+        <p class="font-bold text-xs uppercase tracking-widest text-brand_cta mb-4">Enter Competitor Domain</p>
+        <div class="flex flex-col sm:flex-row gap-2 justify-center">
+          <input type="text" placeholder="competitor.com" class="border-2 border-black p-2 text-xs w-full max-w-[200px]" />
+          <Button size="sm" className="bg-black text-white rounded-none border-2 border-black uppercase text-xs">Scan</Button>
+        </div>
+      </div>
+    </div>
+    <div class="border-4 border-black p-6 bg-white shadow-brutal flex flex-col justify-center">
+      <h3 class="font-heading text-xl font-black text-black uppercase tracking-tight mb-2">Market Data Feeds</h3>
+      <p class="text-sm font-mono text-gray-600 mb-6">Stop guessing. Get real-time, zero-delay data feeds covering essential metrics and market telemetry.</p>
+      <Stats
+        stats={[
+          { title: 'Global Indices', amount: '24/7' },
+          { title: 'Sentiment', amount: 'Real-time' },
+          { title: 'Delay', amount: '0ms' },
+          { title: 'Coverage', amount: '99%' },
+        ]}
+      />
+    </div>
+  </div>
+
+  <!-- Frictionless Conversion Hook -->
+  <div class="bg-brand_cta text-black border-y-4 border-black py-16">
+    <div class="max-w-screen-xl mx-auto px-4 text-center">
+      <h2 class="font-heading text-3xl font-black uppercase tracking-tight mb-4">Stop guessing their strategy.</h2>
+      <p class="font-mono font-bold max-w-2xl mx-auto mb-8">Enter your competitor's domain now and get an instant report on their technology intelligence.</p>
+      <a href="#deploy">
+        <Button size="lg" className="text-sm tracking-wide h-14 px-8 uppercase font-bold rounded-none bg-black text-white hover:bg-gray-800">
+          Extract Intel
+        </Button>
+      </a>
+    </div>
+  </div>
+
+  <div id="deploy" class="max-w-screen-xl px-4 py-12 mx-auto">
+    <LeadCaptureWidget
+      title="REQUEST COMPETITOR DOSSIER"
+      subtitle="Register your competitor's domain for a full AI reconnaissance report."
+      serviceKey="intelligence_spy"
+      ctaText="REQUEST INTEL"
+    />
+  </div>
+</BaseLayout>

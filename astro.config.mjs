@@ -5,6 +5,8 @@ import robotsTxt from 'astro-ai-robots-txt';
 import icon from 'astro-icon';
 import { defineConfig } from 'astro/config';
 
+import react from '@astrojs/react';
+
 export default defineConfig({
   site: process.env.PUBLIC_SITE_URL || 'https://bizkitgrow.vercel.app',
   adapter: vercel({
@@ -16,18 +18,13 @@ export default defineConfig({
     remotePatterns: [{ protocol: 'https' }],
   },
   output: 'static', // Enables static generation for pages but keeps dynamic endpoints alive
-  integrations: [
-    tailwind({
-      applyBaseStyles: true,
-    }),
-    sitemap(),
-    robotsTxt(),
-    icon({
-      include: {
-        tabler: ['*'],
-      },
-    }),
-  ],
+  integrations: [tailwind({
+    applyBaseStyles: true,
+  }), sitemap(), robotsTxt(), icon({
+    include: {
+      tabler: ['*'],
+    },
+  }), react()],
   vite: {
     ssr: {
       noExternal: ['lenis'],
