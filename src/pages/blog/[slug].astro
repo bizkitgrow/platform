@@ -72,7 +72,8 @@ const fallbackPost = {
 };
 
 const activePost = post || fallbackPost;
-const mainContent = activePost.originalContent || activePost.content || '';
+const mainContentRaw = activePost.originalContent || activePost.content || '';
+const mainContent = mainContentRaw.replace(/<a([^>]+href="(?!#|\/)[^"]+")[^>]*>/gi, '<a$1 target="_blank" rel="noopener noreferrer">');
 const wordCount = mainContent.replace(/<[^>]*>/g, '').split(/\s+/).length;
 const readingTime = Math.max(2, Math.ceil(wordCount / 200));
 
@@ -155,10 +156,10 @@ const articleSchema = {
   <!-- Reading Progress Bar -->
   <div class="fixed top-0 left-0 w-full h-[2px] bg-canvas_accent z-50">
     <div id="reading-progress" class="h-full bg-brand_cta w-0 transition-none"></div>
-  </div>Logic Layer Alignment
+  </div>
 
   <main class="max-w-screen-xl mx-auto px-4 py-16">
-    <div class="flex gap-16">
+    <div class={`flex gap-16 ${toc.length === 0 ? 'justify-center' : ''}`}>
 
       <!-- ═══════ SIDEBAR: Table of Contents ═══════ -->
       {toc.length > 0 && (
@@ -326,6 +327,42 @@ const articleSchema = {
             });
           }
         </script>
+
+        <!-- Social Media Copy Widget -->
+        <div class="mt-8 p-6 border border-borders_subtle bg-canvas_accent rounded-sm shadow-subtle hover:border-brand_cta transition-colors">
+          <p class="font-mono text-xs uppercase tracking-widest text-text_primary font-bold mb-3">SOCIAL MEDIA ASSET</p>
+          <p class="text-xs text-text_secondary mb-4">
+            Copy this pre-formatted intelligence briefing for your social channels.
+          </p>
+          <div class="flex flex-col gap-3">
+            <textarea 
+              readonly 
+              class="w-full bg-white border border-borders_subtle px-3 py-3 text-xs font-mono text-text_primary rounded-sm focus:outline-none resize-y min-h-[80px]"
+              id="social-copy-textarea"
+            >{`[ INTELLIGENCE FEED // BIZKITGROW ]\n\n${activePost.title}\n\n${metaDesc}\n\nAccess full briefing: ${Astro.url.href}`}</textarea>
+            <button 
+              id="copy-social-btn"
+              class="font-mono text-[10px] uppercase tracking-widest bg-brand_cta text-white px-4 py-2 hover:bg-brand_cta_hover transition-colors font-bold rounded-sm self-start"
+            >
+              COPY STATUS
+            </button>
+          </div>
+        </div>
+
+        <script>
+          const copySocialBtn = document.getElementById('copy-social-btn');
+          const socialInput = document.getElementById('social-copy-textarea') as HTMLTextAreaElement;
+          if (copySocialBtn && socialInput) {
+            copySocialBtn.addEventListener('click', () => {
+              socialInput.select();
+              navigator.clipboard.writeText(socialInput.value);
+              copySocialBtn.textContent = 'COPIED';
+              setTimeout(() => {
+                copySocialBtn.textContent = 'COPY STATUS';
+              }, 2000);
+            });
+          }
+        </script>
  
         {aiMeta.tags && Array.isArray(aiMeta.tags) && aiMeta.tags.length > 0 && (
           <div class="mt-8 flex flex-wrap gap-2">
@@ -349,18 +386,18 @@ const articleSchema = {
 
         <!-- Related Briefings -->
         {relatedPosts.length > 0 && (
-          <div class="mt-16 pt-12 border-t border-gray-800">
-            <div class="font-mono text-xs text-gray-500 uppercase tracking-widest mb-6 font-bold">RELATED BRIEFINGS</div>
+          <div class="mt-16 pt-12 border-t border-borders_subtle">
+            <div class="font-mono text-xs text-text_secondary uppercase tracking-widest mb-6 font-bold">RELATED BRIEFINGS</div>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
               {relatedPosts.map((rPost) => (
-                <article class="p-6 bg-gray-900 border border-gray-800 hover:border-brand_cta transition-colors rounded-sm group relative">
-                  <div class="font-mono text-[10px] text-gray-500 uppercase tracking-widest mb-3 font-bold">
+                <article class="p-6 bg-canvas_accent border border-borders_subtle hover:border-brand_cta transition-colors rounded-sm group relative">
+                  <div class="font-mono text-[10px] text-text_secondary uppercase tracking-widest mb-3 font-bold">
                     {pillarLabels[rPost.targetProductSku] || 'INTELLIGENCE'}
                   </div>
-                  <h4 class="font-heading text-lg font-black text-white uppercase tracking-tight leading-snug mb-3 group-hover:text-brand_cta transition-colors">
+                  <h4 class="font-heading text-lg font-black text-text_primary uppercase tracking-tight leading-snug mb-3 group-hover:text-brand_cta transition-colors">
                     <a href={`/blog/${rPost.slug}`} class="stretched-link line-clamp-2">{rPost.title}</a>
                   </h4>
-                  <p class="font-mono text-[10px] text-gray-600 uppercase tracking-widest font-bold">
+                  <p class="font-mono text-[10px] text-text_secondary uppercase tracking-widest font-bold">
                     {rPost.createdAt
                       ? new Date(rPost.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase()
                       : 'RECENT'}

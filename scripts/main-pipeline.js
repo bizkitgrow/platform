@@ -45,7 +45,8 @@ async function runPipeline() {
                 content: cleanContent,
                 meta_desc:
                   'Live international corporate trading tracking data points and asset security parameters.',
-                target_product_key: classified.key,
+                target_product_sku: classified.key,
+                ai_summary: null,
               },
               { onConflict: 'slug' },
             );
@@ -89,7 +90,8 @@ async function runPipeline() {
                 content: cleanContent,
                 meta_desc:
                   'Real-time grid routing data optimization rules for international coverage maps.',
-                target_product_key: classified.key,
+                target_product_sku: classified.key,
+                ai_summary: null,
               },
               { onConflict: 'slug' },
             );
@@ -157,8 +159,9 @@ Format response STRICTLY as a raw JSON object (no markdown code fences):
             content: polished.summary || cleanRawContent,
             meta_desc: polished.metaDescription || 'Authorized operational connectivity update.',
             category_id: catId,
-            target_product_key: classified.key,
+            target_product_sku: classified.key,
             source_url: item.link,
+            ai_summary: polished,
           },
         ]);
 
@@ -212,8 +215,9 @@ Format response STRICTLY as a raw JSON object (no markdown code fences):
               content,
               meta_desc: trend.metaDescription || 'Gemini CLI Grounded search trend update.',
               category_id: catId,
-              target_product_key: classified.key,
+              target_product_sku: classified.key,
               source_url: 'https://github.com/google/gemini-cli',
+              ai_summary: trend,
             },
           ]);
           itemsFetched++;

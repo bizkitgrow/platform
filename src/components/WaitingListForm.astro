@@ -87,7 +87,13 @@ const { targetedService = 'General' } = Astro.props;
           })
         });
 
-        const data = await res.json();
+        let data = {};
+        try {
+          data = await res.json();
+        } catch (jsonError) {
+          console.error("Failed to parse JSON response:", jsonError);
+        }
+
         
         // State: Done
         submitBtn.disabled = false;

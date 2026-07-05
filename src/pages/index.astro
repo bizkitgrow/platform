@@ -43,6 +43,10 @@ const pillarData = [
   },
 ];
 
+import { desc } from 'drizzle-orm';
+import { db } from '../db/client';
+import { posts as postsTable } from '../db/schema';
+
 const orgSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
@@ -57,6 +61,36 @@ const orgSchema = {
     email: systemArchitecture.tenant_settings.support_email,
   },
 };
+
+let recentPosts: any[] = [];
+try {
+  recentPosts = await db.select().from(postsTable).orderBy(desc(postsTable.createdAt)).limit(2);
+} catch (err: any) {
+  console.error('Database query failed for index:', err.message);
+}
+
+const displayPosts = recentPosts.length > 0 ? recentPosts.map(p => ({
+  title: p.title,
+  slug: p.slug,
+  excerpt: p.metaDesc || 'Read the complete analysis from the Bizkitgrow intelligence feed.',
+  createdAt: p.createdAt ? new Date(p.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Jul 4, 2026',
+  pillar: p.targetProductSku || 'ai_business_tools_suite'
+})) : [
+  {
+    title: 'The Future of Global Connectivity for Remote Teams',
+    slug: 'the-future-of-connectivity-and-mobility',
+    excerpt: 'How enterprise eSIM infrastructure is replacing legacy SIM provisioning — and what it means for B2B operations in 2026.',
+    createdAt: 'Jul 4, 2026',
+    pillar: 'esim_data_plans',
+  },
+  {
+    title: 'Google Rewrites the Search Interface',
+    slug: 'google-rewrites-search-2026',
+    excerpt: 'The largest upgrade to Google Search in 25 years is live. AI Mode now merges with standard results — and it changes local SEO authority fundamentally.',
+    createdAt: 'Jul 4, 2026',
+    pillar: 'ai_business_tools_suite',
+  }
+];
 ---
 
 <BaseLayout
@@ -167,35 +201,22 @@ const orgSchema = {
     </div>
 
     <div class="grid lg:grid-cols-2 gap-8">
-      <article class="p-8 bg-white border border-borders_subtle shadow-subtle rounded-sm">
-        <div class="flex justify-between items-center mb-5 text-text_secondary">
-            <span class="bg-canvas_accent border border-borders_subtle text-text_secondary text-xs font-mono font-bold uppercase tracking-widest px-3 py-1 rounded-sm">esim_data_plans</span>
-            <span class="text-sm font-mono uppercase tracking-widest">Jul 4, 2026</span>
-        </div>
-        <h2 class="mb-4 text-2xl font-bold tracking-tight text-text_primary font-heading uppercase hover:text-brand_cta transition-colors"><a href="/blog">The Future of Global Connectivity for Remote Teams</a></h2>
-        <p class="mb-6 font-light text-text_secondary font-body">How enterprise eSIM infrastructure is replacing legacy SIM provisioning — and what it means for B2B operations in 2026.</p>
-        <a href="/blog" class="inline-flex items-center font-mono font-bold text-xs uppercase tracking-widest text-brand_cta hover:text-brand_cta_hover transition-colors">
-            READ BRIEFING
-            <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-            </svg>
-        </a>
-      </article>
-
-      <article class="p-8 bg-white border border-borders_subtle shadow-subtle rounded-sm">
-        <div class="flex justify-between items-center mb-5 text-text_secondary">
-            <span class="bg-canvas_accent border border-borders_subtle text-text_secondary text-xs font-mono font-bold uppercase tracking-widest px-3 py-1 rounded-sm">ai_business_tools_suite</span>
-            <span class="text-sm font-mono uppercase tracking-widest">Jul 4, 2026</span>
-        </div>
-        <h2 class="mb-4 text-2xl font-bold tracking-tight text-text_primary font-heading uppercase hover:text-brand_cta transition-colors"><a href="/blog">Google Rewrites the Search Interface</a></h2>
-        <p class="mb-6 font-light text-text_secondary font-body">The largest upgrade to Google Search in 25 years is live. AI Mode now merges with standard results — and it changes local SEO authority fundamentally.</p>
-        <a href="/blog" class="inline-flex items-center font-mono font-bold text-xs uppercase tracking-widest text-brand_cta hover:text-brand_cta_hover transition-colors">
-            READ BRIEFING
-            <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-            </svg>
-        </a>
-      </article>
+      {displayPosts.map((post) => (
+        <article class="p-8 bg-white border border-borders_subtle shadow-subtle rounded-sm">
+          <div class="flex justify-between items-center mb-5 text-text_secondary">
+              <span class="bg-canvas_accent border border-borders_subtle text-text_secondary text-xs font-mono font-bold uppercase tracking-widest px-3 py-1 rounded-sm">{post.pillar}</span>
+              <span class="text-sm font-mono uppercase tracking-widest">{post.createdAt}</span>
+          </div>
+          <h2 class="mb-4 text-2xl font-bold tracking-tight text-text_primary font-heading uppercase hover:text-brand_cta transition-colors"><a href={`/blog/${post.slug}`}>{post.title}</a></h2>
+          <p class="mb-6 font-light text-text_secondary font-body">{post.excerpt}</p>
+          <a href={`/blog/${post.slug}`} class="inline-flex items-center font-mono font-bold text-xs uppercase tracking-widest text-brand_cta hover:text-brand_cta_hover transition-colors">
+              READ BRIEFING
+              <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+              </svg>
+          </a>
+        </article>
+      ))}
     </div>
   </section>
 
