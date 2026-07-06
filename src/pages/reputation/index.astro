@@ -7,7 +7,7 @@ import GoogleReviewsWidget from '../../components/widgets/GoogleReviewsWidget.as
 import Hero from '../../components/widgets/Hero.astro';
 import SEOAuditsWidget from '../../components/widgets/SEOAuditsWidget.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { Button } from '../../components/ui/button';
+import LinkButton from '../../components/ui/LinkButton.astro';
 
 const currentUrl = Astro.site
   ? new URL('/reputation', Astro.site).toString()
@@ -47,9 +47,9 @@ const currentUrl = Astro.site
       <h2 class="font-heading text-3xl font-black uppercase tracking-tight mb-4">Don't let emotions ruin your business rating.</h2>
       <p class="font-mono font-bold max-w-2xl mx-auto mb-8">Let our reputation assistant reply to every review professionally within 2 seconds of it arriving.</p>
       <a href="#deploy">
-        <Button size="lg" className="text-sm tracking-wide h-14 px-8 uppercase font-bold rounded-none bg-black text-white hover:bg-gray-800">
+        <LinkButton size="lg" className="w-full sm:w-auto text-sm tracking-widest h-14 px-8 uppercase font-black rounded-none border-2 border-black bg-brand_cta text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-none transition-all">
           Deploy AI Responder
-        </Button>
+        </LinkButton>
       </a>
     </div>
   </div>

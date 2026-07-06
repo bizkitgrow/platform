@@ -4,7 +4,6 @@ import { count } from 'drizzle-orm';
 import { db } from '../../db/client';
 import { posts as postsTable } from '../../db/schema';
 import AdminLayout from '../../layouts/AdminLayout.astro';
-import TiptapEditor from '../../components/admin/TiptapEditor';
 
 let postsCount = 0;
 const logsCount = 0;
@@ -62,8 +61,7 @@ try {
       </div>
       <div>
         <label class="block font-mono text-xs font-bold uppercase mb-2">Content</label>
-        <TiptapEditor client:load inputId="contentHtml" />
-        <input type="hidden" id="contentHtml" />
+        <textarea id="contentHtml" rows="10" class="w-full border-2 border-black p-3 bg-canvas_accent font-mono text-sm focus:outline-none focus:border-brand_cta"></textarea>
       </div>
       <button type="submit" class="bg-brand_cta text-white border-2 border-black font-mono font-bold uppercase px-8 py-4 hover:bg-black transition-colors w-full md:w-auto">
         PUBLISH BRIEFING

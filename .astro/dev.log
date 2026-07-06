@@ -6,3 +6,111 @@
 {"message":"`cache.set()` was called but caching is not enabled. Configure a cache provider in your Astro config under `cache` to enable caching.","label":"cache","level":"warn"}
 {"message":"[200] /404 283ms","label":null,"level":"info"}
 {"message":"[200] POST /api/v1/admin/sync 15ms","label":null,"level":"info"}
+{"message":"Configuration file updated. Restarting...","label":null,"level":"info"}
+Local icons changed, reloading
+[astro] Unable to load your Astro config
+
+{"message":"react is not defined\n  Stack trace:\n    at eval (/Users/mac/Downloads/PROYEK/BIZKITDEV/astro.config.mjs:23:35)\n    [...] See full stack trace in the browser, or rerun with --verbose.\n","label":"config","level":"error"}
+{"message":"Continuing with previous valid configuration\n","label":null,"level":"error"}
+{"message":"Configuration file updated. Restarting...","label":null,"level":"info"}
+Local icons changed, reloading
+{"message":"connected.","label":"vite","level":"info"}
+{"message":"connected.","label":"vite","level":"info"}
+{"message":"Re-optimizing dependencies because vite config has changed","label":"vite","level":"info"}
+{"message":"server restarted.","label":"vite","level":"info"}
+{"message":"Configuration file updated. Restarting...","label":null,"level":"info"}
+Local icons changed, reloading
+{"message":"connected.","label":"vite","level":"info"}
+{"message":"connected.","label":"vite","level":"info"}
+{"message":"server restarted.","label":"vite","level":"info"}
+{"message":"Configuration file updated. Restarting...","label":null,"level":"info"}
+{"message":"connected.","label":"vite","level":"info"}
+{"message":"connected.","label":"vite","level":"info"}
+{"message":"Re-optimizing dependencies because vite config has changed","label":"vite","level":"info"}
+{"message":"server restarted.","label":"vite","level":"info"}
+{"message":"Configuration file updated. Restarting...","label":null,"level":"info"}
+{"message":"connected.","label":"vite","level":"info"}
+{"message":"connected.","label":"vite","level":"info"}
+{"message":"server restarted.","label":"vite","level":"info"}
+{"message":"Configuration file updated. Restarting...","label":null,"level":"info"}
+[astro] Unable to load your Astro config
+
+{"message":"Cannot find module 'astro-icon' imported from '/Users/mac/Downloads/PROYEK/BIZKITDEV/astro.config.mjs'\n  Stack trace:\n    at fetchModule (file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/vite/dist/node/chunks/node.js:33132:32)\n    [...] See full stack trace in the browser, or rerun with --verbose.\n","label":"config","level":"error"}
+{"message":"Continuing with previous valid configuration\n","label":null,"level":"error"}
+{"message":"Configuration file updated. Restarting...","label":null,"level":"info"}
+{"message":"connected.","label":"vite","level":"info"}
+{"message":"connected.","label":"vite","level":"info"}
+{"message":"Re-optimizing dependencies because lockfile has changed","label":"vite","level":"info"}
+{"message":"server restarted.","label":"vite","level":"info"}
+{"message":"(!) Failed to run dependency scan. Skipping dependency pre-bundling. Error: The following dependencies are imported but could not be resolved:\n\n  class-variance-authority (imported by /Users/mac/Downloads/PROYEK/BIZKITDEV/src/components/ui/button.tsx)\n  react/jsx-dev-runtime (imported by /Users/mac/Downloads/PROYEK/BIZKITDEV/src/components/admin/TiptapEditor.tsx)\n  react (imported by /Users/mac/Downloads/PROYEK/BIZKITDEV/src/components/admin/TiptapEditor.tsx)\n  @radix-ui/react-slot (imported by /Users/mac/Downloads/PROYEK/BIZKITDEV/src/components/ui/button.tsx)\n  lucide-react (imported by /Users/mac/Downloads/PROYEK/BIZKITDEV/src/components/admin/TiptapEditor.tsx)\n  @tiptap/react (imported by /Users/mac/Downloads/PROYEK/BIZKITDEV/src/components/admin/TiptapEditor.tsx)\n  @tiptap/extension-link (imported by /Users/mac/Downloads/PROYEK/BIZKITDEV/src/components/admin/TiptapEditor.tsx)\n  @tiptap/extension-underline (imported by /Users/mac/Downloads/PROYEK/BIZKITDEV/src/components/admin/TiptapEditor.tsx)\n  @tiptap/starter-kit (imported by /Users/mac/Downloads/PROYEK/BIZKITDEV/src/components/admin/TiptapEditor.tsx)\n\nAre they installed?\n    at file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/vite/dist/node/chunks/node.js:30992:33\n    at async file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/vite/dist/node/chunks/node.js:33264:15","label":"vite","level":"error"}
+{"message":".vercel/output/static/404.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/privacy/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/terms/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/australia/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/canada/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/united-kingdom/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/germany/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/united-states/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/london/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/new-york/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/berlin/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/toronto/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/ai-review-responder/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/sydney/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/cpanel-managed-hosting/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/competitor-website-spy/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/global-esim-data/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/global-vpn-infrastructure/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/market-metrics-dashboard/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/secure-cloud-storage/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/invoicing-with-ai/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/local-leads-discovery/index.html","label":"watch","level":"info"}
+{"message":"Configuration file updated. Restarting...","label":null,"level":"info"}
+{"message":"connected.","label":"vite","level":"info"}
+{"message":"connected.","label":"vite","level":"info"}
+{"message":"Re-optimizing dependencies because lockfile has changed","label":"vite","level":"info"}
+{"message":"server restarted.","label":"vite","level":"info"}
+{"message":"(!) Failed to run dependency scan. Skipping dependency pre-bundling. Error: The following dependencies are imported but could not be resolved:\n\n  react/jsx-dev-runtime (imported by /Users/mac/Downloads/PROYEK/BIZKITDEV/src/components/ui/button.tsx)\n  lucide-react (imported by /Users/mac/Downloads/PROYEK/BIZKITDEV/src/components/admin/TiptapEditor.tsx)\n  react (imported by /Users/mac/Downloads/PROYEK/BIZKITDEV/src/components/ui/button.tsx)\n  @tiptap/react (imported by /Users/mac/Downloads/PROYEK/BIZKITDEV/src/components/admin/TiptapEditor.tsx)\n  @tiptap/extension-link (imported by /Users/mac/Downloads/PROYEK/BIZKITDEV/src/components/admin/TiptapEditor.tsx)\n  @tiptap/extension-underline (imported by /Users/mac/Downloads/PROYEK/BIZKITDEV/src/components/admin/TiptapEditor.tsx)\n  class-variance-authority (imported by /Users/mac/Downloads/PROYEK/BIZKITDEV/src/components/ui/badge.tsx)\n  @tiptap/starter-kit (imported by /Users/mac/Downloads/PROYEK/BIZKITDEV/src/components/admin/TiptapEditor.tsx)\n  @radix-ui/react-slot (imported by /Users/mac/Downloads/PROYEK/BIZKITDEV/src/components/ui/button.tsx)\n\nAre they installed?\n    at file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/vite/dist/node/chunks/node.js:30992:33\n    at async file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/vite/dist/node/chunks/node.js:33264:15","label":"vite","level":"error"}
+{"message":"Configuration file updated. Restarting...","label":null,"level":"info"}
+{"message":"connected.","label":"vite","level":"info"}
+{"message":"connected.","label":"vite","level":"info"}
+{"message":"Re-optimizing dependencies because lockfile has changed","label":"vite","level":"info"}
+{"message":"server restarted.","label":"vite","level":"info"}
+{"message":"(!) Failed to run dependency scan. Skipping dependency pre-bundling. Error: The following dependencies are imported but could not be resolved:\n\n  class-variance-authority (imported by /Users/mac/Downloads/PROYEK/BIZKITDEV/src/components/ui/button.tsx)\n  react/jsx-dev-runtime (imported by /Users/mac/Downloads/PROYEK/BIZKITDEV/src/components/admin/TiptapEditor.tsx)\n  react (imported by /Users/mac/Downloads/PROYEK/BIZKITDEV/src/components/admin/TiptapEditor.tsx)\n  @radix-ui/react-slot (imported by /Users/mac/Downloads/PROYEK/BIZKITDEV/src/components/ui/button.tsx)\n  lucide-react (imported by /Users/mac/Downloads/PROYEK/BIZKITDEV/src/components/admin/TiptapEditor.tsx)\n  @tiptap/react (imported by /Users/mac/Downloads/PROYEK/BIZKITDEV/src/components/admin/TiptapEditor.tsx)\n  @tiptap/extension-link (imported by /Users/mac/Downloads/PROYEK/BIZKITDEV/src/components/admin/TiptapEditor.tsx)\n  @tiptap/extension-underline (imported by /Users/mac/Downloads/PROYEK/BIZKITDEV/src/components/admin/TiptapEditor.tsx)\n  @tiptap/starter-kit (imported by /Users/mac/Downloads/PROYEK/BIZKITDEV/src/components/admin/TiptapEditor.tsx)\n\nAre they installed?\n    at file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/vite/dist/node/chunks/node.js:30992:33\n    at async file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/vite/dist/node/chunks/node.js:33264:15","label":"vite","level":"error"}
+{"message":"Configuration file updated. Restarting...","label":null,"level":"info"}
+{"message":"connected.","label":"vite","level":"info"}
+{"message":"connected.","label":"vite","level":"info"}
+{"message":"Re-optimizing dependencies because lockfile has changed","label":"vite","level":"info"}
+{"message":"server restarted.","label":"vite","level":"info"}
+{"message":"(!) Failed to run dependency scan. Skipping dependency pre-bundling. Error: The following dependencies are imported but could not be resolved:\n\n  class-variance-authority (imported by /Users/mac/Downloads/PROYEK/BIZKITDEV/src/components/ui/button.tsx)\n  react/jsx-dev-runtime (imported by /Users/mac/Downloads/PROYEK/BIZKITDEV/src/components/ui/card.tsx)\n  react (imported by /Users/mac/Downloads/PROYEK/BIZKITDEV/src/components/ui/card.tsx)\n  @radix-ui/react-slot (imported by /Users/mac/Downloads/PROYEK/BIZKITDEV/src/components/ui/button.tsx)\n  lucide-react (imported by /Users/mac/Downloads/PROYEK/BIZKITDEV/src/components/admin/TiptapEditor.tsx)\n  @tiptap/react (imported by /Users/mac/Downloads/PROYEK/BIZKITDEV/src/components/admin/TiptapEditor.tsx)\n  @tiptap/extension-link (imported by /Users/mac/Downloads/PROYEK/BIZKITDEV/src/components/admin/TiptapEditor.tsx)\n  @tiptap/extension-underline (imported by /Users/mac/Downloads/PROYEK/BIZKITDEV/src/components/admin/TiptapEditor.tsx)\n  @tiptap/starter-kit (imported by /Users/mac/Downloads/PROYEK/BIZKITDEV/src/components/admin/TiptapEditor.tsx)\n\nAre they installed?\n    at file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/vite/dist/node/chunks/node.js:30992:33\n    at async file:///Users/mac/Downloads/PROYEK/BIZKITDEV/node_modules/vite/dist/node/chunks/node.js:33264:15","label":"vite","level":"error"}
+{"message":".vercel/output/static/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/privacy/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/sydney/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/new-york/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/toronto/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/london/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/reputation/berlin/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/terms/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/404.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/invoicing-with-ai/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/local-leads-discovery/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/competitor-website-spy/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/global-vpn-infrastructure/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/market-metrics-dashboard/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/secure-cloud-storage/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/global-esim-data/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/ai-review-responder/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/solutions/cpanel-managed-hosting/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/australia/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/germany/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/united-states/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/canada/index.html","label":"watch","level":"info"}
+{"message":".vercel/output/static/esim/united-kingdom/index.html","label":"watch","level":"info"}
+{"message":"Configuration file updated. Restarting...","label":null,"level":"info"}
+{"message":"connected.","label":"vite","level":"info"}
+{"message":"connected.","label":"vite","level":"info"}
+{"message":"Re-optimizing dependencies because lockfile has changed","label":"vite","level":"info"}
+{"message":"server restarted.","label":"vite","level":"info"}

@@ -1,0 +1,32 @@
+---
+// LatencyTester.astro
+---
+<div class="widget-container" style="border: 1px solid oklch(var(--border)); padding: 1rem; border-radius: 0.5rem; background: oklch(var(--background));">
+  <h3 style="color: oklch(var(--primary)); font-weight: bold; margin-bottom: 0.5rem;">CDN Latency Tester</h3>
+  <div style="display: flex; gap: 1rem; align-items: center;">
+    <button id="test-latency-btn" style="background: oklch(var(--primary)); color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.25rem; cursor: pointer;">Test Ping</button>
+    <span id="latency-result" style="font-family: monospace;">--- ms</span>
+  </div>
+</div>
+
+<script>
+  document.getElementById('test-latency-btn')?.addEventListener('click', async () => {
+    const resultEl = document.getElementById('latency-result');
+    if (!resultEl) return;
+    
+    resultEl.textContent = 'Testing...';
+    
+    // Using a reliable CDN endpoint for testing latency
+    const testUrl = 'https://cloudflare.com/cdn-cgi/trace';
+    
+    const start = performance.now();
+    try {
+      await fetch(testUrl, { mode: 'no-cors', cache: 'no-store' });
+      const end = performance.now();
+      const latency = Math.round(end - start);
+      resultEl.textContent = `${latency} ms`;
+    } catch (e) {
+      resultEl.textContent = 'Error';
+    }
+  });
+</script>

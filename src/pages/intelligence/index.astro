@@ -4,7 +4,7 @@ import LeadCaptureWidget from '../../components/LeadCaptureWidget.astro';
 import Stats from '../../components/widgets/Stats.astro';
 import Hero from '../../components/widgets/Hero.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { Button } from '../../components/ui/button';
+import LinkButton from '../../components/ui/LinkButton.astro';
 
 const currentUrl = Astro.site
   ? new URL('/intelligence', Astro.site).toString()
@@ -33,7 +33,7 @@ const currentUrl = Astro.site
         <p class="font-bold text-xs uppercase tracking-widest text-brand_cta mb-4">Enter Competitor Domain</p>
         <div class="flex flex-col sm:flex-row gap-2 justify-center">
           <input type="text" placeholder="competitor.com" class="border-2 border-black p-2 text-xs w-full max-w-[200px]" />
-          <Button size="sm" className="bg-black text-white rounded-none border-2 border-black uppercase text-xs">Scan</Button>
+          <LinkButton size="sm" className="bg-black text-white rounded-none border-2 border-black uppercase text-xs">Scan</LinkButton>
         </div>
       </div>
     </div>
@@ -57,9 +57,9 @@ const currentUrl = Astro.site
       <h2 class="font-heading text-3xl font-black uppercase tracking-tight mb-4">Stop guessing their strategy.</h2>
       <p class="font-mono font-bold max-w-2xl mx-auto mb-8">Enter your competitor's domain now and get an instant report on their technology intelligence.</p>
       <a href="#deploy">
-        <Button size="lg" className="text-sm tracking-wide h-14 px-8 uppercase font-bold rounded-none bg-black text-white hover:bg-gray-800">
+        <LinkButton size="lg" className="text-sm tracking-wide h-14 px-8 uppercase font-bold rounded-none bg-black text-white hover:bg-gray-800">
           Extract Intel
-        </Button>
+        </LinkButton>
       </a>
     </div>
   </div>

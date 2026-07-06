@@ -1,0 +1,58 @@
+---
+// ConversionLossChart.astro
+---
+<div class="widget-container" style="border: 1px solid oklch(var(--border)); padding: 1.5rem; border-radius: 0.5rem; background: oklch(var(--background));">
+  <h3 style="color: oklch(var(--primary)); font-weight: bold; margin-bottom: 1rem;">Conversion Loss Funnel</h3>
+  
+  <div style="width: 100%; overflow-x: auto;">
+    <canvas id="conversion-chart" width="400" height="200" style="display: block; margin: 0 auto; max-width: 100%;"></canvas>
+  </div>
+</div>
+
+<script>
+  (function() {
+    const canvas = document.getElementById('conversion-chart');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    // Hardcoded funnel data
+    const steps = ['Visits', 'Add to Cart', 'Checkout', 'Purchase'];
+    const values = [1000, 450, 200, 50];
+    
+    // Calculate colors (primary with varying opacity)
+    // Assuming oklch parsing is complex in canvas, we'll use solid standard colors 
+    // but try to mimic the primary feel using a generic blue/indigo for safety
+    const colors = ['#4f46e5', '#6366f1', '#818cf8', '#a5b4fc'];
+    
+    const maxVal = values[0];
+    const width = canvas.width;
+    const height = canvas.height;
+    const barHeight = 30;
+    const spacing = (height - (steps.length * barHeight)) / (steps.length + 1);
+    
+    ctx.clearRect(0, 0, width, height);
+    
+    ctx.font = '14px sans-serif';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    
+    values.forEach((val, i) => {
+      const barWidth = (val / maxVal) * (width - 120);
+      const y = spacing + i * (barHeight + spacing);
+      
+      // Draw bar
+      ctx.fillStyle = colors[i];
+      // center the bars
+      const x = (width - 120 - barWidth) / 2 + 100;
+      ctx.fillRect(x, y, barWidth, barHeight);
+      
+      // Draw text label
+      ctx.fillStyle = '#333';
+      ctx.fillText(steps[i], 10, y + barHeight / 2);
+      
+      // Draw value
+      ctx.fillText(val.toString(), x + barWidth + 10, y + barHeight / 2);
+    });
+  })();
+</script>

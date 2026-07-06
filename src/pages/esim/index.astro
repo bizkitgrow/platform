@@ -2,12 +2,12 @@
 export const prerender = false;
 import LeadCaptureWidget from '../../components/LeadCaptureWidget.astro';
 import NetworkChecker from '../../components/NetworkChecker.astro';
-import ResellPortalWidget from '../../components/ResellPortalWidget.astro';
+import LinkButton from '../../components/ui/LinkButton.astro';
 import AstroStatusPage from '../../components/widgets/AstroStatusPage.astro';
 import Hero from '../../components/widgets/Hero.astro';
 import Pricing from '../../components/widgets/Pricing.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { Button } from '../../components/ui/button';
+
 
 const currentUrl = Astro.site
   ? new URL('/esim', Astro.site).toString()
@@ -51,9 +51,9 @@ const currentUrl = Astro.site
       <h2 class="font-heading text-3xl font-black uppercase tracking-tight mb-4">One public network mistake can expose all your client data.</h2>
       <p class="font-mono font-bold max-w-2xl mx-auto mb-8">Activate your team's corporate VPN directly from here in under 60 seconds.</p>
       <a href="#deploy">
-        <Button size="lg" className="text-sm tracking-wide h-14 px-8 uppercase font-bold rounded-none bg-black text-white hover:bg-gray-800">
+        <LinkButton size="lg" className="text-sm tracking-wide h-14 px-8 uppercase font-bold rounded-none bg-black text-white hover:bg-gray-800">
           Activate Protection Now
-        </Button>
+        </LinkButton>
       </a>
     </div>
   </div>

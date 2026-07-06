@@ -1,0 +1,52 @@
+---
+// ESIMMatcher.astro
+---
+<div class="widget-container" style="border: 1px solid oklch(var(--border)); padding: 1.5rem; border-radius: 0.5rem; background: oklch(var(--background));">
+  <h3 style="color: oklch(var(--primary)); font-weight: bold; margin-bottom: 1rem;">eSIM Device Compatibility Checker</h3>
+  <input type="text" id="esim-search" placeholder="Type your device name (e.g. iPhone 14)..." style="width: 100%; padding: 0.75rem; border: 1px solid oklch(var(--border)); border-radius: 0.25rem; margin-bottom: 1rem; background: transparent;" />
+  <ul id="esim-results" style="list-style: none; padding: 0; margin: 0; max-height: 200px; overflow-y: auto;">
+    <!-- Results will appear here -->
+  </ul>
+</div>
+
+<script>
+  (function() {
+    const input = document.getElementById('esim-search');
+    const results = document.getElementById('esim-results');
+    if (!input || !results) return;
+
+    // Minimal mock data for demonstration. In production, this would fetch esim_devices.json
+    const mockDevices = [
+      { name: 'iPhone 15 Pro Max', compatible: true },
+      { name: 'iPhone 15 Pro', compatible: true },
+      { name: 'iPhone 14', compatible: true },
+      { name: 'iPhone X', compatible: false },
+      { name: 'Samsung Galaxy S24 Ultra', compatible: true },
+      { name: 'Samsung Galaxy S20', compatible: true },
+      { name: 'Google Pixel 8 Pro', compatible: true },
+      { name: 'OnePlus 12', compatible: true },
+    ];
+
+    input.addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase();
+      results.innerHTML = '';
+      
+      if (!query.trim()) return;
+
+      const matches = mockDevices.filter(d => d.name.toLowerCase().includes(query));
+      
+      if (matches.length === 0) {
+        results.innerHTML = '<li style="padding: 0.5rem 0; color: #666;">No devices found.</li>';
+        return;
+      }
+
+      matches.forEach(device => {
+        const li = document.createElement('li');
+        li.style.padding = '0.5rem 0';
+        li.style.borderBottom = '1px solid rgba(0,0,0,0.05)';
+        li.innerHTML = `<strong>${device.name}</strong> - ${device.compatible ? '<span style="color: green;">Compatible ✓</span>' : '<span style="color: red;">Not Compatible ✗</span>'}`;
+        results.appendChild(li);
+      });
+    });
+  })();
+</script>

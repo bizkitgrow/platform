@@ -1,0 +1,63 @@
+---
+// ParaphraseBox.astro
+---
+<div class="widget-container" style="border: 1px solid oklch(var(--border)); padding: 1.5rem; border-radius: 0.5rem; background: oklch(var(--background));">
+  <h3 style="color: oklch(var(--primary)); font-weight: bold; margin-bottom: 1rem;">AI Paraphraser</h3>
+  <textarea id="paraphrase-input" rows="4" placeholder="Enter text to paraphrase..." style="width: 100%; padding: 0.75rem; border: 1px solid oklch(var(--border)); border-radius: 0.25rem; margin-bottom: 1rem; font-family: inherit; background: transparent;"></textarea>
+  <button id="paraphrase-btn" style="background: oklch(var(--primary)); color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.25rem; cursor: pointer; margin-bottom: 1rem;">Paraphrase</button>
+  
+  <div style="min-height: 100px; background: rgba(0,0,0,0.02); padding: 1rem; border-radius: 0.25rem;">
+    <p id="paraphrase-output" style="margin: 0; white-space: pre-wrap; font-family: serif;"></p>
+  </div>
+</div>
+
+<script>
+  (function() {
+    const btn = document.getElementById('paraphrase-btn');
+    const input = document.getElementById('paraphrase-input');
+    const output = document.getElementById('paraphrase-output');
+    
+    if (!btn || !input || !output) return;
+    
+    let isTyping = false;
+    
+    const typeWriter = async (text) => {
+      isTyping = true;
+      output.textContent = '';
+      for (let i = 0; i < text.length; i++) {
+        output.textContent += text.charAt(i);
+        await new Promise(r => setTimeout(r, 20)); // Typewriter delay
+      }
+      isTyping = false;
+    };
+
+    btn.addEventListener('click', async () => {
+      if (isTyping) return;
+      
+      const text = input.value.trim();
+      if (!text) return;
+      
+      output.textContent = 'Thinking...';
+      
+      try {
+        // Attempt to call the endpoint. If it fails (e.g. CORS or not found), fallback to mock
+        const response = await fetch('/api/v1/paraphrase', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text })
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          typeWriter(data.paraphrased || data.result || 'Done.');
+        } else {
+          throw new Error('Endpoint error');
+        }
+      } catch (e) {
+        // Fallback mock paraphrase for demonstration
+        const mockResponse = "This is a demonstration of the paraphrased text effect, generated dynamically in response to your input: " + text.substring(0, 20) + "...";
+        typeWriter(mockResponse);
+      }
+    });
+  })();
+</script>

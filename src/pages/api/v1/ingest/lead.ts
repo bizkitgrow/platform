@@ -1,140 +1,80 @@
-export const prerender = false;
 import type { APIRoute } from 'astro';
-import { db } from '../../../../db/client';
-import { leads } from '../../../../db/schema';
+import { createClient } from '@supabase/supabase-js';
+
+export const prerender = false;
+
+const supabase = createClient(
+  import.meta.env.SUPABASE_URL || '',
+  import.meta.env.SUPABASE_ANON_KEY || ''
+);
 
 export const POST: APIRoute = async ({ request }) => {
   try {
-    const body = await request.json();
+    let email = '';
+    let name = '';
+    let target_sku = '';
+    let created_at = new Date().toISOString();
 
-    // Normalize payload across omnichannel sources
-    const email = body.client_email || body.email;
-    const businessName = body.client_name || body.business_name || '';
-    const targetedService = body.sku || body.targeted_service || 'general';
-    const billingCycle = body.billing_cycle || null;
+    const contentType = request.headers.get('Content-Type') || '';
+
+    if (contentType.includes('application/json')) {
+      const body = await request.json();
+      email = body.email || '';
+      name = body.name || '';
+      target_sku = body.target_sku || '';
+    } else if (contentType.includes('application/x-www-form-urlencoded')) {
+      const formData = await request.formData();
+      email = formData.get('email')?.toString() || '';
+      name = formData.get('name')?.toString() || '';
+      target_sku = formData.get('target_sku')?.toString() || '';
+    } else {
+      return new Response(JSON.stringify({ error: 'Unsupported Media Type' }), { status: 415 });
+    }
 
     if (!email) {
       return new Response(JSON.stringify({ error: 'Email is required' }), { status: 400 });
     }
 
-    // 1. Supabase / Drizzle Ingestion (Upsert)
-    await db
-      .insert(leads)
-      .values({
-        email,
-        businessName,
-        targetedService,
-        status: 'pending_provision',
-      })
-      .onConflictDoUpdate({
-        target: leads.email,
-        set: {
-          businessName,
-          targetedService,
-          status: 'pending_provision',
-          updatedAt: new Date(),
-        },
-      });
-
-    // 2. OneSignal SDK Synchronization
-    const ONESIGNAL_APP_ID = process.env.ONESIGNAL_APP_ID;
-    const ONESIGNAL_REST_API_KEY = process.env.ONESIGNAL_REST_API_KEY;
-
-    if (ONESIGNAL_APP_ID && ONESIGNAL_REST_API_KEY) {
-      try {
-        await fetch('https://onesignal.com/api/v1/players', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Key ${ONESIGNAL_REST_API_KEY}`,
-          },
-          body: JSON.stringify({
-            app_id: ONESIGNAL_APP_ID,
-            identifier: email,
-            device_type: 11, // Email type
-            tags: {
-              lead_source: 'omnichannel_ingest',
-              targeted_service: targetedService,
-              digest_preference: 'weekly',
-              market_feed: 'active',
-              signup_timestamp: Math.floor(Date.now() / 1000).toString(),
-            },
-          }),
-        });
-      } catch (onesignalErr) {
-        console.warn('[OneSignal] Broadcast failed:', onesignalErr);
-      }
-    }
-
-    // 3. Programmatic Pre-Activation Mock
-    const RESELLPORTAL_API_KEY = process.env.RESELLPORTAL_API_KEY;
-
-    // In production, we would hit ResellPortal API here.
-    // For now, securely catch missing keys and return structured mock
-    if (!RESELLPORTAL_API_KEY || process.env.NODE_ENV === 'development') {
-      return new Response(
-        JSON.stringify({
-          status: 'success',
-          order_id: `MOCK-ORD-${new Date().getFullYear()}-OMNI`,
-          live: false,
-        }),
-        {
-          status: 201,
-          headers: { 'Content-Type': 'application/json' },
-        },
-      );
-    }
-
-    // Actual API Call to ResellPortal
-    try {
-      const rpRes = await fetch('https://panel.resellportal.com/api/v1/services/activate', {
+    const onesignalAppId = import.meta.env.ONESIGNAL_APP_ID || '';
+    
+    // Dual-mesh Promise.all sync for Supabase and OneSignal
+    const [supabaseResult, onesignalResult] = await Promise.allSettled([
+      supabase.from('waiting_list').insert([{ email, name, target_sku, created_at }]),
+      
+      fetch('https://onesignal.com/api/v1/players', {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${RESELLPORTAL_API_KEY}`,
           'Content-Type': 'application/json',
+          'Authorization': `Basic ${import.meta.env.ONESIGNAL_REST_API_KEY || ''}`
         },
         body: JSON.stringify({
-          client_email: email,
-          client_name: businessName,
-          product: targetedService,
-          billing_cycle: billingCycle || 'monthly',
-          options: {},
-        }),
-      });
+          app_id: onesignalAppId,
+          identifier: email,
+          tags: {
+            name: name,
+            sku: target_sku
+          }
+        })
+      })
+    ]);
 
-      if (!rpRes.ok) {
-        throw new Error('ResellPortal API error');
-      }
-
-      const rpData = await rpRes.json();
-      return new Response(
-        JSON.stringify({
-          status: 'success',
-          order_id: rpData.order_id || 'LIVE-ORD-OMNI',
-          live: true,
-        }),
-        {
-          status: 201,
-          headers: { 'Content-Type': 'application/json' },
-        },
-      );
-    } catch (apiErr) {
-      console.error('[ResellPortal] Activation Failed:', apiErr);
-      // Fallback mock to ensure unbroken UI conversion transitions
-      return new Response(
-        JSON.stringify({
-          status: 'success',
-          order_id: `MOCK-ORD-${new Date().getFullYear()}-OMNI-FAILOVER`,
-          live: false,
-        }),
-        {
-          status: 201,
-          headers: { 'Content-Type': 'application/json' },
-        },
-      );
+    let success = true;
+    if (supabaseResult.status === 'rejected' || (supabaseResult.status === 'fulfilled' && supabaseResult.value.error)) {
+      console.error('Supabase Error:', supabaseResult.status === 'fulfilled' ? supabaseResult.value.error : supabaseResult.reason);
+      success = false;
     }
-  } catch (error: any) {
-    console.error('[Ingest] Error:', error);
+    
+    if (onesignalResult.status === 'rejected' || (onesignalResult.status === 'fulfilled' && !onesignalResult.value.ok)) {
+       console.error('OneSignal Error:', onesignalResult.status === 'fulfilled' ? await onesignalResult.value.text() : onesignalResult.reason);
+    }
+
+    if (!success) {
+      return new Response(JSON.stringify({ error: 'Failed to ingest lead' }), { status: 500 });
+    }
+
+    return new Response(JSON.stringify({ success: true, message: 'Lead ingested successfully' }), { status: 200 });
+  } catch (error) {
+    console.error('Ingestion Error:', error);
     return new Response(JSON.stringify({ error: 'Internal Server Error' }), { status: 500 });
   }
 };

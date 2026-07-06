@@ -1,0 +1,103 @@
+---
+// EditableInvoice.astro
+---
+<style>
+  /* The print media query ensures non-invoice elements are hidden when printing */
+  @media print {
+    body * {
+      visibility: hidden;
+    }
+    #invoice-print-area, #invoice-print-area * {
+      visibility: visible;
+    }
+    #invoice-print-area {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+    }
+    .no-print {
+      display: none !important;
+    }
+  }
+
+  .invoice-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+  }
+  .invoice-table th, .invoice-table td {
+    border: 1px solid oklch(var(--border));
+    padding: 0.75rem;
+    text-align: left;
+  }
+  .invoice-table th {
+    background: rgba(0,0,0,0.03);
+    font-weight: bold;
+  }
+  [contenteditable="true"]:hover {
+    background: rgba(0,0,0,0.02);
+    outline: 1px dashed oklch(var(--primary));
+  }
+</style>
+
+<div class="widget-container" style="border: 1px solid oklch(var(--border)); padding: 1.5rem; border-radius: 0.5rem; background: oklch(var(--background));">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+    <h3 style="color: oklch(var(--primary)); font-weight: bold; margin: 0;">Invoice Generator</h3>
+    <button class="no-print" onclick="window.print()" style="background: oklch(var(--primary)); color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.25rem; cursor: pointer;">Print Invoice</button>
+  </div>
+  
+  <div id="invoice-print-area" style="padding: 2rem; border: 1px solid oklch(var(--border)); background: white;">
+    <div style="display: flex; justify-content: space-between; margin-bottom: 2rem;">
+      <div>
+        <h2 style="margin: 0;" contenteditable="true">YOUR COMPANY</h2>
+        <p contenteditable="true" style="margin: 0.25rem 0 0 0; color: #666;">123 Business Rd.<br/>City, ST 12345</p>
+      </div>
+      <div style="text-align: right;">
+        <h1 style="margin: 0; color: #333;">INVOICE</h1>
+        <p contenteditable="true" style="margin: 0.25rem 0 0 0; font-weight: bold;">INV-1001</p>
+        <p contenteditable="true" style="margin: 0.25rem 0 0 0; color: #666;">Date: Oct 25, 2026</p>
+      </div>
+    </div>
+    
+    <div style="margin-bottom: 2rem;">
+      <h4 style="margin: 0 0 0.5rem 0;">Bill To:</h4>
+      <p contenteditable="true" style="margin: 0;">Client Name<br/>Client Address<br/>City, ST 54321</p>
+    </div>
+    
+    <table class="invoice-table">
+      <thead>
+        <tr>
+          <th>Description</th>
+          <th style="width: 100px;">Qty</th>
+          <th style="width: 120px;">Price</th>
+          <th style="width: 120px;">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td contenteditable="true">Consulting Services</td>
+          <td contenteditable="true">10</td>
+          <td contenteditable="true">$150.00</td>
+          <td contenteditable="true">$1,500.00</td>
+        </tr>
+        <tr>
+          <td contenteditable="true">Software License</td>
+          <td contenteditable="true">1</td>
+          <td contenteditable="true">$500.00</td>
+          <td contenteditable="true">$500.00</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="3" style="text-align: right; font-weight: bold;">Grand Total:</td>
+          <td contenteditable="true" style="font-weight: bold;">$2,000.00</td>
+        </tr>
+      </tfoot>
+    </table>
+    
+    <div style="margin-top: 3rem;">
+      <p contenteditable="true" style="color: #666; font-size: 0.9rem;">Thank you for your business. Payment is due within 30 days.</p>
+    </div>
+  </div>
+</div>

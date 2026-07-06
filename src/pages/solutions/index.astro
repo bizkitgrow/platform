@@ -1,7 +1,7 @@
 ---
 import LeadCaptureWidget from '../../components/LeadCaptureWidget.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { Button } from '../../components/ui/button';
+import LinkButton from '../../components/ui/LinkButton.astro';
 
 const currentUrl = Astro.site
   ? new URL('/solutions', Astro.site).toString()
@@ -47,11 +47,9 @@ const currentUrl = Astro.site
     <div class="max-w-screen-xl mx-auto px-4 text-center">
       <h2 class="font-heading text-3xl font-black uppercase tracking-tight mb-4">Every 1-second delay on your website cuts conversions by 7%.</h2>
       <p class="font-mono font-bold max-w-2xl mx-auto mb-8">Migrate your systems to our serverless hosting optimized for extreme speed.</p>
-      <a href="#deploy">
-        <Button size="lg" className="text-sm tracking-wide h-14 px-8 uppercase font-bold rounded-none bg-black text-white hover:bg-gray-800">
-          Migrate Infrastructure
-        </Button>
-      </a>
+      <LinkButton href="#deploy" class="text-sm tracking-wide h-14 px-8 uppercase font-bold rounded-none bg-black text-white hover:bg-gray-800 inline-flex items-center justify-center">
+        Migrate Infrastructure
+      </LinkButton>
     </div>
   </div>
 
